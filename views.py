@@ -20,6 +20,16 @@ def logout():
     return redirect(url_for('login'))
 
 
+def doc(doc_id):
+    doc = Doc.objects.get(id=doc_id)
+    sents = []
+
+    for index, sen in enumerate(doc.text.split('.')):
+        sents.append((index + 1, sen + '.'))
+
+    return render_template('doc.html', doc=doc, sents=sents, g=g)
+
+
 def login_api():
     data = request.get_json()
     username = data['username']
