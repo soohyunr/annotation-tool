@@ -3,17 +3,11 @@ from flask import g, session, request, redirect, url_for
 import random
 
 
-# reference: https://medium.com/@devsudhi/how-to-create-a-middleware-in-flask-4e757041a6aa
-
-
-def defaults(f):
+def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        db = mongo.get_db()
-        g.users = mongo.to_dicts(db['user'].find({}))
-        if ('user' in session) is False:
-            session['user'] = mongo.to_dict(g.users[0])
-        g.random = random.randrange(0, 1000000)
+        if g.user is None:
+            return redirect(url_for('login'))
         return f(*args, **kwargs)
 
     return decorated_function

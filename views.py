@@ -1,11 +1,29 @@
-import flask
-from models import Doc
+import json
+from flask import request, render_template, Response, g, session
+
+from models import Doc, User
+from decorator import login_required
 
 
+@login_required
 def index():
     docs = Doc.objects.all()
+    return render_template('index.html', docs=docs, g=g)
 
-    for doc in docs:
-        print(doc.id)
 
-    return flask.render_template('index.html', docs=docs)
+def login():
+    return render_template('login.html', g=g)
+
+
+def login_api():
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+
+    user = User.objects.get(username=username)
+    if not user or not user.check_password(password):
+        return Response(status=403)
+
+    session['username'] = username
+    g.user = user.dump()
+    return Response('success', status=200)

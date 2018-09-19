@@ -1,6 +1,6 @@
 from mongoengine import connect
 
-from models import Doc
+from models import Doc, User
 import config
 
 
@@ -17,7 +17,14 @@ def insert_sample_docs():
         Doc(title=doc['title'], text=doc['text']).save()
 
 
+def insert_sample_user():
+    user = User(username='annotator1')
+    user.set_password('annotator1')
+    user.save()
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
     # insert_sample_docs()
+    # insert_sample_user()
