@@ -16,24 +16,6 @@
     background-color: white;
 }
 
-#guideline-modal-btn {
-    position: fixed;
-    right: 20px;
-    bottom: 30px;
-}
-
-.negative {
-    color: #ff8787;
-}
-
-.neutral {
-    color: #495057;
-}
-
-.positive {
-    color: #40c057;
-}
-
 body {
     margin-top: 70px;
 }
