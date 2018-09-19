@@ -1,5 +1,5 @@
 import json
-from flask import request, render_template, Response, g, session
+from flask import request, render_template, Response, g, session, redirect, url_for
 
 from models import Doc, User
 from decorator import login_required
@@ -13,6 +13,11 @@ def index():
 
 def login():
     return render_template('login.html', g=g)
+
+
+def logout():
+    if 'username' in session: del session['username']
+    return redirect(url_for('login'))
 
 
 def login_api():

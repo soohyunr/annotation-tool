@@ -3,6 +3,13 @@
         <a href="/">NLPCL</a>
     </h5>
     <nav class="my-2 my-md-0 mr-md-2">
+        {% if g.user %}
+        {{g.user['username']}}
+        {% endif %}
     </nav>
+    {% if not g.user %}
     <a class="btn btn-outline-primary" href="/login">Sign In</a>
+    {% else %}
+    <a class="btn btn-outline-dark ml-2" href="/logout">Log Out</a>
+    {% endif %}
 </div>
