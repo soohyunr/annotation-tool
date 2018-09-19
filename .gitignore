@@ -7,4 +7,4 @@
 *.mo
 /ENV/
 
-config.cfg
+config.py
