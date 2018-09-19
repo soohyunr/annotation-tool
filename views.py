@@ -21,11 +21,12 @@ def logout():
 
 
 def doc(doc_id):
+    from nltk import sent_tokenize
     doc = Doc.objects.get(id=doc_id)
     sents = []
 
-    for index, sen in enumerate(doc.text.split('.')):
-        sents.append((index + 1, sen + '.'))
+    for i, sen in enumerate(sent_tokenize(doc.text)):
+        sents.append((i + 1, sen))
 
     return render_template('doc.html', doc=doc, sents=sents, g=g)
 
