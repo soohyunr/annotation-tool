@@ -1,0 +1,10 @@
+# InteliJ IDEA
+*.iml
+.idea/
+
+# Python
+*.pyc
+*.mo
+/ENV/
+
+config.cfg

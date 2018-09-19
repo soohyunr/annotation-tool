@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+{% include 'base/head.html' %}
+<body>
+{% include 'base/navbar.html' %}
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">제목</th>
+            <th scope="col" style="width: 150px;">강연자</th>
+            <th scope="col" style="width: 80px;">자막</th>
+            <th scope="col" style="width: 120px;">주석(문맥x)</th>
+            <th scope="col" style="width: 120px;">주석(문맥o)</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for video in videos %}
+        <tr>
+            <td>{{video.video_id}}</td>
+            <td>{{video.title}}
+                <span class="badge badge-light"><a href="{{video.link}}" target="_blank">유튜브</a></span>
+                <span class="badge badge-light"><a href="/insight/{{video.video_id}}">분석</a></span>
+            </td>
+            <td>{{video.author}}</td>
+            <td>
+                {{video['sub_total']}}개
+            </td>
+            <td>
+                <span class="badge badge-light"><a href="/annotate/{{video.video_id}}?context=0">주석하기</a></span>
+                {% for label in video['context_no_labels'] %}
+                <span class="badge badge-pill badge-light">{{label['name']}}({{label['total']}}개)</span>
+                {% endfor %}
+            </td>
+            <td>
+                <span class="badge badge-light"><a href="/annotate/{{video.video_id}}?context=1">주석하기</a></span>
+                {% for label in video['context_yes_labels'] %}
+                <span class="badge badge-pill badge-light">{{label['name']}}({{label['total']}}개)</span>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'base/script.html' %}
+</body>
+</html>
