@@ -4,8 +4,7 @@ from flask_mongoengine import MongoEngine
 db = MongoEngine()
 
 
-class Todo(db.Document):
-    title = db.StringField(max_length=60)
+class Doc(db.Document):
+    title = db.StringField()
     text = db.StringField()
-    done = db.BooleanField(default=False)
-    pub_date = db.DateTimeField(default=datetime.datetime.now)
+    created_at = db.DateTimeField(default=datetime.datetime.now)
