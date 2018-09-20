@@ -19,3 +19,13 @@
 body {
     margin-top: 70px;
 }
+
+.modal-dialog {
+    margin: 0;
+}
+.modal-open {
+    overflow: auto;
+}
+.modal-backdrop.show {
+    opacity: 0.2;
+}

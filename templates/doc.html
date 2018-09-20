@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
 {% include 'base/head.html' %}
+<style>
+    body {
+        margin-bottom: 500px;
+    }
+</style>
 <body>
 {% include 'base/navbar.html' %}
 <div class="container">
@@ -25,6 +30,26 @@
         <td class="target-text" data-index="<%index%>"><%text%></td>
     </tr>
 </script>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
   const annotation = {
@@ -108,6 +133,11 @@
           annotation.add(data['annotation']);
           renderer.render_table();
         });
+
+
+        modal.set_header(item.target_text);
+        modal.set_position(selection);
+        modal.show();
       }.bind(this);
     },
   };
@@ -140,6 +170,34 @@
         callback(JSON.parse(data));
       });
     }
+  };
+
+  const modal = {
+    el: null,
+    init: function () {
+      this.el = $('#modal');
+      this.el.modal({
+        show: false,
+      });
+      this.el.draggable({
+        handle: '.modal-header',
+      });
+    },
+    show: function () {
+      this.el.modal('show');
+    },
+    set_header: function (text) {
+      this.el.find('.modal-title').html('Text: <span class="badge badge-success">' + text + '</span>');
+    },
+    set_position: function (selection) {
+      const range = selection.getRangeAt(0);
+      const bound = range.getBoundingClientRect();
+
+      this.el.css('left', bound.left - 150);
+      this.el.css('top', bound.top + 50);
+
+      console.log('getBoundingClientRect :', range.getBoundingClientRect());
+    },
   };
 
   const renderer = {
@@ -176,7 +234,7 @@
       let markup = '';
       for (let i = 0; i < text.length; i++) {
         if (i in start) {
-          markup += '<span class="badge badge-pill badge-success">';
+          markup += '<span class="badge badge-success">';
         }
         markup += text[i];
         if (i + 1 in end) {
@@ -193,11 +251,12 @@
     api.get_doc(function (data) {
       renderer.state.sents = data['sents'];
       api.get_annotation(function (data) {
-        console.log('data :', data);
         annotation.data = data['annotations'];
         renderer.render_table();
       })
     });
+
+    modal.init();
   })
 
 </script>
