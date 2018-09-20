@@ -1,7 +1,7 @@
 import json
 from flask import request, render_template, Response, g, session, redirect, url_for
 
-from models import Doc, User
+from models import Doc, User, Sent
 from decorator import login_required
 
 
@@ -20,18 +20,27 @@ def logout():
     return redirect(url_for('login'))
 
 
+@login_required
 def doc(doc_id):
-    from nltk import sent_tokenize
     doc = Doc.objects.get(id=doc_id)
-    sents = []
-
-    for i, sen in enumerate(sent_tokenize(doc.text)):
-        sents.append((i + 1, sen))
-
-    return render_template('doc.html', doc=doc, sents=sents, g=g)
+    return render_template('doc.html', doc=doc, g=g)
 
 
-def login_api():
+@login_required
+def get_doc(doc_id):
+    doc = Doc.objects.get(id=doc_id)
+    sents = Sent.objects(doc=doc).order_by('index')
+
+    sents_data = []
+    for sent in sents:
+        sents_data.append(sent.dump())
+
+    return json.dumps({
+        'sents': sents_data,
+    })
+
+
+def post_login():
     data = request.get_json()
     username = data['username']
     password = data['password']

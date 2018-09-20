@@ -12,6 +12,19 @@ class Doc(db.Document):
     created_at = db.DateTimeField(default=datetime.datetime.now)
 
 
+class Sent(db.Document):
+    doc = db.ReferenceField(Doc)
+    index = db.IntField()
+    text = db.StringField()
+    created_at = db.DateTimeField(default=datetime.datetime.now)
+
+    def dump(self):
+        return {
+            'index': self.index,
+            'text': self.text,
+        }
+
+
 class User(db.Document):
     username = db.StringField()
     password = db.StringField()

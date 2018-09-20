@@ -4,27 +4,97 @@
 <body>
 {% include 'base/navbar.html' %}
 <div class="container">
-    <table class="table">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col"></th>
         </tr>
         </thead>
-        <tbody>
-        {% for sen in sents %}
-        <tr>
-            <td scope="row">
-                {{sen[0]}}
-            </td>
-            <td>
-                {{sen[1]}}
-            </td>
-        </tr>
-        {% endfor %}
+        <tbody id="tbody">
         </tbody>
     </table>
 </div>
+<input type="hidden" id="doc_id" value="{{doc.id}}"/>
 {% include 'base/script.html' %}
+
+<script type='text/template' id='tr-template'>
+    <tr class="">
+        <td scope="row"><%index%></td>
+        <td class="target-text" data-index="<%index%>"><%text%></td>
+    </tr>
+</script>
+
+<script>
+  const event = {
+    listen_selection: function () {
+      document.onmouseup = document.onkeyup = function () {
+        const selection = window.getSelection();
+        if (selection.type !== 'Range') return;
+
+        const anchorNodeParent = selection.anchorNode.parentElement;
+        const focusNodeParent = selection.focusNode.parentElement;
+
+        if (anchorNodeParent.className !== 'target-text') return;
+        if (anchorNodeParent.getAttribute('data-index') !== focusNodeParent.getAttribute('data-index')) return;
+
+        const index = anchorNodeParent.getAttribute('data-index');
+        const anchorOffset = selection.anchorOffset;
+        const focusOffset = selection.focusOffset;
+
+        console.log('selection :', selection);
+
+        console.log({
+          innerText: selection.focusNode.data,
+          index: index,
+          anchorOffset: anchorOffset,
+          focusOffset: focusOffset,
+          sub_str: selection.focusNode.data.substr(anchorOffset, focusOffset - anchorOffset),
+          text: selection.toString(),
+        })
+
+      }.bind(this);
+    },
+  };
+
+  const api = {
+    get_doc: function (callback) {
+      const doc_id = $('#doc_id').val();
+      $.get({
+        url: '/api/doc/' + doc_id,
+      }).done(function (data) {
+        callback(JSON.parse(data));
+      })
+    }
+  };
+
+  const renderer = {
+    render_tr: function (data) {
+      const sents = data['sents'];
+
+      const tbody = $('#tbody');
+      tbody.html('');
+
+      console.log(sents);
+
+      for (let i = 0; i < sents.length; i++) {
+        const sent = sents[i];
+        let tr = $('#tr-template').html();
+
+        tr = tr.split('<%index%>').join(sent['index']);
+        tr = tr.replace('<%text%>', sent['text']);
+        tbody.append(tr);
+      }
+    }
+  };
+
+  $(document).ready(function () {
+    event.listen_selection();
+    api.get_doc(function (data) {
+      renderer.render_tr(data);
+    });
+  })
+
+</script>
 </body>
 </html>

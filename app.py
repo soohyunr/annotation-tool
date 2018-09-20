@@ -27,7 +27,8 @@ app.add_url_rule('/login', view_func=views.login, methods=['GET'])
 app.add_url_rule('/logout', view_func=views.logout, methods=['GET'])
 app.add_url_rule('/doc/<doc_id>', view_func=views.doc, methods=['GET'])
 
-app.add_url_rule('/api/login', view_func=views.login_api, methods=['POST'])
+app.add_url_rule('/api/login', view_func=views.post_login, methods=['POST'])
+app.add_url_rule('/api/doc/<doc_id>', view_func=views.get_doc, methods=['GET'])
 
 if __name__ == '__main__':
     FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
