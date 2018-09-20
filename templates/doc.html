@@ -27,19 +27,19 @@
 </script>
 
 <script>
-  text_flag = true;
   const annotation = {
     data: [
       /**
        * {
        *     type: String, // "event" or "sentence"
        *     index: Integer,
+       *     sent: ObjectID,
        *     doc: ObjectID,
+       *     user: ObjectID,
        *     anchor_offset: Integer,
        *     focus_offset: Integer,
        *     entire_text: String,
        *     target_text: String,
-       *     user_id: ObjectID,
        *     meta: {
        *         KnowledgeAwareness: "2_I_did_not_know",
        *         Tense: "1_past",
@@ -104,11 +104,8 @@
           type: 'event',
         };
 
-        console.log('annotation item :', item);
         annotation.add(item);
-        if (text_flag) {
-          renderer.render_table();
-        }
+        renderer.render_table();
       }.bind(this);
     },
   };

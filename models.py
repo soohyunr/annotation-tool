@@ -43,3 +43,38 @@ class User(db.Document):
             'id': self.id,
             'username': self.username,
         }
+
+
+class Annotation(db.Document):
+    doc = db.ReferenceField(Doc)
+    sent = db.ReferenceField(Sent)
+    user = db.ReferenceField(User)
+
+    type = db.StringField(choices=('event', 'sentence'))
+
+    index = db.IntField()
+    anchor_offset = db.IntField()
+    focus_offset = db.IntField()
+
+    entire_text = db.StringField()
+    target_text = db.StringField()
+
+    meta = db.DictField()
+
+    created_at = db.DateTimeField(default=datetime.datetime.now)
+    updated_at = db.DateTimeField(default=datetime.datetime.now)
+
+    def dump(self):
+        return {
+            'doc': self.doc,
+            'sent': self.sent,
+            'user': self.user,
+            'type': self.type,
+            'index': self.index,
+            'anchor_offset': self.anchor_offset,
+            'entire_text': self.entire_text,
+            'target_text': self.target_text,
+            'meta': self.meta,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
+        }
