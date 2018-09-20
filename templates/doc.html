@@ -40,7 +40,7 @@
        *     focus_offset: Integer,
        *     entire_text: String,
        *     target_text: String,
-       *     meta: {
+       *     basket: {
        *         KnowledgeAwareness: "2_I_did_not_know",
        *         Tense: "1_past",
        *     },
@@ -104,8 +104,10 @@
           type: 'event',
         };
 
-        annotation.add(item);
-        renderer.render_table();
+        api.post_annotation(item, function (data) {
+          annotation.add(data['annotation']);
+          renderer.render_table();
+        });
       }.bind(this);
     },
   };
@@ -118,6 +120,25 @@
       }).done(function (data) {
         callback(JSON.parse(data));
       })
+    },
+    get_annotation: function (callback) {
+      const doc_id = $('#doc_id').val();
+      $.get({
+        url: '/api/doc/' + doc_id + '/annotation',
+      }).done(function (data) {
+        callback(JSON.parse(data));
+      })
+    },
+    post_annotation: function (item, callback) {
+      item.doc = $('#doc_id').val();
+      $.ajax({
+        url: '/api/annotation',
+        contentType: 'application/json',
+        type: 'POST',
+        data: JSON.stringify(item),
+      }).done(function (data) {
+        callback(JSON.parse(data));
+      });
     }
   };
 
@@ -158,7 +179,7 @@
           markup += '<span class="badge badge-pill badge-success">';
         }
         markup += text[i];
-        if (i+1 in end) {
+        if (i + 1 in end) {
           markup += '</span>';
         }
       }
@@ -171,7 +192,11 @@
     event.listen_selection();
     api.get_doc(function (data) {
       renderer.state.sents = data['sents'];
-      renderer.render_table();
+      api.get_annotation(function (data) {
+        console.log('data :', data);
+        annotation.data = data['annotations'];
+        renderer.render_table();
+      })
     });
   })
 

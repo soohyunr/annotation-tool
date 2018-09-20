@@ -59,22 +59,24 @@ class Annotation(db.Document):
     entire_text = db.StringField()
     target_text = db.StringField()
 
-    meta = db.DictField()
+    basket = db.DictField()
 
     created_at = db.DateTimeField(default=datetime.datetime.now)
     updated_at = db.DateTimeField(default=datetime.datetime.now)
 
     def dump(self):
         return {
-            'doc': self.doc,
-            'sent': self.sent,
-            'user': self.user,
+            'id': str(self.id),
+            'doc': str(self.doc.id),
+            'sent': str(self.sent.id),
+            'user': str(self.user.id),
             'type': self.type,
             'index': self.index,
             'anchor_offset': self.anchor_offset,
+            'focus_offset': self.focus_offset,
             'entire_text': self.entire_text,
             'target_text': self.target_text,
-            'meta': self.meta,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at,
+            'basket': self.basket,
+            'created_at': str(self.created_at),
+            'updated_at': str(self.updated_at),
         }

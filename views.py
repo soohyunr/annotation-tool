@@ -1,7 +1,7 @@
 import json
 from flask import request, render_template, Response, g, session, redirect, url_for
 
-from models import Doc, User, Sent
+from models import Doc, User, Sent, Annotation
 from decorator import login_required
 
 
@@ -37,6 +37,54 @@ def get_doc(doc_id):
 
     return json.dumps({
         'sents': sents_data,
+    })
+
+
+@login_required
+def post_annotation():
+    data = request.get_json()
+
+    doc = data['doc']
+    entire_text = data['entire_text']
+    target_text = data['target_text']
+    index = data['index']
+    anchor_offset = data['anchor_offset']
+    focus_offset = data['focus_offset']
+    type = data['type']
+
+    doc = Doc.objects().get(id=doc)
+    sent = Sent.objects().get(doc=doc, index=index)
+    user = g.user
+
+    annotation = Annotation(
+        doc=doc,
+        sent=sent,
+        user=user,
+        type=type,
+        index=index,
+        anchor_offset=anchor_offset,
+        focus_offset=focus_offset,
+        entire_text=entire_text,
+        target_text=target_text,
+    )
+    annotation.save()
+
+    return json.dumps({
+        'annotation': annotation.dump(),
+    })
+
+
+@login_required
+def get_annotation(doc_id):
+    doc = Doc.objects().get(id=doc_id)
+    annotations = Annotation.objects(doc=doc, user=g.user)
+
+    data = []
+    for annotation in annotations:
+        data.append(annotation.dump())
+
+    return json.dumps({
+        'annotations': data,
     })
 
 
