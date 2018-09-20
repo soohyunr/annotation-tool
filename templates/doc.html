@@ -41,7 +41,124 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <form>
+                    <div class="form-group row">
+                        <label for="attribute1" class="col-sm-5 col-form-label">1. Knowledge Awareness</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute1">
+                                <option>I already know</option>
+                                <option>I did not know</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute2" class="col-sm-5 col-form-label">2. Credibility</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute2">
+                                <option>false</option>
+                                <option>feel like false</option>
+                                <option>hard to judge</option>
+                                <option>feel like true</option>
+                                <option>true</option>
+                                <option>None</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute3" class="col-sm-5 col-form-label">3. Verifiability</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute3">
+                                <option>verify it with my knowledge</option>
+                                <option>verify it by short time googling</option>
+                                <option>verify it by long time googling</option>
+                                <option>hard to verify it</option>
+                                <option>no way to verify it</option>
+                                <option>None</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute4" class="col-sm-5 col-form-label">4. Conditionality</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute4">
+                                <option>sufficient condition</option>
+                                <option>necessary condition</option>
+                                <option>None</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute5" class="col-sm-5 col-form-label">5. Polarity</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute5">
+                                <option>negative</option>
+                                <option>positive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute6" class="col-sm-5 col-form-label">6. Tense</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute6">
+                                <option>past</option>
+                                <option>present</option>
+                                <option>future</option>
+                                <option>unspecified</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute7" class="col-sm-5 col-form-label">7. Genericity</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute7">
+                                <option>specific</option>
+                                <option>generic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute8" class="col-sm-5 col-form-label">8. Source Type</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute8">
+                                <option>author</option>
+                                <option>involved</option>
+                                <option>named third party</option>
+                                <option>unnamed third party</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute9" class="col-sm-5 col-form-label">9. Subjectivity</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute9">
+                                <option>positive</option>
+                                <option>negative</option>
+                                <option>neutral</option>
+                                <option>multi valued</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute10" class="col-sm-5 col-form-label">10. Factuality</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute10">
+                                <option>asserted</option>
+                                <option>speculated</option>
+                                <option>None</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="attribute11" class="col-sm-5 col-form-label">11. Prominence</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="attribute11">
+                                <option>new</option>
+                                <option>prominent</option>
+                                <option>presupposed</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -187,7 +304,7 @@
       this.el.modal('show');
     },
     set_header: function (text) {
-      this.el.find('.modal-title').html('Text: <span class="badge badge-success">' + text + '</span>');
+      this.el.find('.modal-title').html('Event: ' + text);
     },
     set_position: function (selection) {
       const range = selection.getRangeAt(0);

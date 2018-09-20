@@ -16,6 +16,10 @@
     background-color: white;
 }
 
+.badge-success {
+    background-color: #40c057;
+}
+
 body {
     margin-top: 70px;
 }
@@ -23,9 +27,11 @@ body {
 .modal-dialog {
     margin: 0;
 }
+
 .modal-open {
     overflow: auto;
 }
+
 .modal-backdrop.show {
-    opacity: 0.2;
+    opacity: 0.25;
 }
