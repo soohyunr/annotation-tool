@@ -21,11 +21,50 @@
 <script type='text/template' id='tr-template'>
     <tr class="">
         <td scope="row"><%index%></td>
+        <!-- Warning: changing the location of the tag can cause an issue in which the annotation data are not matched. -->
         <td class="target-text" data-index="<%index%>"><%text%></td>
     </tr>
 </script>
 
 <script>
+  const annotation = {
+    data: [
+      /**
+       * {
+       *     type: String, // "event" or "sentence"
+       *     index: Integer,
+       *     doc: ObjectID,
+       *     anchor_offset: Integer,
+       *     focus_offset: Integer,
+       *     entire_text: String,
+       *     target_text: String,
+       *     user_id: ObjectID,
+       *     meta: {
+       *         KnowledgeAwareness: "2_I_did_not_know",
+       *         Tense: "1_past",
+       *     },
+       * }
+       */
+    ],
+    find_event: function (index, anchor_offset, focus_offset) {
+      for (let i = 0; i < this.data.length; i++) {
+        const item = this.data[i];
+        if (item.type === 'event') continue;
+        if (item.index !== index) continue;
+        if (item.anchor_offset !== anchor_offset) continue;
+        if (item.focus_offset !== focus_offset) continue;
+        return i;
+      }
+      return -1;
+    },
+    add: function (item) {
+      if (item.type === 'event') {
+        if (this.find_event(item.index, item.anchor_offset, item.focus_offset) !== -1) return;
+      }
+      this.data.push(item);
+    }
+  };
+
   const event = {
     listen_selection: function () {
       document.onmouseup = document.onkeyup = function () {
@@ -38,21 +77,32 @@
         if (anchorNodeParent.className !== 'target-text') return;
         if (anchorNodeParent.getAttribute('data-index') !== focusNodeParent.getAttribute('data-index')) return;
 
-        const index = anchorNodeParent.getAttribute('data-index');
-        const anchorOffset = selection.anchorOffset;
-        const focusOffset = selection.focusOffset;
+        const index = Number(anchorNodeParent.getAttribute('data-index'));
+        let anchorOffset = selection.anchorOffset;
+        let focusOffset = selection.focusOffset;
+        const entire_text = selection.focusNode.data;
+        const selection_text = selection.toString();
 
-        console.log('selection :', selection);
+        for (let i = 0; i < selection_text.length; i++) {
+          if (selection_text[i] === ' ') anchorOffset++;
+          else break;
+        }
+        for (let i = selection_text.length - 1; i >= 0; i--) {
+          if (selection_text[i] === ' ') focusOffset--;
+          else break;
+        }
+        if (anchorOffset >= focusOffset) return;
 
-        console.log({
-          innerText: selection.focusNode.data,
+        const item = {
+          entire_text: entire_text,
+          target_text: entire_text.substr(anchorOffset, focusOffset - anchorOffset),
           index: index,
-          anchorOffset: anchorOffset,
-          focusOffset: focusOffset,
-          sub_str: selection.focusNode.data.substr(anchorOffset, focusOffset - anchorOffset),
-          text: selection.toString(),
-        })
+          anchor_offset: anchorOffset,
+          focus_offset: focusOffset,
+          type: 'event',
+        };
 
+        annotation.add(item);
       }.bind(this);
     },
   };
@@ -69,13 +119,14 @@
   };
 
   const renderer = {
-    render_tr: function (data) {
-      const sents = data['sents'];
+    state: {
+      sents: [],
+    },
+    render_table: function () {
+      const sents = this.state.sents;
 
       const tbody = $('#tbody');
       tbody.html('');
-
-      console.log(sents);
 
       for (let i = 0; i < sents.length; i++) {
         const sent = sents[i];
@@ -91,7 +142,8 @@
   $(document).ready(function () {
     event.listen_selection();
     api.get_doc(function (data) {
-      renderer.render_tr(data);
+      renderer.state.sents = data['sents'];
+      renderer.render_table();
     });
   })
 
