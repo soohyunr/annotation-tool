@@ -69,6 +69,10 @@
     .input-group-text.active {
         font-weight: bold;
     }
+
+    .annotation-badge {
+        cursor: pointer;
+    }
 </style>
 <body>
 {% include 'base/navbar.html' %}
@@ -375,6 +379,19 @@
       ['attribute10', 'factuality'],
       ['attribute11', 'prominence'],
     ],
+    attributes_defalut: {
+      knowledge_awareness: 'i_already_know',
+      credibility: 'feel_like_true',
+      verifiability: 'verify_it_by_short_time_googling',
+      conditionality: 'sufficient_condition',
+      polarity: 'negative',
+      tense: 'present',
+      genericity: 'specific',
+      source_type: 'author',
+      subjectivity: 'neutral',
+      factuality: 'asserted',
+      prominence: 'prominent',
+    },
     data: [
       /**
        * {
@@ -394,6 +411,21 @@
        * }
        */
     ],
+    find_attribute_name_by_id: function (id) {
+      for (let i = 0; i < this.attributes.length; i++) {
+        if (this.attributes[i][0] === id) return this.attributes[i][1];
+      }
+      return '';
+    },
+    find_by_id: function (annotation_id) {
+      for (let i = 0; i < this.data.length; i++) {
+        const item = this.data[i];
+        if (item.id === annotation_id) {
+          return item;
+        }
+      }
+      return null;
+    },
     find_event: function (index, anchor_offset, focus_offset) {
       for (let i = 0; i < this.data.length; i++) {
         const item = this.data[i];
@@ -408,6 +440,14 @@
     add: function (item) {
       if (item.type === 'event' && this.find_event(item.index, item.anchor_offset, item.focus_offset) !== -1) return;
       this.data.push(item);
+    },
+    update: function (annotation_id, new_item) {
+      for (let i = 0; i < this.data.length; i++) {
+        const item = this.data[i];
+        if (item.id === annotation_id) {
+          this.data[i] = new_item;
+        }
+      }
     },
     remove: function (annotation_id) {
       for (let i = 0; i < this.data.length; i++) {
@@ -424,7 +464,6 @@
       selection_listen: function () {
         document.onmouseup = document.onkeyup = function () {
           const selection = window.getSelection();
-
           if (selection.type !== 'Range') return;
 
           const anchorNodeParent = selection.anchorNode.parentElement;
@@ -460,19 +499,37 @@
             type: 'event',
           };
 
+
           modal.set_header(item.target_text);
-          modal.set_position(selection);
+          const range = selection.getRangeAt(0);
+          const bound = range.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          modal.set_position(bound.left, bound.top + scrollTop);
 
           api.post_annotation(item, function (data) {
             const annotation_item = data['annotation'];
             annotation.add(annotation_item);
             renderer.render_table();
 
-            modal.show(annotation_item);
+            modal.set_annotation_item(annotation_item);
+            modal.show();
             renderer.load_annotation_and_render_table();
           });
 
         }.bind(this);
+      },
+      listen_annotation_badge: function () {
+        $('.annotation-badge').click(function (e) {
+
+          const annotation_id = $(this).attr('data-id');
+          const annotation_item = annotation.find_by_id(annotation_id);
+
+          modal.set_header(annotation_item.target_text);
+          modal.set_position(e.pageX, e.pageY);
+
+          modal.set_annotation_item(annotation_item);
+          modal.show();
+        });
       },
       listen_key: function () {
         $(document).keydown(function (e) {
@@ -548,8 +605,8 @@
         contentType: 'application/json',
         type: 'PUT',
         data: JSON.stringify(item),
-      }).done(function () {
-        callback();
+      }).done(function (data) {
+        callback(JSON.parse(data));
       });
     },
   };
@@ -584,8 +641,25 @@
       $('.dropdown-toggle').removeClass('text-primary');
       $('#attribute' + step + '-val').addClass('text-primary');
     },
-    show: function (annotation_item) {
+    set_annotation_item: function (annotation_item) {
       this.state.annotation_item = annotation_item;
+    },
+    load_attributes: function () {
+      const basket = this.state.annotation_item.basket;
+      for (let i = 1; i <= 11; i++) {
+        const attribute_id = 'attribute' + i;
+        const name = annotation.find_attribute_name_by_id(attribute_id);
+        let value = basket[name];
+        if (!value) value = annotation.attributes_defalut[name];
+
+        $('#' + attribute_id + '-val').html(value.split('_').join(' '));
+
+        $('#' + attribute_id + ' .dropdown-item').removeClass('active');
+        $('#' + attribute_id + ' .dropdown-item[data-value=' + value + ']').addClass('active');
+      }
+    },
+    show: function () {
+      this.load_attributes();
       this.el.modal('show');
 
       this.state.step = 0;
@@ -594,37 +668,27 @@
     set_header: function (text) {
       this.el.find('.modal-title').html('Event: ' + text);
     },
-    set_position: function (selection) {
-      const range = selection.getRangeAt(0);
-      const bound = range.getBoundingClientRect();
-
+    set_position: function (left, top) {
       const window_width = document.body.clientWidth;
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
       const margin = 20;
-      let left = Math.max(margin, bound.left - 450);
-      left = Math.min(left, window_width - 850 - margin);
-      this.el.css('left', left);
-      this.el.css('top', scrollTop + bound.top + 50);
+      let calibrated_left = Math.max(margin, left - 450);
+      calibrated_left = Math.min(calibrated_left, window_width - 850 - margin);
+      this.el.css('left', calibrated_left);
+      this.el.css('top', top + 50);
     },
     save: function () {
       const attributes = $('.attribute');
-
-      const find_attribute_name = function (id) {
-        for (let i = 0; i < annotation.attributes.length; i++) {
-          if (annotation.attributes[i][0] === id) return annotation.attributes[i][1];
-        }
-        return '';
-      };
 
       for (let i = 0; i < attributes.length; i++) {
         const attribute = $(attributes[i]);
         const attribute_id = attribute.attr('id');
 
         const value = $('#' + attribute_id + '-val').html().trim().split(' ').join('_');
-        this.state.annotation_item.basket[find_attribute_name(attribute_id)] = value;
+        this.state.annotation_item.basket[annotation.find_attribute_name_by_id(attribute_id)] = value;
       }
 
+      annotation.update(this.state.annotation_item.id, this.state.annotation_item);
       api.put_annotation(this.state.annotation_item, function () {
         renderer.load_annotation_and_render_table();
       });
@@ -632,14 +696,14 @@
     listen: function () {
       $('.dropdown-item').click(function () {
         const dropdown = $(this).parents('.dropdown');
+        const attribute_id = dropdown.attr('id');
         const dropdown_toggle = dropdown.find('.dropdown-toggle');
-        const before_value = dropdown_toggle.text().trim().split(' ').join('_');
         const value = $(this).attr('data-value');
 
         dropdown.find('.dropdown-toggle').html(value.split('_').join(' '));
 
-        dropdown.find('.dropdown-item[data-value="' + before_value + '"]').removeClass('active');
-        dropdown.find('.dropdown-item[data-value="' + value + '"]').addClass('active');
+        $('#' + attribute_id + ' .dropdown-item').removeClass('active');
+        $('#' + attribute_id + ' .dropdown-item[data-value=' + value + ']').addClass('active');
 
         modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-val', ''));
         modal.next_step();
@@ -705,6 +769,8 @@
         tr = tr.replace('<%text%>', this.render_markup_sentence(Number(index), text, annotation_map[Number(index)]));
         tbody.append(tr);
       }
+
+      event.listen_annotation_badge();
     },
     render_markup_sentence: function (index, text, annotations) {
       const start = {}, end = {};
@@ -718,7 +784,7 @@
       let markup = '';
       for (let i = 0; i < text.length; i++) {
         if (i in start) {
-          markup += '<span class="badge badge-success">';
+          markup += '<span class="badge badge-success annotation-badge" data-id="' + annotations[start[i]].id + '">';
         }
         markup += text[i];
         if (i + 1 in end) {

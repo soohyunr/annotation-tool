@@ -102,7 +102,9 @@ def put_annotation(annotation_id):
     annotation.basket = basket
     annotation.save()
 
-    return Response('success', status=200)
+    return json.dumps({
+        'annotation': annotation.dump(),
+    })
 
 
 def post_login():
