@@ -64,6 +64,12 @@ class Annotation(db.Document):
     created_at = db.DateTimeField(default=datetime.datetime.now)
     updated_at = db.DateTimeField(default=datetime.datetime.now)
 
+    meta = {
+        'indexes': [
+            ('doc', 'user'),
+        ]
+    }
+
     def dump(self):
         return {
             'id': str(self.id),
