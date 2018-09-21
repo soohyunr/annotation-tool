@@ -301,8 +301,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Delete</button>
-                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-outline-danger btn-sm" id="modal-delete-btn">Delete</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" id="modal-ok-btn">Ok</button>
             </div>
         </div>
     </div>
@@ -387,14 +387,17 @@
           };
 
           api.post_annotation(item, function (data) {
-            annotation.add(data['annotation']);
+            const annotation_item = data['annotation'];
+            annotation.add(annotation_item);
+
+            modal.set_header(item.target_text);
+            modal.set_position(selection);
+            modal.show(annotation_item);
+
             renderer.render_table();
           });
 
 
-          modal.set_header(item.target_text);
-          modal.set_position(selection);
-          modal.show();
         }.bind(this);
       },
       listen_key: function () {
@@ -456,13 +459,22 @@
       }).done(function (data) {
         callback(JSON.parse(data));
       });
-    }
+    },
+    delete_annotation: function (annotation_id, callback) {
+      $.ajax({
+        url: '/api/annotation/' + annotation_id,
+        type: 'DELETE',
+      }).done(function () {
+        callback();
+      });
+    },
   };
 
   const modal = {
     el: null,
     state: {
       step: 1,
+      annotation_item: {},
     },
     init: function () {
       this.el = $('#modal');
@@ -488,7 +500,8 @@
       $('.dropdown-toggle').removeClass('text-primary');
       $('#attribute' + step + '-val').addClass('text-primary');
     },
-    show: function () {
+    show: function (annotation_item) {
+      this.state.annotation_item = annotation_item;
       this.el.modal('show');
 
       this.state.step = 0;
@@ -500,7 +513,6 @@
     set_position: function (selection) {
       const range = selection.getRangeAt(0);
       const bound = range.getBoundingClientRect();
-      console.log('bound :', bound);
 
       const window_width = document.body.clientWidth;
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -510,8 +522,6 @@
       left = Math.min(left, window_width - 850 - margin);
       this.el.css('left', left);
       this.el.css('top', scrollTop + bound.top + 50);
-
-      console.log('getBoundingClientRect :', range.getBoundingClientRect());
     },
     listen: function () {
       $('.dropdown-item').click(function () {
@@ -533,13 +543,26 @@
         if (e.keyCode === 13) {
           modal.next_step();
         }
-      })
+      });
+
+      $('#modal-delete-btn').click(function () {
+        api.delete_annotation(modal.state.annotation_item.id, function () {
+          renderer.load_annotation_and_render_table();
+          modal.el.modal('hide');
+        });
+      });
     }
   };
 
   const renderer = {
     state: {
       sents: [],
+    },
+    load_annotation_and_render_table: function () {
+      api.get_annotation(function (data) {
+        annotation.data = data['annotations'];
+        renderer.render_table();
+      });
     },
     render_table: function () {
       const sents = this.state.sents;
@@ -589,10 +612,7 @@
 
     api.get_doc(function (data) {
       renderer.state.sents = data['sents'];
-      api.get_annotation(function (data) {
-        annotation.data = data['annotations'];
-        renderer.render_table();
-      })
+      renderer.load_annotation_and_render_table();
     });
     modal.init();
   })

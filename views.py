@@ -88,6 +88,12 @@ def get_annotation(doc_id):
     })
 
 
+@login_required
+def delete_annotation(annotation_id):
+    Annotation.objects(id=annotation_id).delete()
+    return Response('success', status=200)
+
+
 def post_login():
     data = request.get_json()
     username = data['username']

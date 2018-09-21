@@ -31,6 +31,7 @@ app.add_url_rule('/api/login', view_func=views.post_login, methods=['POST'])
 app.add_url_rule('/api/doc/<doc_id>', view_func=views.get_doc, methods=['GET'])
 app.add_url_rule('/api/doc/<doc_id>/annotation', view_func=views.get_annotation, methods=['GET'])
 app.add_url_rule('/api/annotation', view_func=views.post_annotation, methods=['POST'])
+app.add_url_rule('/api/annotation/<annotation_id>', view_func=views.delete_annotation, methods=['DELETE'])
 
 if __name__ == '__main__':
     FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
