@@ -10,6 +10,7 @@
         width: 850px;
         min-height: 850px;
         max-width: 850px;
+        position: absolute;
     }
 
     .modal .modal-content {
@@ -94,7 +95,7 @@
     </tr>
 </script>
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="modal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -499,11 +500,18 @@
     set_position: function (selection) {
       const range = selection.getRangeAt(0);
       const bound = range.getBoundingClientRect();
+      console.log('bound :', bound);
 
-      this.el.css('left', bound.left - 150);
-      this.el.css('top', bound.top + 50);
+      const window_width = document.body.clientWidth;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-      // console.log('getBoundingClientRect :', range.getBoundingClientRect());
+      const margin = 20;
+      let left = Math.max(margin, bound.left - 450);
+      left = Math.min(left, window_width - 850 - margin);
+      this.el.css('left', left);
+      this.el.css('top', scrollTop + bound.top + 50);
+
+      console.log('getBoundingClientRect :', range.getBoundingClientRect());
     },
     listen: function () {
       $('.dropdown-item').click(function () {
