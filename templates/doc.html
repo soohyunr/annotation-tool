@@ -5,6 +5,65 @@
     body {
         margin-bottom: 500px;
     }
+
+    .modal {
+        width: 850px;
+        min-height: 850px;
+        max-width: 850px;
+    }
+
+    .modal .modal-content {
+        width: 850px;
+        min-width: 850px;
+    }
+
+    .modal-body .input-group {
+        margin-left: 0;
+    }
+
+    .modal-body .input-group-text {
+        border: none;
+        background-color: white;
+    }
+
+    .modal-body .custom-select {
+        border: none;
+    }
+
+    .modal-body .input-group {
+        border-bottom: 1px dashed #CCC;
+    }
+
+    .dropdown {
+        flex: 1 1 auto;
+    }
+
+    .dropdown .dropdown-menu {
+        width: 100%;
+    }
+
+    .dropdown-toggle::after {
+        position: absolute;
+        right: 6px;
+        top: 18px;
+    }
+
+    .dropdown .dropdown-toggle {
+        margin-top: 2px;
+        color: #495057;
+        font-size: inherit;
+        width: 100%;
+        text-align: left;
+        box-shadow: none;
+    }
+
+    .dropdown-menu .dropdown-item.active {
+        color: white;
+    }
+
+    .dropdown-menu .dropdown-item.active:hover {
+        color: white;
+    }
 </style>
 <body>
 {% include 'base/navbar.html' %}
@@ -41,128 +100,204 @@
                 </button>
             </div>
             <div class="modal-body">
+
                 <form>
-                    <div class="form-group row">
-                        <label for="attribute1" class="col-sm-5 col-form-label">1. Knowledge Awareness</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute1">
-                                <option>I already know</option>
-                                <option>I did not know</option>
-                            </select>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">1. Knowledge Awareness:</span>
+                                </div>
+                                <div class="dropdown" id="attribute1">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute1-val"
+                                            data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        I already know
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute1-val">
+                                        <button class="dropdown-item active" type="button">I already know</button>
+                                        <button class="dropdown-item" type="button">I did not know</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">2. Credibility:</span>
+                                </div>
+                                <div class="dropdown" id="attribute2">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute2-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        false
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute2-val">
+                                        <button class="dropdown-item active" type="button">false</button>
+                                        <button class="dropdown-item" type="button">feel like false</button>
+                                        <button class="dropdown-item" type="button">hard to judge</button>
+                                        <button class="dropdown-item" type="button">feel like true</button>
+                                        <button class="dropdown-item" type="button">None</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">3. Verifiability:</span>
+                                </div>
+                                <div class="dropdown" id="attribute3">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute3-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        verify it with my knowledge
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute3-val">
+                                        <button class="dropdown-item active" type="button">verify it with my knowledge
+                                        </button>
+                                        <button class="dropdown-item" type="button">verify it by short time googling
+                                        </button>
+                                        <button class="dropdown-item" type="button">verify it by long time googling
+                                        </button>
+                                        <button class="dropdown-item" type="button">hard to verify it</button>
+                                        <button class="dropdown-item" type="button">no way to verify it</button>
+                                        <button class="dropdown-item" type="button">None</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">4. Conditionality:</span>
+                                </div>
+                                <div class="dropdown" id="attribute4">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute4-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        sufficient condition
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute4-val">
+                                        <button class="dropdown-item active" type="button">sufficient condition</button>
+                                        <button class="dropdown-item" type="button">necessary condition</button>
+                                        <button class="dropdown-item" type="button">None</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">5. Polarity:</span>
+                                </div>
+                                <div class="dropdown" id="attribute5">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute5-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        negative
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute5-val">
+                                        <button class="dropdown-item active" type="button">negative</button>
+                                        <button class="dropdown-item" type="button">positive</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">6. Tense:</span>
+                                </div>
+                                <div class="dropdown" id="attribute6">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute6-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        past
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute6-val">
+                                        <button class="dropdown-item active" type="button">past</button>
+                                        <button class="dropdown-item" type="button">present</button>
+                                        <button class="dropdown-item" type="button">future</button>
+                                        <button class="dropdown-item" type="button">unspecified</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute2" class="col-sm-5 col-form-label">2. Credibility</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute2">
-                                <option>false</option>
-                                <option>feel like false</option>
-                                <option>hard to judge</option>
-                                <option>feel like true</option>
-                                <option>true</option>
-                                <option>None</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute3" class="col-sm-5 col-form-label">3. Verifiability</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute3">
-                                <option>verify it with my knowledge</option>
-                                <option>verify it by short time googling</option>
-                                <option>verify it by long time googling</option>
-                                <option>hard to verify it</option>
-                                <option>no way to verify it</option>
-                                <option>None</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute4" class="col-sm-5 col-form-label">4. Conditionality</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute4">
-                                <option>sufficient condition</option>
-                                <option>necessary condition</option>
-                                <option>None</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute5" class="col-sm-5 col-form-label">5. Polarity</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute5">
-                                <option>negative</option>
-                                <option>positive</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute6" class="col-sm-5 col-form-label">6. Tense</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute6">
-                                <option>past</option>
-                                <option>present</option>
-                                <option>future</option>
-                                <option>unspecified</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute7" class="col-sm-5 col-form-label">7. Genericity</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute7">
-                                <option>specific</option>
-                                <option>generic</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute8" class="col-sm-5 col-form-label">8. Source Type</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute8">
-                                <option>author</option>
-                                <option>involved</option>
-                                <option>named third party</option>
-                                <option>unnamed third party</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute9" class="col-sm-5 col-form-label">9. Subjectivity</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute9">
-                                <option>positive</option>
-                                <option>negative</option>
-                                <option>neutral</option>
-                                <option>multi valued</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute10" class="col-sm-5 col-form-label">10. Factuality</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute10">
-                                <option>asserted</option>
-                                <option>speculated</option>
-                                <option>None</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="attribute11" class="col-sm-5 col-form-label">11. Prominence</label>
-                        <div class="col-sm-7">
-                            <select class="form-control" id="attribute11">
-                                <option>new</option>
-                                <option>prominent</option>
-                                <option>presupposed</option>
-                            </select>
+                        <div class="col-md-6">
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">7. Genericity:</span>
+                                </div>
+                                <div class="dropdown" id="attribute7">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute7-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        specific
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute7-val">
+                                        <button class="dropdown-item active" type="button">specific</button>
+                                        <button class="dropdown-item" type="button">generic</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">8. Source Type:</span>
+                                </div>
+                                <div class="dropdown" id="attribute8">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute8-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        author
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute8-val">
+                                        <button class="dropdown-item active" type="button">author</button>
+                                        <button class="dropdown-item" type="button">involved</button>
+                                        <button class="dropdown-item" type="button">named third party</button>
+                                        <button class="dropdown-item" type="button">unnamed third party</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">9. Subjectivity:</span>
+                                </div>
+                                <div class="dropdown" id="attribute9">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute9-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        positive
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute9-val">
+                                        <button class="dropdown-item active" type="button">positive</button>
+                                        <button class="dropdown-item" type="button">negative</button>
+                                        <button class="dropdown-item" type="button">neutral</button>
+                                        <button class="dropdown-item" type="button">multi valued</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">10. Factuality:</span>
+                                </div>
+                                <div class="dropdown" id="attribute10">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute10-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        asserted
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute10-val">
+                                        <button class="dropdown-item active" type="button">asserted</button>
+                                        <button class="dropdown-item" type="button">speculated</button>
+                                        <button class="dropdown-item" type="button">None</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group row">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">11. Prominence:</span>
+                                </div>
+                                <div class="dropdown" id="attribute11">
+                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute11-val"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        new
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="attribute11-val">
+                                        <button class="dropdown-item active" type="button">new</button>
+                                        <button class="dropdown-item" type="button">prominent</button>
+                                        <button class="dropdown-item" type="button">presupposed</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">Ok</button>
             </div>
         </div>
     </div>
@@ -207,57 +342,87 @@
   };
 
   const event = {
-    listen_selection: function () {
-      document.onmouseup = document.onkeyup = function () {
-        const selection = window.getSelection();
+      selection_listen: function () {
+        document.onmouseup = document.onkeyup = function () {
+          const selection = window.getSelection();
 
-        if (selection.type !== 'Range') return;
+          if (selection.type !== 'Range') return;
 
-        const anchorNodeParent = selection.anchorNode.parentElement;
-        const focusNodeParent = selection.focusNode.parentElement;
+          const anchorNodeParent = selection.anchorNode.parentElement;
+          const focusNodeParent = selection.focusNode.parentElement;
 
-        if (anchorNodeParent.className !== 'target-text') return;
-        if (anchorNodeParent.getAttribute('data-index') !== focusNodeParent.getAttribute('data-index')) return;
+          if (anchorNodeParent.className !== 'target-text') return;
+          if (anchorNodeParent.getAttribute('data-index') !== focusNodeParent.getAttribute('data-index')) return;
 
-        const index = Number(anchorNodeParent.getAttribute('data-index'));
-        const entire_text = anchorNodeParent.innerText;
-        const common_offset = entire_text.indexOf(selection.anchorNode.data);
-        let anchor_offset = selection.anchorOffset + common_offset;
-        let focus_offset = selection.focusOffset + common_offset;
+          const index = Number(anchorNodeParent.getAttribute('data-index'));
+          const entire_text = anchorNodeParent.innerText;
+          const common_offset = entire_text.indexOf(selection.anchorNode.data);
+          let anchor_offset = selection.anchorOffset + common_offset;
+          let focus_offset = selection.focusOffset + common_offset;
 
-        const selection_text = selection.toString();
+          const selection_text = selection.toString();
 
-        for (let i = 0; i < selection_text.length; i++) {
-          if (selection_text[i] === ' ') anchor_offset++;
-          else break;
-        }
-        for (let i = selection_text.length - 1; i >= 0; i--) {
-          if (selection_text[i] === ' ') focus_offset--;
-          else break;
-        }
-        if (anchor_offset >= focus_offset) return;
+          for (let i = 0; i < selection_text.length; i++) {
+            if (selection_text[i] === ' ') anchor_offset++;
+            else break;
+          }
+          for (let i = selection_text.length - 1; i >= 0; i--) {
+            if (selection_text[i] === ' ') focus_offset--;
+            else break;
+          }
+          if (anchor_offset >= focus_offset) return;
 
-        const item = {
-          entire_text: entire_text,
-          target_text: entire_text.substr(anchor_offset, focus_offset - anchor_offset),
-          index: index,
-          anchor_offset: anchor_offset,
-          focus_offset: focus_offset,
-          type: 'event',
-        };
+          const item = {
+            entire_text: entire_text,
+            target_text: entire_text.substr(anchor_offset, focus_offset - anchor_offset),
+            index: index,
+            anchor_offset: anchor_offset,
+            focus_offset: focus_offset,
+            type: 'event',
+          };
 
-        api.post_annotation(item, function (data) {
-          annotation.add(data['annotation']);
-          renderer.render_table();
+          api.post_annotation(item, function (data) {
+            annotation.add(data['annotation']);
+            renderer.render_table();
+          });
+
+
+          modal.set_header(item.target_text);
+          modal.set_position(selection);
+          modal.show();
+        }.bind(this);
+      },
+      listen_key: function () {
+        $(document).keydown(function (e) {
+          switch (e.which) {
+            case 13: // enter
+              break;
+            case 37: // left
+              break;
+            case 39: // right
+              break;
+            case 38: // up
+              break;
+            case 40: // down
+              break;
+            case 49: // 1
+              break;
+            case 50: // 2
+              break;
+            case 51: // 3
+              break;
+            case 52: // 4
+              break;
+            case 53: // 5
+              break;
+            default:
+              return;
+          }
+          e.preventDefault();
         });
-
-
-        modal.set_header(item.target_text);
-        modal.set_position(selection);
-        modal.show();
-      }.bind(this);
-    },
-  };
+      }
+    }
+  ;
 
   const api = {
     get_doc: function (callback) {
@@ -291,6 +456,9 @@
 
   const modal = {
     el: null,
+    state: {
+      step: 1,
+    },
     init: function () {
       this.el = $('#modal');
       this.el.modal({
@@ -299,9 +467,22 @@
       this.el.draggable({
         handle: '.modal-header',
       });
+      this.listen();
+    },
+    open_dropdown() {
+      const step = this.state.step;
+      console.log('open_dropdown step :', step);
+      setTimeout(function () {
+        $('#attribute' + step + '-val').click();
+        setTimeout(function () {
+          $('#attribute' + step + ' .active').focus();
+        }, 100);
+      }, 200);
     },
     show: function () {
       this.el.modal('show');
+      this.state.step = 1;
+      this.open_dropdown();
     },
     set_header: function (text) {
       this.el.find('.modal-title').html('Event: ' + text);
@@ -313,8 +494,28 @@
       this.el.css('left', bound.left - 150);
       this.el.css('top', bound.top + 50);
 
-      console.log('getBoundingClientRect :', range.getBoundingClientRect());
+      // console.log('getBoundingClientRect :', range.getBoundingClientRect());
     },
+    listen: function () {
+      $('.dropdown-item').click(function () {
+        const dropdown = $(this).parents('.dropdown');
+        const dropdown_toggole = dropdown.find('.dropdown-toggle');
+        const before_value = dropdown_toggole.text().trim();
+        const value = $(this).text();
+
+        dropdown.find('.dropdown-toggle').html(value);
+
+        dropdown.find('.dropdown-item:contains("' + before_value + '")').removeClass('active');
+        dropdown.find('.dropdown-item:contains("' + value + '")').addClass('active');
+      });
+
+      this.el.keydown(function (e) {
+        if (e.keyCode === 13) {
+          this.state.step += 1;
+          this.open_dropdown();
+        }
+      }.bind(this))
+    }
   };
 
   const renderer = {
@@ -364,7 +565,9 @@
   };
 
   $(document).ready(function () {
-    event.listen_selection();
+    event.selection_listen();
+    // event.listen_key();
+
     api.get_doc(function (data) {
       renderer.state.sents = data['sents'];
       api.get_annotation(function (data) {
@@ -372,7 +575,6 @@
         renderer.render_table();
       })
     });
-
     modal.init();
   })
 
