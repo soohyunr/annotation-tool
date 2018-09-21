@@ -64,6 +64,10 @@
     .dropdown-menu .dropdown-item.active:hover {
         color: white;
     }
+
+    .input-group-text.active {
+        font-weight: bold;
+    }
 </style>
 <body>
 {% include 'base/navbar.html' %}
@@ -469,20 +473,25 @@
       });
       this.listen();
     },
-    open_dropdown() {
-      const step = this.state.step;
-      console.log('open_dropdown step :', step);
+    next_step() {
+      const step = this.state.step + 1;
       setTimeout(function () {
         $('#attribute' + step + '-val').click();
         setTimeout(function () {
           $('#attribute' + step + ' .active').focus();
         }, 100);
       }, 200);
+
+      $('.input-group-text').removeClass('text-primary');
+      $('#attribute' + step).parents('.input-group').find('.input-group-text').addClass('text-primary');
+      $('.dropdown-toggle').removeClass('text-primary');
+      $('#attribute' + step + '-val').addClass('text-primary');
     },
     show: function () {
       this.el.modal('show');
-      this.state.step = 1;
-      this.open_dropdown();
+
+      this.state.step = 0;
+      this.next_step();
     },
     set_header: function (text) {
       this.el.find('.modal-title').html('Event: ' + text);
@@ -499,22 +508,24 @@
     listen: function () {
       $('.dropdown-item').click(function () {
         const dropdown = $(this).parents('.dropdown');
-        const dropdown_toggole = dropdown.find('.dropdown-toggle');
-        const before_value = dropdown_toggole.text().trim();
+        const dropdown_toggle = dropdown.find('.dropdown-toggle');
+        const before_value = dropdown_toggle.text().trim();
         const value = $(this).text();
 
         dropdown.find('.dropdown-toggle').html(value);
 
         dropdown.find('.dropdown-item:contains("' + before_value + '")').removeClass('active');
         dropdown.find('.dropdown-item:contains("' + value + '")').addClass('active');
+
+        modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-val', ''));
+        modal.next_step();
       });
 
       this.el.keydown(function (e) {
         if (e.keyCode === 13) {
-          this.state.step += 1;
-          this.open_dropdown();
+          modal.next_step();
         }
-      }.bind(this))
+      })
     }
   };
 
