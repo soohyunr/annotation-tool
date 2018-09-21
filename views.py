@@ -94,6 +94,18 @@ def delete_annotation(annotation_id):
     return Response('success', status=200)
 
 
+@login_required
+def put_annotation(annotation_id):
+    data = request.get_json()
+    basket = data['type']
+
+    annotation = Annotation.objects(id=annotation_id)
+    annotation.basket = basket
+    annotation.save()
+
+    return Response('success', status=200)
+
+
 def post_login():
     data = request.get_json()
     username = data['username']
