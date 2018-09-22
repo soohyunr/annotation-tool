@@ -587,7 +587,6 @@
           const annotation_item = annotation.find_by_id(annotation_id);
 
           modal.set_position(e.pageX, e.pageY);
-          console.log('set annotation_item', annotation_item)
           modal.set_annotation_item(annotation_item);
           modal.show();
           modal.state.step = 0;
@@ -652,7 +651,14 @@
         data: JSON.stringify(item),
       }).done(function (data) {
         callback(JSON.parse(data));
-      });
+      }).fail(function (data) {
+        console.error(data);
+        swal({
+          title: '',
+          text: 'Failed to save annotation, please check network.',
+          type: 'error',
+        });
+      })
     },
     delete_annotation: function (annotation_id, callback) {
       $.ajax({
@@ -660,7 +666,14 @@
         type: 'DELETE',
       }).done(function () {
         callback();
-      });
+      }).fail(function (data) {
+        console.error(data);
+        swal({
+          title: '',
+          text: 'Failed to delete annotation, please check network.',
+          type: 'error',
+        });
+      })
     },
     put_annotation: function (item, callback) {
       $.ajax({
@@ -670,7 +683,14 @@
         data: JSON.stringify(item),
       }).done(function (data) {
         callback(JSON.parse(data));
-      });
+      }).fail(function (data) {
+        console.error(data);
+        swal({
+          title: '',
+          text: 'Failed to update annotation, please check network.',
+          type: 'error',
+        });
+      })
     },
   };
 
@@ -764,7 +784,7 @@
 
       this.state.annotation_item.memo = $('#memo').val();
       api.put_annotation(this.state.annotation_item, function () {
-        annotation.update(this.state.annotation_item.id, this.state.annotation_item);
+        annotation.update(modal.state.annotation_item.id, modal.state.annotation_item);
         renderer.render_table();
       });
     },
