@@ -564,9 +564,14 @@
           api.post_annotation(item, function (data) {
             const annotation_item = data['annotation'];
             annotation.add(annotation_item);
+
             renderer.render_table();
 
             modal.set_annotation_item(annotation_item);
+
+            if (annotation_item.type === 'sentence') {
+              modal.show()
+            }
           });
 
         }.bind(this);
