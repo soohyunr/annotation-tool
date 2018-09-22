@@ -35,5 +35,5 @@ def insert_sample_user():
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
-    insert_sample_docs()
-    # insert_sample_user()
+    # insert_sample_docs()
+    insert_sample_user()
