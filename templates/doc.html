@@ -570,7 +570,9 @@
             modal.set_annotation_item(annotation_item);
 
             if (annotation_item.type === 'sentence') {
-              modal.show()
+              modal.show();
+              modal.state.step = 0;
+              modal.next_step();
             }
           });
 
