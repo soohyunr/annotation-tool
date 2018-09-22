@@ -14,7 +14,7 @@ def index():
 
     total = Doc.objects.count()
     total_page = math.ceil(total / item_per_page)
-    paginator = Pagination(Doc.objects, page, 50)
+    paginator = Pagination(Doc.objects().order_by('seq'), page, 50)
     docs = paginator.items
 
     docs_data = []
