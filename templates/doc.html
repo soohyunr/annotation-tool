@@ -875,7 +875,12 @@
           }
         }
         if (sentence_type_index !== -1) {
-          sent_col = '<span class="badge badge-primary annotation-badge" data-id="' + annotations[sentence_type_index].id + '">' + sent_col + '</span>'
+          const annotation = annotations[sentence_type_index];
+          let badge_type = 'primary';
+          if (Object.keys(annotation.basket).length === 0) {
+            badge_type = 'secondary';
+          }
+          sent_col = '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '">' + sent_col + '</span>'
         }
         tr = tr.replace('<%sent%>', sent_col);
 

@@ -133,6 +133,7 @@ def download_dataset():
                 'annotation_target_text': annotation.target_text,
                 'annotation_type': annotation.type,
                 'attributes': annotation.basket,
+                'memo': annotation.memo,
                 'title': doc.title,
                 'source': doc.source,
             })
