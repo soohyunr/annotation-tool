@@ -921,9 +921,11 @@
           }
           sent_markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '" ';
           sent_markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation) + '">';
-          sent_markup += sent_col + '</span>'
+          sent_markup += sent_col + '</span>';
+          tr = tr.replace('<%sent%>', sent_markup);
+        } else {
+          tr = tr.replace('<%sent%>', sent_col);
         }
-        tr = tr.replace('<%sent%>', sent_markup);
 
         tbody.append(tr);
       }
@@ -965,7 +967,7 @@
       for (let i = 0; i < annotation.attributes.length; i++) {
         const attribute_name = annotation.attributes[i][1];
         if (attribute_name in annotation_item.basket) {
-          markup += '<b>' + (i + 1) + '. ' + attribute_name + '</b>: <em>' + annotation_item.basket[attribute_name] + '</em><br/>'
+          markup += (i + 1) + '. ' + attribute_name + ': <em>' + annotation_item.basket[attribute_name] + '</em><br/>'
         }
       }
       return markup;
