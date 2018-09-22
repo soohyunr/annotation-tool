@@ -800,7 +800,7 @@
       // make annotation map
       const annotation_map = {};
       for (let i = 0; i < sents.length; i++) {
-        annotation_map[i] = [];
+        annotation_map[sents[i].index] = [];
       }
       for (let i = 0; i < annotation.data.length; i++) {
         const item = annotation.data[i];

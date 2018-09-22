@@ -1,5 +1,6 @@
-import json
+import json, math
 from flask import request, render_template, Response, g, session, redirect, url_for
+from flask_mongoengine import Pagination
 
 from models import Doc, User, Sent, Annotation
 from decorator import login_required
@@ -7,8 +8,15 @@ from decorator import login_required
 
 @login_required
 def index():
-    docs = Doc.objects.all()
-    return render_template('index.html', docs=docs, g=g)
+    item_per_page = 50
+    page = request.args.get('p', 1)
+    page = int(page)
+
+    total = Doc.objects.count()
+    total_page = math.ceil(total / item_per_page)
+    paginator = Pagination(Doc.objects, page, 50)
+    docs = paginator.items
+    return render_template('index.html', docs=docs, g=g, page=page, total_page=total_page)
 
 
 def login():
@@ -22,7 +30,7 @@ def logout():
 
 @login_required
 def doc(doc_id):
-    doc = Doc.objects.get(id=doc_id)
+    doc = Doc.objects.get(seq=doc_id)
     return render_template('doc.html', doc=doc, g=g)
 
 

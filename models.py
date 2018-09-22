@@ -10,7 +10,14 @@ class Doc(db.Document):
     title = db.StringField()
     text = db.StringField()
     source = db.StringField()
+    seq = db.IntField()
     created_at = db.DateTimeField(default=datetime.datetime.now)
+
+    meta = {
+        'indexes': [
+            'seq',
+        ]
+    }
 
 
 class Sent(db.Document):

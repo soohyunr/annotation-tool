@@ -21,11 +21,23 @@ def insert_sample_docs():
 
 def insert_doc(title, text, source):
     doc = Doc(title=title, text=text, source=source)
+    total = Doc.objects.count()
+    doc.seq = total + 1
     doc.save()
 
-    from nltk import sent_tokenize
-    for i, text in enumerate(sent_tokenize(doc.text)):
-        Sent(index=i, text=text, doc=doc).save()
+    import re
+    regex = re.compile(r'\(Sent\d{1,4}\)')
+
+    # from nltk import sent_tokenize
+    for text in text.split('\n'):
+        if len(text) == 0:
+            continue
+
+        index_str = regex.findall(text)[0]
+        text = text.replace(index_str, '').strip()
+        index = int(index_str.replace('(Sent', '').replace(')', ''))
+
+        Sent(index=index, text=text, doc=doc).save()
 
 
 def insert_sample_user():
@@ -39,10 +51,13 @@ def insert_dataset(dirname, source):
     filenames = os.listdir(dir_path)
 
     for filename in filenames:
+        print('filename : {}'.format(filename))
         path = os.path.join(dir_path, filename)
 
         with open(path, 'r') as f:
             text = f.read()
+            if len(text) == 0:
+                continue
             insert_doc(title=filename, source=source, text=text)
 
 
@@ -52,4 +67,4 @@ if __name__ == '__main__':
     # insert_sample_docs()
     # insert_sample_user()
 
-    insert_dataset('aljazeera_paragraph_to_annotate', source='aljazeera')
+    insert_dataset('XXX_paragraph_to_annotate', source='XXX')
