@@ -9,6 +9,7 @@ db = MongoEngine()
 class Doc(db.Document):
     title = db.StringField()
     text = db.StringField()
+    source = db.StringField()
     created_at = db.DateTimeField(default=datetime.datetime.now)
 
 

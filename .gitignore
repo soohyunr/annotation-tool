@@ -6,5 +6,6 @@
 *.pyc
 *.mo
 /ENV/
+/data/
 
 config.py

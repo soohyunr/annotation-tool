@@ -1,3 +1,5 @@
+import os
+
 from mongoengine import connect
 
 from models import Doc, User, Sent
@@ -17,8 +19,8 @@ def insert_sample_docs():
         insert_doc(title=doc['title'], text=doc['text'])
 
 
-def insert_doc(title, text):
-    doc = Doc(title=title, text=text)
+def insert_doc(title, text, source):
+    doc = Doc(title=title, text=text, source=source)
     doc.save()
 
     from nltk import sent_tokenize
@@ -32,8 +34,22 @@ def insert_sample_user():
     user.save()
 
 
+def insert_dataset(dirname, source):
+    dir_path = os.path.abspath(os.path.dirname(__file__) + '/../data/{}'.format(dirname))
+    filenames = os.listdir(dir_path)
+
+    for filename in filenames:
+        path = os.path.join(dir_path, filename)
+
+        with open(path, 'r') as f:
+            text = f.read()
+            insert_doc(title=filename, source=source, text=text)
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
     # insert_sample_docs()
-    insert_sample_user()
+    # insert_sample_user()
+
+    insert_dataset('aljazeera_paragraph_to_annotate', source='aljazeera')
