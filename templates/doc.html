@@ -118,6 +118,11 @@
         line-height: 25px;
         color: #343a40;
     }
+
+    .toast-success {
+        width: 145px !important;
+        font-size: 15px;
+    }
 </style>
 <body>
 {% include 'base/navbar.html' %}
@@ -556,14 +561,17 @@
           const selection_text = selection.toString();
 
           for (let i = 0; i < selection_text.length; i++) {
-            if (selection_text[i] === ' ') anchor_offset++;
+            // To detect &nbsp;(&nbsp;'s chartCode is 160 and space chartCode is 32).
+            if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ') anchor_offset++;
             else break;
           }
           for (let i = selection_text.length - 1; i >= 0; i--) {
-            if (selection_text[i] === ' ') focus_offset--;
+            if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ') focus_offset--;
             else break;
           }
           if (anchor_offset >= focus_offset) return;
+          if (anchor_offset < 0 || anchor_offset > entire_text.length) return;
+          if (focus_offset < 0 || focus_offset > entire_text.length) return;
 
           let type = 'event';
           if (anchorNodeParent.className === 'type-sentence') type = 'sentence';
@@ -686,6 +694,7 @@
         url: '/api/annotation/' + annotation_id,
         type: 'DELETE',
       }).done(function () {
+        toastr.success("Deleted");
         callback();
       }).fail(function (data) {
         console.error(data);
@@ -703,6 +712,7 @@
         type: 'PUT',
         data: JSON.stringify(item),
       }).done(function (data) {
+        toastr.success("Saved");
         callback(JSON.parse(data));
       }).fail(function (data) {
         console.error(data);
@@ -945,6 +955,8 @@
         end[item.focus_offset] = i;
       }
       let markup = '';
+
+      // console.log('text :', text);
       for (let i = 0; i < text.length; i++) {
         if (i in start) {
           const annotation = annotations[start[i]];
@@ -956,7 +968,13 @@
           markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '" ';
           markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation) + '">';
         }
-        markup += text[i];
+
+        if (text[i] !== ' ') {
+          markup += text[i];
+        } else {
+          markup += '&nbsp;';
+        }
+
         if (i + 1 in end) {
           markup += '</span>';
         }
