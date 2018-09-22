@@ -709,11 +709,8 @@
       this.el.css('top', top + 50);
     },
     save: function () {
-      const attributes = $('.attribute');
-
-      for (let i = 0; i < attributes.length; i++) {
-        const attribute = $(attributes[i]);
-        const attribute_id = attribute.attr('id');
+      for (let i = 1; i <= this.state.max_attribute; i++) {
+        const attribute_id = 'attribute' + i;
 
         const value = $('#' + attribute_id + '-val').html().trim().split(' ').join('_');
         this.state.annotation_item.basket[annotation.find_attribute_name_by_id(attribute_id)] = value;
