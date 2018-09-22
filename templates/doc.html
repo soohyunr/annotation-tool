@@ -95,11 +95,13 @@
     .fa-chevron-left {
         cursor: pointer;
         margin-right: 10px;
+        color: #CCC;
     }
 
     .fa-chevron-right {
         cursor: pointer;
         margin-left: 10px;
+        color: #CCC;
     }
 
     .tooltip.show {
@@ -128,7 +130,7 @@
             </a>
             {% endif %}
 
-            {{doc['title']}}
+            #{{doc.seq}} {{doc['title']}}
 
             <a href="/doc/{{doc['seq']+1}}">
                 <i class="fas fa-chevron-right"></i>
