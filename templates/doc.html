@@ -530,9 +530,6 @@
             renderer.render_table();
 
             modal.set_annotation_item(annotation_item);
-            modal.show();
-            modal.state.step = 0;
-            modal.next_step();
           });
 
         }.bind(this);
@@ -547,6 +544,8 @@
 
           modal.set_annotation_item(annotation_item);
           modal.show();
+          modal.state.step = 0;
+          modal.next_step();
         });
       },
       listen_key: function () {
@@ -717,6 +716,7 @@
       }
 
       annotation.update(this.state.annotation_item.id, this.state.annotation_item);
+      renderer.render_table();
       api.put_annotation(this.state.annotation_item, function () {
         // renderer.load_annotation_and_render_table();
       });
@@ -849,7 +849,13 @@
       let markup = '';
       for (let i = 0; i < text.length; i++) {
         if (i in start) {
-          markup += '<span class="badge badge-success annotation-badge" data-id="' + annotations[start[i]].id + '">';
+          const annotation = annotations[start[i]];
+          let badge_type = 'success';
+          if (Object.keys(annotation.basket).length === 0) {
+            badge_type = 'secondary';
+          }
+
+          markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '">';
         }
         markup += text[i];
         if (i + 1 in end) {
