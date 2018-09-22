@@ -19,6 +19,13 @@ class Doc(db.Document):
         ]
     }
 
+    def dump(self):
+        return {
+            'title': self.title,
+            'text': self.text,
+            'seq': self.seq,
+        }
+
 
 class Sent(db.Document):
     doc = db.ReferenceField(Doc)

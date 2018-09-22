@@ -17,6 +17,14 @@ def index():
     paginator = Pagination(Doc.objects, page, 50)
     docs = paginator.items
 
+    docs_data = []
+    for doc in docs:
+        item = doc.dump()
+        item['sent_total'] = Sent.objects(doc=doc).count()
+        item['progress'] = Annotation.objects(doc=doc, user=g.user, type='sentence').count()
+
+        docs_data.append(item)
+
     pagination = {
         'page': page,
         'total_page': total_page,
@@ -24,7 +32,10 @@ def index():
         'right': min(page + 5, total_page),
     }
 
-    return render_template('index.html', docs=docs, g=g, pagination=pagination)
+    print('data :', docs_data)
+    print('pagination :', pagination)
+
+    return render_template('index.html', docs=docs_data, g=g, pagination=pagination)
 
 
 def login():
@@ -112,7 +123,6 @@ def download_dataset():
     for doc in docs:
         annotations = Annotation.objects(doc=doc)
         for annotation in annotations:
-
             data.append({
                 'annotator': annotation.user.username,
                 'doc_id': doc.seq,

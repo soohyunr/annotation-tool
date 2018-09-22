@@ -6,6 +6,7 @@
 import nltk
 nltk.download('punkt')
 ```
+
 ```bash
 pip3 install -r requirements.txt
 export PYTHONPATH=.
