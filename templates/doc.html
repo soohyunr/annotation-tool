@@ -101,6 +101,21 @@
         cursor: pointer;
         margin-left: 10px;
     }
+
+    .tooltip.show {
+        opacity: 1;
+    }
+
+    .tooltip-inner {
+        max-width: 460px;
+        text-align: left;
+        background-color: white;
+        border: 1px solid #CCC;
+        border-radius: 5px;
+        padding: 15px 20px;
+        line-height: 25px;
+        color: #343a40;
+    }
 </style>
 <body>
 {% include 'base/navbar.html' %}
@@ -593,6 +608,10 @@
           modal.next_step();
         });
       },
+      listen_tooltip: function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        // $('[data-toggle="tooltip"]').tooltip('show');
+      },
       listen_key: function () {
         $(document).keydown(function (e) {
           switch (e.which) {
@@ -886,6 +905,7 @@
         tr = tr.replace('<%text%>', this.render_markup_sentence(Number(index), text, annotations));
 
         let sent_col = 'Sent' + index;
+        let sent_markup = '';
         let sentence_type_index = -1;
         for (let j = 0; j < annotations.length; j++) {
           if (annotations[j].type === 'sentence') {
@@ -899,14 +919,17 @@
           if (Object.keys(annotation.basket).length === 0) {
             badge_type = 'secondary';
           }
-          sent_col = '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '">' + sent_col + '</span>'
+          sent_markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '" ';
+          sent_markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation) + '">';
+          sent_markup += sent_col + '</span>'
         }
-        tr = tr.replace('<%sent%>', sent_col);
+        tr = tr.replace('<%sent%>', sent_markup);
 
         tbody.append(tr);
       }
 
       event.listen_annotation_badge();
+      event.listen_tooltip();
     },
     render_markup_sentence: function (index, text, annotations) {
       const start = {}, end = {};
@@ -926,7 +949,8 @@
             badge_type = 'secondary';
           }
 
-          markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '">';
+          markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '" ';
+          markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation) + '">';
         }
         markup += text[i];
         if (i + 1 in end) {
@@ -934,6 +958,16 @@
         }
       }
       // console.log('markup :', markup, start, end);
+      return markup;
+    },
+    render_tooltip_markup: function (annotation_item) {
+      let markup = '';
+      for (let i = 0; i < annotation.attributes.length; i++) {
+        const attribute_name = annotation.attributes[i][1];
+        if (attribute_name in annotation_item.basket) {
+          markup += '<b>' + (i + 1) + '. ' + attribute_name + '</b>: <em>' + annotation_item.basket[attribute_name] + '</em><br/>'
+        }
+      }
       return markup;
     },
   };
