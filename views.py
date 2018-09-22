@@ -105,6 +105,33 @@ def get_annotation(doc_id):
 
 
 @login_required
+def download_dataset():
+    docs = Doc.objects
+
+    data = []
+    for doc in docs:
+        annotations = Annotation.objects(doc=doc)
+        for annotation in annotations:
+
+            data.append({
+                'annotator': annotation.user.username,
+                'doc_id': doc.seq,
+                'sentence_index': annotation.index,
+                'sentence': annotation.entire_text,
+                'annotation_anchor_offset': annotation.anchor_offset,
+                'annotation_focus_offset': annotation.focus_offset,
+                'annotation_target_text': annotation.target_text,
+                'annotation_type': annotation.type,
+                'title': doc.title,
+                'source': doc.source,
+            })
+
+    return Response(json.dumps({
+        'annotations': data,
+    }), mimetype='application/json')
+
+
+@login_required
 def delete_annotation(annotation_id):
     Annotation.objects(id=annotation_id).delete()
     return Response('success', status=200)
