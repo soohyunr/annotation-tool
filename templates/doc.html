@@ -44,6 +44,10 @@
         border-bottom: 1px dashed #CCC;
     }
 
+    .modal-body .input-group.no-border {
+        border-bottom: none;
+    }
+
     .dropdown {
         flex: 1 1 auto;
     }
@@ -371,6 +375,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-4">
+                            <div class="input-group no-border">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Memo</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="" id="memo"
+                                       aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -681,6 +696,7 @@
         $('#' + attribute_id + ' .dropdown-item').removeClass('active');
         $('#' + attribute_id + ' .dropdown-item[data-value=' + value + ']').addClass('active');
       }
+      $('#memo').val(this.state.annotation_item.memo);
     },
     show: function () {
       this.load_attributes();
@@ -715,8 +731,10 @@
         this.state.annotation_item.basket[annotation.find_attribute_name_by_id(attribute_id)] = value;
       }
 
+      this.state.annotation_item.memo = $('#memo').val();
       annotation.update(this.state.annotation_item.id, this.state.annotation_item);
       renderer.render_table();
+
       api.put_annotation(this.state.annotation_item, function () {
         // renderer.load_annotation_and_render_table();
       });

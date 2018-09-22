@@ -69,6 +69,8 @@ class Annotation(db.Document):
 
     basket = db.DictField()
 
+    memo = db.StringField()
+
     created_at = db.DateTimeField(default=datetime.datetime.now)
     updated_at = db.DateTimeField(default=datetime.datetime.now)
 

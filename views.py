@@ -141,8 +141,10 @@ def delete_annotation(annotation_id):
 def put_annotation(annotation_id):
     data = request.get_json()
     basket = data['basket']
+    memo = data['memo']
     annotation = Annotation.objects().get(id=annotation_id)
     annotation.basket = basket
+    annotation.memo = memo
     annotation.save()
 
     return json.dumps({
