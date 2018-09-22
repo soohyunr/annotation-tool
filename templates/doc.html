@@ -6,6 +6,15 @@
         margin-bottom: 500px;
     }
 
+    .container {
+        padding: 1px;
+    }
+
+    .header {
+        margin: 10px 0 20px 0;
+        color: #495057;
+    }
+
     .modal {
         width: 850px;
         min-height: 850px;
@@ -73,10 +82,18 @@
     .annotation-badge {
         cursor: pointer;
     }
+
+    .badge {
+        font-weight: 400;
+        font-size: 80%;
+    }
 </style>
 <body>
 {% include 'base/navbar.html' %}
 <div class="container">
+    <div class="header">
+        <h4>{{doc['title']}}</h4>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -93,9 +110,9 @@
 
 <script type='text/template' id='tr-template'>
     <tr class="">
-        <td scope="row"><%index%></td>
+        <td class="type-sentence" data-index="<%index%>" scope="row"><%sent%></td>
         <!-- Warning: changing the location of the tag can cause an issue in which the annotation data are not matched. -->
-        <td class="target-text" data-index="<%index%>"><%text%></td>
+        <td class="type-event" data-index="<%index%>"><%text%></td>
     </tr>
 </script>
 
@@ -111,7 +128,7 @@
             <div class="modal-body">
                 <form>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="left-col">
                             <div class="input-group row">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">1. Knowledge Awareness:</span>
@@ -123,10 +140,10 @@
                                         I already know
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="attribute1-val">
-                                        <button class="dropdown-item active" type="button" data-value="i_already_know">I
+                                        <button class="dropdown-item active" type="button" data-value="I_already_know">I
                                             already know
                                         </button>
-                                        <button class="dropdown-item" type="button" data-value="i_did_not_know">I did
+                                        <button class="dropdown-item" type="button" data-value="I_did_not_know">I did
                                             not know
                                         </button>
                                     </div>
@@ -169,7 +186,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="attribute3-val">
                                         <button class="dropdown-item active" type="button"
-                                                data-value=">verify_it_with_my_knowledge">verify it with my knowledge
+                                                data-value="verify_it_with_my_knowledge">verify it with my knowledge
                                         </button>
                                         <button class="dropdown-item" type="button"
                                                 data-value="verify_it_by_short_time_googling">verify it by short time
@@ -249,7 +266,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="right-col">
                             <div class="input-group row">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">7. Genericity:</span>
@@ -380,7 +397,7 @@
       ['attribute11', 'prominence'],
     ],
     attributes_defalut: {
-      knowledge_awareness: 'i_already_know',
+      knowledge_awareness: 'I_already_know',
       credibility: 'feel_like_true',
       verifiability: 'verify_it_by_short_time_googling',
       conditionality: 'sufficient_condition',
@@ -469,7 +486,8 @@
           const anchorNodeParent = selection.anchorNode.parentElement;
           const focusNodeParent = selection.focusNode.parentElement;
 
-          if (anchorNodeParent.className !== 'target-text') return;
+          if (anchorNodeParent.className !== 'type-event' && anchorNodeParent.className !== 'type-sentence') return;
+          if (anchorNodeParent.className !== focusNodeParent.className) return;
           if (anchorNodeParent.getAttribute('data-index') !== focusNodeParent.getAttribute('data-index')) return;
 
           const index = Number(anchorNodeParent.getAttribute('data-index'));
@@ -490,17 +508,17 @@
           }
           if (anchor_offset >= focus_offset) return;
 
+          let type = 'event';
+          if (anchorNodeParent.className === 'type-sentence') type = 'sentence';
           const item = {
             entire_text: entire_text,
             target_text: entire_text.substr(anchor_offset, focus_offset - anchor_offset),
             index: index,
             anchor_offset: anchor_offset,
             focus_offset: focus_offset,
-            type: 'event',
+            type: type,
           };
 
-
-          modal.set_header(item.target_text);
           const range = selection.getRangeAt(0);
           const bound = range.getBoundingClientRect();
           const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -513,7 +531,8 @@
 
             modal.set_annotation_item(annotation_item);
             modal.show();
-            renderer.load_annotation_and_render_table();
+            modal.state.step = 0;
+            modal.next_step();
           });
 
         }.bind(this);
@@ -524,7 +543,6 @@
           const annotation_id = $(this).attr('data-id');
           const annotation_item = annotation.find_by_id(annotation_id);
 
-          modal.set_header(annotation_item.target_text);
           modal.set_position(e.pageX, e.pageY);
 
           modal.set_annotation_item(annotation_item);
@@ -616,6 +634,7 @@
     state: {
       step: 1,
       annotation_item: {},
+      max_attribute: 11,
     },
     init: function () {
       this.el = $('#modal');
@@ -629,6 +648,12 @@
     },
     next_step() {
       const step = this.state.step + 1;
+      if (step === this.state.max_attribute + 1) {
+        modal.save();
+        modal.el.modal('hide');
+        return;
+      }
+
       setTimeout(function () {
         $('#attribute' + step + '-val').click();
         setTimeout(function () {
@@ -646,7 +671,7 @@
     },
     load_attributes: function () {
       const basket = this.state.annotation_item.basket;
-      for (let i = 1; i <= 11; i++) {
+      for (let i = 1; i <= this.state.max_attribute; i++) {
         const attribute_id = 'attribute' + i;
         const name = annotation.find_attribute_name_by_id(attribute_id);
         let value = basket[name];
@@ -660,13 +685,19 @@
     },
     show: function () {
       this.load_attributes();
+      this.set_header();
       this.el.modal('show');
 
-      this.state.step = 0;
-      this.next_step();
+      this.change_type(this.state.annotation_item.type);
     },
-    set_header: function (text) {
-      this.el.find('.modal-title').html('Event: ' + text);
+    set_header: function () {
+      const type = this.state.annotation_item.type;
+      let title = 'Event: ' + this.state.annotation_item.target_text;
+      if (type === 'sentence') {
+        title = 'Sentence' + this.state.annotation_item.index;
+      }
+
+      this.el.find('.modal-title').html(title);
     },
     set_position: function (left, top) {
       const window_width = document.body.clientWidth;
@@ -690,8 +721,29 @@
 
       annotation.update(this.state.annotation_item.id, this.state.annotation_item);
       api.put_annotation(this.state.annotation_item, function () {
-        renderer.load_annotation_and_render_table();
+        // renderer.load_annotation_and_render_table();
       });
+    },
+    change_type: function (type) {
+      if (type === 'event') {
+        $('#left-col').removeClass('col-md-12').addClass('col-md-6');
+        $('#right-col').show();
+        this.state.max_attribute = 11;
+        for (let i = 4; i <= 11; i++) {
+          $('#attribute' + i).parents('.input-group').show();
+        }
+        $('#modal').css('width', '850px');
+        $('#modal .modal-content').css('width', '850px').css('min-width', '850px');
+      } else {
+        $('#left-col').removeClass('col-md-6').addClass('col-md-12');
+        $('#right-col').hide();
+        this.state.max_attribute = 3;
+        for (let i = 4; i <= 11; i++) {
+          $('#attribute' + i).parents('.input-group').hide();
+        }
+        $('#modal').css('width', '500px');
+        $('#modal .modal-content').css('width', '500px').css('min-width', '500px');
+      }
     },
     listen: function () {
       $('.dropdown-item').click(function () {
@@ -720,7 +772,7 @@
         annotation.remove(annotation_id);
         renderer.render_table();
         api.delete_annotation(modal.state.annotation_item.id, function () {
-          renderer.load_annotation_and_render_table();
+          // renderer.load_annotation_and_render_table();
           modal.el.modal('hide');
         });
       });
@@ -765,8 +817,24 @@
         const index = sent['index'];
         const text = sent['text'];
 
+        const annotations = annotation_map[Number(index)];
+
         tr = tr.split('<%index%>').join(sent['index']);
-        tr = tr.replace('<%text%>', this.render_markup_sentence(Number(index), text, annotation_map[Number(index)]));
+        tr = tr.replace('<%text%>', this.render_markup_sentence(Number(index), text, annotations));
+
+        let sent_col = 'Sent' + index;
+        let sentence_type_index = -1;
+        for (let j = 0; j < annotations.length; j++) {
+          if (annotations[j].type === 'sentence') {
+            sentence_type_index = j;
+            break;
+          }
+        }
+        if (sentence_type_index !== -1) {
+          sent_col = '<span class="badge badge-primary annotation-badge" data-id="' + annotations[sentence_type_index].id + '">' + sent_col + '</span>'
+        }
+        tr = tr.replace('<%sent%>', sent_col);
+
         tbody.append(tr);
       }
 
