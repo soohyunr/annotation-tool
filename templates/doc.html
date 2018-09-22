@@ -556,7 +556,7 @@
           const annotation_item = annotation.find_by_id(annotation_id);
 
           modal.set_position(e.pageX, e.pageY);
-
+          console.log('set annotation_item', annotation_item)
           modal.set_annotation_item(annotation_item);
           modal.show();
           modal.state.step = 0;
