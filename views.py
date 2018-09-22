@@ -132,6 +132,7 @@ def download_dataset():
                 'annotation_focus_offset': annotation.focus_offset,
                 'annotation_target_text': annotation.target_text,
                 'annotation_type': annotation.type,
+                'attributes': annotation.basket,
                 'title': doc.title,
                 'source': doc.source,
             })
