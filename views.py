@@ -16,7 +16,15 @@ def index():
     total_page = math.ceil(total / item_per_page)
     paginator = Pagination(Doc.objects, page, 50)
     docs = paginator.items
-    return render_template('index.html', docs=docs, g=g, page=page, total_page=total_page)
+
+    pagination = {
+        'page': page,
+        'total_page': total_page,
+        'left': max(1, page - 5),
+        'right': min(page + 5, total_page),
+    }
+
+    return render_template('index.html', docs=docs, g=g, pagination=pagination)
 
 
 def login():
