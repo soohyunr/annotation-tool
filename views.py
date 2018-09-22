@@ -32,9 +32,6 @@ def index():
         'right': min(page + 5, total_page),
     }
 
-    print('data :', docs_data)
-    print('pagination :', pagination)
-
     return render_template('index.html', docs=docs_data, g=g, pagination=pagination)
 
 

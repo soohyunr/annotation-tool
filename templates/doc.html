@@ -120,7 +120,7 @@
             </a>
         </h4>
         <!--<a href="" target="_blank">-->
-            <!--<button type="button" class="btn btn-outline-primary">My Data</button>-->
+        <!--<button type="button" class="btn btn-outline-primary">My Data</button>-->
         <!--</a>-->
     </div>
     <table class="table table-striped">
@@ -406,7 +406,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Memo</span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="" id="memo"
+                                <input type="text" class="form-control" placeholder="" id="memo" value=""
                                        aria-describedby="basic-addon1">
                             </div>
                         </div>
@@ -567,7 +567,6 @@
           api.post_annotation(item, function (data) {
             const annotation_item = data['annotation'];
             annotation.add(annotation_item);
-
             renderer.render_table();
 
             modal.set_annotation_item(annotation_item);
@@ -764,11 +763,9 @@
       }
 
       this.state.annotation_item.memo = $('#memo').val();
-      annotation.update(this.state.annotation_item.id, this.state.annotation_item);
-      renderer.render_table();
-
       api.put_annotation(this.state.annotation_item, function () {
-        // renderer.load_annotation_and_render_table();
+        annotation.update(this.state.annotation_item.id, this.state.annotation_item);
+        renderer.render_table();
       });
     },
     change_type: function (type) {
@@ -816,10 +813,9 @@
 
       $('#modal-delete-btn').click(function () {
         const annotation_id = modal.state.annotation_item.id;
-        annotation.remove(annotation_id);
-        renderer.render_table();
         api.delete_annotation(modal.state.annotation_item.id, function () {
-          // renderer.load_annotation_and_render_table();
+          annotation.remove(annotation_id);
+          renderer.render_table();
           modal.el.modal('hide');
         });
       });

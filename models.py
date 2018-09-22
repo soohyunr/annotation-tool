@@ -33,6 +33,12 @@ class Sent(db.Document):
     text = db.StringField()
     created_at = db.DateTimeField(default=datetime.datetime.now)
 
+    meta = {
+        'indexes': [
+            'doc',
+        ]
+    }
+
     def dump(self):
         return {
             'index': self.index,
@@ -84,6 +90,7 @@ class Annotation(db.Document):
     meta = {
         'indexes': [
             ('doc', 'user'),
+            ('doc', 'user', 'type'),
         ]
     }
 
