@@ -61,10 +61,45 @@ def insert_dataset(dirname, source):
             insert_doc(title=filename, source=source, text=text)
 
 
+def db_backup(memo):
+    import datetime
+    collections = ['doc', 'sent', 'annotation', 'user']
+
+    backup_dir = os.path.abspath(os.path.dirname(__file__) + '/../data/backup/' + datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S'))
+    os.makedirs(backup_dir)
+
+    memo_path = os.path.abspath(backup_dir + '/memo.txt')
+    with open(memo_path, 'w') as f:
+        f.write(memo)
+
+    import subprocess
+
+    MONGODB_SETTINGS = config.Config.MONGODB_SETTINGS
+    for collection in collections:
+        print('now backup collection {}'.format(collection))
+        backup_path = os.path.abspath(backup_dir + '/{}'.format(collection))
+        subprocess.call(['mongoexport',
+                         '-h',
+                         '{}:{}'.format(MONGODB_SETTINGS['host'], MONGODB_SETTINGS['port']),
+                         '-u',
+                         MONGODB_SETTINGS['username'],
+                         '-p',
+                         MONGODB_SETTINGS['password'],
+                         '-d',
+                         MONGODB_SETTINGS['db'],
+                         '-c',
+                         collection,
+                         '-o',
+                         backup_path,
+                         ])
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
     # insert_sample_docs()
     # insert_sample_user()
 
-    insert_dataset('XXX_paragraph_to_annotate', source='XXX')
+    # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
+
+    db_backup('first backup')
