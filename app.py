@@ -35,6 +35,7 @@ def before_request():
 
 app.add_url_rule('/', view_func=views.index, methods=['GET'])
 app.add_url_rule('/login', view_func=views.login, methods=['GET'])
+app.add_url_rule('/signup', view_func=views.signup, methods=['GET'])
 app.add_url_rule('/logout', view_func=views.logout, methods=['GET'])
 app.add_url_rule('/doc/<doc_id>', view_func=views.doc, methods=['GET'])
 

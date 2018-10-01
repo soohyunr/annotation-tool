@@ -39,6 +39,10 @@ def login():
     return render_template('login.html', g=g)
 
 
+def signup():
+    return render_template('signup.html', g=g)
+
+
 def logout():
     if 'username' in session: del session['username']
     return redirect(url_for('login'))
