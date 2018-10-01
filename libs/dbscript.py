@@ -1,4 +1,4 @@
-import os
+import os, json
 
 from mongoengine import connect
 
@@ -94,6 +94,30 @@ def db_backup(memo):
                          ])
 
 
+def generate_encrypted_file(seq_id):
+    from itertools import cycle
+    def str_xor(s1, s2):
+        return "".join([chr(ord(c1) ^ ord(c2)) for (c1, c2) in zip(s1, cycle(s2))])
+
+    doc = Doc.objects().get(seq=seq_id)
+    sents = Sent.objects(doc=doc).order_by('index')
+
+    data = {
+        'doc_id': str(doc.id),
+        'sents': [],
+    }
+
+    for sent in sents:
+        data['sents'].append(sent.dump())
+
+    data = json.dumps(data)
+    data = str_xor(data, config.Config.ENCRYPTION_SECRET_KEY)
+
+    file_path = os.path.abspath(os.path.dirname(__file__) + '/../data/encrypted/{}.txt'.format(seq_id))
+    with open(file_path, 'w') as f:
+        f.write(data)
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
@@ -102,4 +126,6 @@ if __name__ == '__main__':
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
 
-    db_backup('backup memo')
+    # db_backup('backup memo')
+
+    generate_encrypted_file(seq_id=1)
