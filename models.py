@@ -50,6 +50,8 @@ class User(db.Document):
     username = db.StringField()
     password = db.StringField()
     salt = db.StringField()
+    name = db.StringField()
+    is_admin = db.BinaryField()
     created_at = db.DateTimeField(default=datetime.datetime.now)
 
     def set_password(self, password):
