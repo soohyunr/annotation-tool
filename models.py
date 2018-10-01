@@ -54,6 +54,8 @@ class User(db.Document):
     last_name = db.StringField()
     is_active = db.BooleanField(default=False)
     is_admin = db.BooleanField(default=False)
+
+    last_ip = db.StringField()
     created_at = db.DateTimeField(default=datetime.datetime.now)
     accessed_at = db.DateTimeField(default=datetime.datetime.now)
 

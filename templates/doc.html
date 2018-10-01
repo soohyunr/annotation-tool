@@ -15,10 +15,11 @@
         color: #495057;
     }
 
-    #tbody td{
+    #tbody td {
         word-break: break-all;
     }
-    #tbody td:nth-child(1){
+
+    #tbody td:nth-child(1) {
         width: 90px;
     }
 
@@ -63,7 +64,7 @@
         width: 100%;
     }
 
-    .dropdown-toggle::after {
+    table .dropdown-toggle::after {
         position: absolute;
         right: 6px;
         top: 18px;
@@ -152,6 +153,15 @@
         <!--<button type="button" class="btn btn-outline-primary">My Data</button>-->
         <!--</a>-->
     </div>
+
+
+    <form>
+        <div class="form-group">
+            <label for="doc-uploader">Document Upload</label>
+            <input type="file" class="form-control-file" id="doc-uploader">
+        </div>
+    </form>
+
     <table class="table table-striped">
         <thead>
         <tr>

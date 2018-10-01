@@ -1,5 +1,5 @@
 import os, sys, datetime
-from flask import Flask, session, g, request, render_template
+from flask import Flask, session, g, request, render_template, redirect
 from flask_mongoengine import MongoEngine
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
@@ -24,14 +24,15 @@ db = MongoEngine(app)
 @app.before_request
 def before_request():
     remote_addr = request.remote_addr
-    # if remote_addr != '127.0.0.1' and '143.248.' not in remote_addr:
-    #     return render_template('403.html')
+    if remote_addr != '127.0.0.1' and '143.248.' not in remote_addr:
+        return redirect('/403')
 
     if 'username' not in session:
         g.user = None
     else:
         user = User.objects.get(username=session['username'])
         user.accessed_at = datetime.datetime.now
+        user.last_ip = remote_addr
         user.save()
         g.user = user
 

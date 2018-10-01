@@ -1,4 +1,4 @@
-import json, math
+import json, math, datetime
 from flask import request, render_template, Response, g, session, redirect, url_for
 from flask_mongoengine import Pagination
 
@@ -170,6 +170,7 @@ def put_annotation(annotation_id):
     annotation = Annotation.objects().get(id=annotation_id)
     annotation.basket = basket
     annotation.memo = memo
+    annotation.updated_at = datetime.datetime.now
     annotation.save()
 
     return json.dumps({
