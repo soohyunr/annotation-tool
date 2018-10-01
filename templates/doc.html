@@ -1011,8 +1011,28 @@
     },
   };
 
+  const text_reader = {
+    data_text: '',
+    data_json: {},
+    listen: function () {
+      let input = document.getElementById("doc-uploader");
+      input.addEventListener("change", function () {
+        if (this.files && this.files[0]) {
+          let myFile = this.files[0];
+          let reader = new FileReader();
+          reader.addEventListener('load', function (e) {
+            reader.data_text = e.target.result;
+            console.log(reader.data_text);
+          });
+          reader.readAsBinaryString(myFile);
+        }
+      });
+    }
+  };
+
   $(document).ready(function () {
     event.selection_listen();
+    text_reader.listen();
     // event.listen_key();
 
     api.get_doc(function (data) {

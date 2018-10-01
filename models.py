@@ -73,6 +73,19 @@ class User(db.Document):
         }
 
 
+class DocLog(db.Document):
+    doc = db.ReferenceField(Doc)
+    user = db.ReferenceField(User)
+    ip = db.StringField()
+    created_at = db.DateTimeField(default=datetime.datetime.now)
+
+    meta = {
+        'indexes': [
+            'user',
+        ]
+    }
+
+
 class Annotation(db.Document):
     doc = db.ReferenceField(Doc)
     sent = db.ReferenceField(Sent)
