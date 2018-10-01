@@ -7,7 +7,7 @@ from decorator import login_required
 
 
 @login_required
-def index():
+def index_page():
     item_per_page = 50
     page = request.args.get('p', 1)
     page = int(page)
@@ -35,21 +35,27 @@ def index():
     return render_template('index.html', docs=docs_data, g=g, pagination=pagination)
 
 
-def login():
+@login_required
+def users_page():
+    users = User.objects.all()
+    return render_template('users.html', users=users, g=g)
+
+
+def login_page():
     return render_template('login.html', g=g)
 
 
-def signup():
+def signup_page():
     return render_template('signup.html', g=g)
 
 
-def logout():
+def logout_page():
     if 'username' in session: del session['username']
     return redirect(url_for('login'))
 
 
 @login_required
-def doc(doc_id):
+def doc_page(doc_id):
     doc = Doc.objects.get(seq=doc_id)
     return render_template('doc.html', doc=doc, g=g)
 

@@ -33,11 +33,12 @@ def before_request():
         g.user = User.objects.get(username=session['username'])
 
 
-app.add_url_rule('/', view_func=views.index, methods=['GET'])
-app.add_url_rule('/login', view_func=views.login, methods=['GET'])
-app.add_url_rule('/signup', view_func=views.signup, methods=['GET'])
-app.add_url_rule('/logout', view_func=views.logout, methods=['GET'])
-app.add_url_rule('/doc/<doc_id>', view_func=views.doc, methods=['GET'])
+app.add_url_rule('/', view_func=views.index_page, methods=['GET'])
+app.add_url_rule('/users', view_func=views.users_page, methods=['GET'])
+app.add_url_rule('/login', view_func=views.login_page, methods=['GET'])
+app.add_url_rule('/signup', view_func=views.signup_page, methods=['GET'])
+app.add_url_rule('/logout', view_func=views.logout_page, methods=['GET'])
+app.add_url_rule('/doc/<doc_id>', view_func=views.doc_page, methods=['GET'])
 
 app.add_url_rule('/api/login', view_func=views.post_login, methods=['POST'])
 app.add_url_rule('/api/signup', view_func=views.post_signup, methods=['POST'])

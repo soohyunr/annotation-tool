@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+{% include 'base/head.html' %}
+<style>
+    .pagination {
+        margin: 40px 20px 70px 0;
+        float: right;
+    }
+</style>
+<body>
+{% include 'base/navbar.html' %}
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>username</th>
+            <th>name</th>
+            <th>last access</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'base/script.html' %}
+</body>
+</html>

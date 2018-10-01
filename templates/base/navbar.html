@@ -10,6 +10,16 @@
     {% if not g.user %}
     <a class="btn btn-outline-primary" href="/login">Sign In</a>
     {% else %}
-    <a class="btn btn-outline-dark ml-2" href="/logout">Log Out</a>
+    <div class="btn-group">
+        <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Menu
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <!--<a class="dropdown-item" href="#">Something else here</a>-->
+            <!--<div class="dropdown-divider"></div>-->
+            <a class="dropdown-item" href="/logout">Log Out</a>
+        </div>
+    </div>
     {% endif %}
 </div>
