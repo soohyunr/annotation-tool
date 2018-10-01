@@ -1021,12 +1021,28 @@
           let myFile = this.files[0];
           let reader = new FileReader();
           reader.addEventListener('load', function (e) {
-            reader.data_text = e.target.result;
-            console.log(reader.data_text);
+            text_reader.data_text = e.target.result;
+            text_reader.data_json = JSON.parse(text_reader.decode_string(text_reader.data_text, 'nlpclnlpcl'));
+            console.log(text_reader.data_json);
           });
           reader.readAsBinaryString(myFile);
         }
       });
+    },
+    decode_string: function (input, key) {
+      input = input.split('-');
+      let c = '';
+      while (key.length < input.length) {
+        key += key;
+      }
+      for (let i = 0; i < input.length; i++) {
+        let value1 = input[i];
+        let value2 = key[i].charCodeAt(0);
+
+        let xor = value1 ^ value2;
+        c += String.fromCharCode(xor);
+      }
+      return c;
     }
   };
 

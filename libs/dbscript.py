@@ -97,7 +97,10 @@ def db_backup(memo):
 def generate_encrypted_file(seq_id):
     from itertools import cycle
     def str_xor(s1, s2):
-        return "".join([chr(ord(c1) ^ ord(c2)) for (c1, c2) in zip(s1, cycle(s2))])
+        result = []
+        for (c1, c2) in zip(s1, cycle(s2)):
+            result.append(str(ord(c1) ^ ord(c2)))
+        return "-".join(result)
 
     doc = Doc.objects().get(seq=seq_id)
     sents = Sent.objects(doc=doc).order_by('index')
@@ -112,7 +115,7 @@ def generate_encrypted_file(seq_id):
 
     data = json.dumps(data)
     data = str_xor(data, config.Config.ENCRYPTION_SECRET_KEY)
-
+    print('data :',data)
     file_path = os.path.abspath(os.path.dirname(__file__) + '/../data/encrypted/{}.txt'.format(seq_id))
     with open(file_path, 'w') as f:
         f.write(data)
