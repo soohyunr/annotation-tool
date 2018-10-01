@@ -177,3 +177,21 @@ def post_login():
     session['username'] = username
     g.user = user.dump()
     return Response('success', status=200)
+
+
+def post_signup():
+    data = request.get_json()
+    username = data['username']
+    first_name = data['first_name']
+    last_name = data['last_name']
+    password = data['password']
+
+    user = User.objects.get(username=username)
+    if user:
+        return Response(status=401)
+
+    user = User(username=username, first_name=first_name, last_name=last_name)
+    user.set_password(password)
+    user.save()
+
+    return Response('success', status=200)

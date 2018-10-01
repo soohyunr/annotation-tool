@@ -40,6 +40,7 @@ app.add_url_rule('/logout', view_func=views.logout, methods=['GET'])
 app.add_url_rule('/doc/<doc_id>', view_func=views.doc, methods=['GET'])
 
 app.add_url_rule('/api/login', view_func=views.post_login, methods=['POST'])
+app.add_url_rule('/api/signup', view_func=views.post_signup, methods=['POST'])
 app.add_url_rule('/api/doc/<doc_id>', view_func=views.get_doc, methods=['GET'])
 app.add_url_rule('/api/doc/<doc_id>/annotation', view_func=views.get_annotation, methods=['GET'])
 app.add_url_rule('/api/annotation', view_func=views.post_annotation, methods=['POST'])
