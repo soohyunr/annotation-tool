@@ -17,5 +17,6 @@ export PYTHONPATH=.
 nohup python3 app.py &
 echo $! > save_pid.txt
 
+# kill background
 kill -9 `cat save_pid.txt`
 ```
