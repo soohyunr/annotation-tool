@@ -47,7 +47,9 @@
 </style>
 <body>
 <div class="container text-center">
-    <h3>Unable to connect from outside.</h3>
+    <img class="mb-4" src="{{ url_for('static', filename='img/logo.jpg') }}" alt="" height="72">
+    <h3>Administrator approval is required for access.</h3>
+    <a href="/login">Login Retry</a>
 </div>
 
 {% include 'base/script.html' %}

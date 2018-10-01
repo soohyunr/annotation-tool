@@ -170,8 +170,12 @@ def post_login():
     username = data['username']
     password = data['password']
 
-    user = User.objects.get(username=username)
-    if not user or not user.check_password(password):
+    user = User.objects.filter(username=username)
+    if len(user) == 0:
+        return Response(status=403)
+
+    user = user[0]
+    if not user.check_password(password):
         return Response(status=403)
 
     session['username'] = username
@@ -186,8 +190,8 @@ def post_signup():
     last_name = data['last_name']
     password = data['password']
 
-    user = User.objects.get(username=username)
-    if user:
+    user = User.objects.filter(username=username)
+    if len(user) != 0:
         return Response(status=401)
 
     user = User(username=username, first_name=first_name, last_name=last_name)

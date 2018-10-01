@@ -24,8 +24,8 @@ db = MongoEngine(app)
 @app.before_request
 def before_request():
     remote_addr = request.remote_addr
-    if remote_addr != '127.0.0.1' and '143.248.' not in remote_addr:
-        return render_template('403.html')
+    # if remote_addr != '127.0.0.1' and '143.248.' not in remote_addr:
+    #     return render_template('403.html')
 
     if 'username' not in session:
         g.user = None
