@@ -55,6 +55,7 @@ class User(db.Document):
     is_active = db.BooleanField(default=False)
     is_admin = db.BooleanField(default=False)
     created_at = db.DateTimeField(default=datetime.datetime.now)
+    accessed_at = db.DateTimeField(default=datetime.datetime.now)
 
     def set_password(self, password):
         self.salt = uuid.uuid4().hex

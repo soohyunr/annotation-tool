@@ -7,9 +7,9 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if g.user is None:
-            return redirect(url_for('/login'))
+            return redirect('/login')
         if not g.user.is_active:
-            return render_template('403.html', g=g)
+            return redirect('/403')
         return f(*args, **kwargs)
 
     return decorated_function
@@ -19,7 +19,7 @@ def is_admin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if g.user is None or g.user.is_admin == False:
-            return redirect(url_for('login'))
+            return redirect('/403')
         return f(*args, **kwargs)
 
     return decorated_function

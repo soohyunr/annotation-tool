@@ -14,18 +14,39 @@
         <thead>
         <tr>
             <th>username</th>
-            <th>name</th>
-            <th>last access</th>
+            <th>first_name / last_name</th>
+            <th>accessed_at</th>
+            <th>is_active</th>
+            <th>annotation_count</th>
         </tr>
         </thead>
         <tbody>
         {% for user in users %}
         <tr>
             <td>
-
+                {{user.username}}
+                {% if user.is_admin %} (admin) {% endif %}
             </td>
             <td>
-
+                {{user.first_name}} {{user.last_name}}
+            </td>
+            <td>
+                {{user.accessed_at}}
+            </td>
+            <td>
+                <div class="form-check">
+                    <input
+                            class="form-check-input position-static"
+                            type="checkbox"
+                            id="{{user.id}}"
+                            value=""
+                            {% if user.is_active or user.is_admin %} checked="" {% endif %}
+                            {% if user.is_admin %} disabled="" {% endif %}
+                    >
+                </div>
+            </td>
+            <td>
+                {{user.annotation_count}}
             </td>
         </tr>
         {% endfor %}
@@ -33,5 +54,36 @@
     </table>
 </div>
 {% include 'base/script.html' %}
+<script>
+  $(document).ready(function () {
+    $("input[type='checkbox']").change(function () {
+      let is_active = null;
+      let user_id = $(this).attr('id');
+
+      if ($(this).is(":checked")) {
+        is_active = true;
+      } else {
+        is_active = false;
+      }
+
+      $.ajax({
+        url: '/api/user/' + user_id + '/active',
+        contentType: 'application/json',
+        type: 'PUT',
+        data: JSON.stringify({
+          is_active: is_active,
+        }),
+      }).done(function () {
+        location.reload()
+      }).fail(function () {
+        swal({
+          title: '',
+          text: 'Permission error. Try again',
+          type: 'error',
+        });
+      })
+    });
+  });
+</script>
 </body>
 </html>

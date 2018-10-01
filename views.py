@@ -3,7 +3,7 @@ from flask import request, render_template, Response, g, session, redirect, url_
 from flask_mongoengine import Pagination
 
 from models import Doc, User, Sent, Annotation
-from decorator import login_required
+from decorator import login_required, is_admin
 
 
 @login_required
@@ -35,14 +35,20 @@ def index_page():
     return render_template('index.html', docs=docs_data, g=g, pagination=pagination)
 
 
-@login_required
+@is_admin
 def users_page():
     users = User.objects.all()
+    for user in users:
+        user.annotation_count = Annotation.objects(user=user).count()
     return render_template('users.html', users=users, g=g)
 
 
 def login_page():
     return render_template('login.html', g=g)
+
+
+def page_403():
+    return render_template('403.html', g=g)
 
 
 def signup_page():
@@ -51,7 +57,7 @@ def signup_page():
 
 def logout_page():
     if 'username' in session: del session['username']
-    return redirect(url_for('login'))
+    return redirect('/login')
 
 
 @login_required
@@ -169,6 +175,18 @@ def put_annotation(annotation_id):
     return json.dumps({
         'annotation': annotation.dump(),
     })
+
+
+@is_admin
+def put_user_active(user_id):
+    data = request.get_json()
+    is_active = data['is_active']
+
+    user = User.objects().get(id=user_id)
+    user.is_active = is_active
+    user.save()
+
+    return Response('success', status=200)
 
 
 def post_login():

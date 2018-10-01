@@ -16,8 +16,10 @@
             Menu
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            <!--<a class="dropdown-item" href="#">Something else here</a>-->
-            <!--<div class="dropdown-divider"></div>-->
+            {% if g.user.is_admin %}
+            <a class="dropdown-item" href="/users">User Management</a>
+            <div class="dropdown-divider"></div>
+            {% endif %}
             <a class="dropdown-item" href="/logout">Log Out</a>
         </div>
     </div>
