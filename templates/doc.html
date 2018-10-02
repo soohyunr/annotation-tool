@@ -48,8 +48,17 @@
         border: none;
     }
 
-    .modal-body .input-group {
+    .modal-body .attribute-input-group {
         border-bottom: 1px dashed #CCC;
+    }
+
+    .memo-reason {
+        border: 1px solid #EEE;
+        font-size: 14px;
+        height: 31px;
+    }
+    .memo-reason::placeholder {
+        color: #adb5bd;
     }
 
     .modal-body .input-group.no-border {
@@ -186,7 +195,7 @@
 </script>
 
 <script type='text/template' id='attribute-input-group-template'>
-    <div class="input-group row">
+    <div class="input-group attribute-input-group row pb-2">
         <div class="input-group-prepend">
             <span class="input-group-text"><%title%>:</span>
         </div>
@@ -196,6 +205,10 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="<%attribute%>-val">
             </div>
+        </div>
+        <div class="input-group">
+            <input type="text" class="form-control memo-reason" placeholder="memo">
+            <input type="text" class="form-control memo-reason" placeholder="reason">
         </div>
     </div>
 </script>
