@@ -188,24 +188,23 @@
 <script type='text/template' id='attribute-input-group-template'>
     <div class="input-group row">
         <div class="input-group-prepend">
-            <span class="input-group-text">{%title%}:</span>
+            <span class="input-group-text"><%title%>:</span>
         </div>
-        <div class="dropdown attribute" id="{%attribute%}">
-            <button class="btn btn-sm dropdown-toggle" type="button" id="{%attribute%}-val"
-                    data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                {%default_option%}
+        <div class="dropdown attribute" id="<%attribute%>">
+            <button class="btn btn-sm dropdown-toggle" type="button" id="<%attribute%>-val"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%initial_option%>
             </button>
-            <div class="dropdown-menu" aria-labelledby="{%attribute%}-val">
-                <button class="dropdown-item active" type="button" data-value="I_already_know">I
-                    already know
-                </button>
-                <button class="dropdown-item" type="button" data-value="I_did_not_know">I did
-                    not know
-                </button>
+            <div class="dropdown-menu" aria-labelledby="<%attribute%>-val">
             </div>
         </div>
     </div>
+</script>
+
+<script type='text/template' id='attribute-button-template'>
+    <button class="dropdown-item <%active%>" type="button" data-value="<%value%>">
+        <%value_space%>
+    </button>
 </script>
 
 <div class="modal fade" id="modal" aria-hidden="true">
@@ -237,198 +236,117 @@
 
 <script>
   const event = {
-      selection_listen: function () {
-        document.onmouseup = document.onkeyup = function () {
-          const selection = window.getSelection();
-          if (selection.type !== 'Range') return;
+    selection_listen: function () {
+      document.onmouseup = document.onkeyup = function () {
+        const selection = window.getSelection();
+        if (selection.type !== 'Range') return;
 
-          const anchorNodeParent = selection.anchorNode.parentElement;
-          const focusNodeParent = selection.focusNode.parentElement;
+        const anchorNodeParent = selection.anchorNode.parentElement;
+        const focusNodeParent = selection.focusNode.parentElement;
 
-          if (anchorNodeParent.className !== 'type-event' && anchorNodeParent.className !== 'type-sentence') return;
-          if (anchorNodeParent.className !== focusNodeParent.className) return;
-          if (anchorNodeParent.getAttribute('data-index') !== focusNodeParent.getAttribute('data-index')) return;
+        if (anchorNodeParent.className !== 'type-event' && anchorNodeParent.className !== 'type-sentence') return;
+        if (anchorNodeParent.className !== focusNodeParent.className) return;
+        if (anchorNodeParent.getAttribute('data-index') !== focusNodeParent.getAttribute('data-index')) return;
 
-          const index = Number(anchorNodeParent.getAttribute('data-index'));
-          const entire_text = anchorNodeParent.innerText;
-          const common_offset = entire_text.indexOf(selection.anchorNode.data);
-          let anchor_offset = selection.anchorOffset + common_offset;
-          let focus_offset = selection.focusOffset + common_offset;
+        const index = Number(anchorNodeParent.getAttribute('data-index'));
+        const entire_text = anchorNodeParent.innerText;
+        const common_offset = entire_text.indexOf(selection.anchorNode.data);
+        let anchor_offset = selection.anchorOffset + common_offset;
+        let focus_offset = selection.focusOffset + common_offset;
 
-          const selection_text = selection.toString();
+        const selection_text = selection.toString();
 
-          for (let i = 0; i < selection_text.length; i++) {
-            // To detect &nbsp;(&nbsp;'s chartCode is 160 and space chartCode is 32).
-            if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ') anchor_offset++;
-            else break;
-          }
-          for (let i = selection_text.length - 1; i >= 0; i--) {
-            if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ') focus_offset--;
-            else break;
-          }
-          if (anchor_offset >= focus_offset) return;
-          if (anchor_offset < 0 || anchor_offset > entire_text.length) return;
-          if (focus_offset < 0 || focus_offset > entire_text.length) return;
+        for (let i = 0; i < selection_text.length; i++) {
+          // To detect &nbsp;(&nbsp;'s chartCode is 160 and space chartCode is 32).
+          if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ') anchor_offset++;
+          else break;
+        }
+        for (let i = selection_text.length - 1; i >= 0; i--) {
+          if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ') focus_offset--;
+          else break;
+        }
+        if (anchor_offset >= focus_offset) return;
+        if (anchor_offset < 0 || anchor_offset > entire_text.length) return;
+        if (focus_offset < 0 || focus_offset > entire_text.length) return;
 
-          let type = 'event';
-          if (anchorNodeParent.className === 'type-sentence') type = 'sentence';
-          const item = {
-            entire_text: entire_text,
-            target_text: entire_text.substr(anchor_offset, focus_offset - anchor_offset),
-            index: index,
-            anchor_offset: anchor_offset,
-            focus_offset: focus_offset,
-            type: type,
-          };
+        let type = 'event';
+        if (anchorNodeParent.className === 'type-sentence') type = 'sentence';
+        const item = {
+          entire_text: entire_text,
+          target_text: entire_text.substr(anchor_offset, focus_offset - anchor_offset),
+          index: index,
+          anchor_offset: anchor_offset,
+          focus_offset: focus_offset,
+          type: type,
+        };
 
-          const range = selection.getRangeAt(0);
-          const bound = range.getBoundingClientRect();
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          modal.set_position(bound.left, bound.top + scrollTop);
+        const range = selection.getRangeAt(0);
+        const bound = range.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        modal.set_position(bound.left, bound.top + scrollTop);
 
-          api.post_annotation(item, function (data) {
-            const annotation_item = data['annotation'];
-            annotation.add(annotation_item);
-            renderer.render_table();
+        api.post_annotation(item, function (data) {
+          const annotation_item = data['annotation'];
+          annotation.add(annotation_item);
+          renderer.render_table();
 
-            modal.set_annotation_item(annotation_item);
-
-            if (annotation_item.type === 'sentence') {
-              modal.show();
-              modal.state.step = 0;
-              modal.next_step();
-            }
-          });
-
-        }.bind(this);
-      },
-      listen_annotation_badge: function () {
-        $('.annotation-badge').click(function (e) {
-
-          const annotation_id = $(this).attr('data-id');
-          const annotation_item = annotation.find_by_id(annotation_id);
-
-          modal.set_position(e.pageX, e.pageY);
           modal.set_annotation_item(annotation_item);
-          modal.show();
-          modal.state.step = 0;
-          modal.next_step();
-        });
-      },
-      listen_tooltip: function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        // $('[data-toggle="tooltip"]').tooltip('show');
-      },
-      listen_key: function () {
-        $(document).keydown(function (e) {
-          switch (e.which) {
-            case 13: // enter
-              break;
-            case 37: // left
-              break;
-            case 39: // right
-              break;
-            case 38: // up
-              break;
-            case 40: // down
-              break;
-            case 49: // 1
-              break;
-            case 50: // 2
-              break;
-            case 51: // 3
-              break;
-            case 52: // 4
-              break;
-            case 53: // 5
-              break;
-            default:
-              return;
-          }
-          e.preventDefault();
-        });
-      }
-    }
-  ;
 
-  const api = {
-    get_doc: function (callback) {
-      const doc_id = $('#doc_id').val();
-      $.get({
-        url: '/api/doc/' + doc_id,
-      }).done(function (data) {
-        callback(JSON.parse(data));
-      })
-    },
-    get_doc_by_local: function (callback) {
-      let doc_id = $('#doc_id').val();
-      let doc = localStorage.getItem(doc_id);
-      if (doc) {
-        callback(JSON.parse(doc));
-      } else {
-        callback(null);
-      }
-    },
-    get_annotation: function (callback) {
-      const doc_id = $('#doc_id').val();
-      $.get({
-        url: '/api/doc/' + doc_id + '/annotation',
-      }).done(function (data) {
-        callback(JSON.parse(data));
-      })
-    },
-    post_annotation: function (item, callback) {
-      item.doc = $('#doc_id').val();
-      $.ajax({
-        url: '/api/annotation',
-        contentType: 'application/json',
-        type: 'POST',
-        data: JSON.stringify(item),
-      }).done(function (data) {
-        callback(JSON.parse(data));
-      }).fail(function (data) {
-        console.error(data);
-        swal({
-          title: '',
-          text: 'Failed to save annotation, please check network.',
-          type: 'error',
+          if (annotation_item.type === 'sentence') {
+            modal.show();
+            modal.state.step = 0;
+            modal.next_step();
+          }
         });
-      })
+
+      }.bind(this);
     },
-    delete_annotation: function (annotation_id, callback) {
-      $.ajax({
-        url: '/api/annotation/' + annotation_id,
-        type: 'DELETE',
-      }).done(function () {
-        toastr.success("Deleted");
-        callback();
-      }).fail(function (data) {
-        console.error(data);
-        swal({
-          title: '',
-          text: 'Failed to delete annotation, please check network.',
-          type: 'error',
-        });
-      })
+    listen_annotation_badge: function () {
+      $('.annotation-badge').click(function (e) {
+
+        const annotation_id = $(this).attr('data-id');
+        const annotation_item = annotation.find_by_id(annotation_id);
+
+        modal.set_position(e.pageX, e.pageY);
+        modal.set_annotation_item(annotation_item);
+        modal.show();
+        modal.state.step = 0;
+        modal.next_step();
+      });
     },
-    put_annotation: function (item, callback) {
-      $.ajax({
-        url: '/api/annotation/' + item.id,
-        contentType: 'application/json',
-        type: 'PUT',
-        data: JSON.stringify(item),
-      }).done(function (data) {
-        toastr.success("Saved");
-        callback(JSON.parse(data));
-      }).fail(function (data) {
-        console.error(data);
-        swal({
-          title: '',
-          text: 'Failed to update annotation, please check network.',
-          type: 'error',
-        });
-      })
+    listen_tooltip: function () {
+      $('[data-toggle="tooltip"]').tooltip();
+      // $('[data-toggle="tooltip"]').tooltip('show');
     },
+    listen_key: function () {
+      $(document).keydown(function (e) {
+        switch (e.which) {
+          case 13: // enter
+            break;
+          case 37: // left
+            break;
+          case 39: // right
+            break;
+          case 38: // up
+            break;
+          case 40: // down
+            break;
+          case 49: // 1
+            break;
+          case 50: // 2
+            break;
+          case 51: // 3
+            break;
+          case 52: // 4
+            break;
+          case 53: // 5
+            break;
+          default:
+            return;
+        }
+        e.preventDefault();
+      });
+    }
   };
 
   const modal = {
@@ -446,7 +364,6 @@
       this.el.draggable({
         handle: '.modal-header',
       });
-      this.listen();
     },
     next_step() {
       const step = this.state.step + 1;
@@ -487,14 +404,53 @@
       $('#memo').val(this.state.annotation_item.memo);
     },
     show: function () {
-      this.load_attributes();
+      // this.load_attributes();
       this.set_header();
       this.el.modal('show');
 
-      this.change_type(this.state.annotation_item.type);
-    },
-    render: function () {
 
+      const annotation_type = this.state.annotation_item.type;
+      this.change_type(annotation_type);
+      this.render_input(annotation_type);
+    },
+    render_input: function (type) {
+      $('#left-col').html('');
+      $('#right-col').html('');
+
+      let attributes = annotation.attributes[type];
+      for (let key in attributes) {
+        let title = attributes[key].title;
+        let options = attributes[key].options;
+        let order = attributes[key].order;
+
+        let initial_option = options[annotation.random(options.length)];
+        let input_group_template = $('#attribute-input-group-template').html();
+
+        input_group_template = input_group_template.split('<%attribute%>').join(key);
+        input_group_template = input_group_template.split('<%title%>').join(title);
+        input_group_template = input_group_template.split('<%initial_option%>').join(initial_option);
+
+        if (order <= 6) {
+          $('#left-col').append(input_group_template);
+        } else {
+          $('#right-col').append(input_group_template);
+        }
+
+        for (let i = 0; i < options.length; i++) {
+          let option = options[i];
+          let button_template = $('#attribute-button-template').html();
+          button_template = button_template.replace('<%value%>', option.split(' ').join('_'));
+          button_template = button_template.replace('<%value_space%>', option);
+
+          if (option === initial_option) {
+            button_template = button_template.replace('<%active%>', 'active');
+          } else {
+            button_template = button_template.replace('<%active%>', '');
+          }
+          $('#' + key + ' .dropdown-menu').append(button_template);
+        }
+      }
+      this.listen();
     },
     set_header: function () {
       const type = this.state.annotation_item.type;
@@ -533,7 +489,7 @@
         $('#left-col').removeClass('col-md-12').addClass('col-md-6');
         $('#right-col').show();
         this.state.max_attribute = 11;
-        for (let i = 4; i <= 11; i++) {
+        for (let i = 5; i <= 11; i++) {
           $('#attribute' + i).parents('.input-group').show();
         }
         $('#modal').css('width', '850px');
@@ -541,12 +497,12 @@
       } else {
         $('#left-col').removeClass('col-md-6').addClass('col-md-12');
         $('#right-col').hide();
-        this.state.max_attribute = 3;
-        for (let i = 4; i <= 11; i++) {
+        this.state.max_attribute = 4;
+        for (let i = 5; i <= 11; i++) {
           $('#attribute' + i).parents('.input-group').hide();
         }
-        $('#modal').css('width', '500px');
-        $('#modal .modal-content').css('width', '500px').css('min-width', '500px');
+        $('#modal').css('width', '950px').css('max-width', '950px');
+        $('#modal .modal-content').css('width', '950px').css('min-width', '950px');
       }
     },
     listen: function () {

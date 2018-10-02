@@ -106,6 +106,7 @@ class Annotation(db.Document):
     ### format ###
     basket = {
         'attribute_key': {
+            'initial_value': 'attribute_value',
             'value': 'attribute_value',
             'memo': '',
             'reason': '',

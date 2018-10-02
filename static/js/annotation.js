@@ -2,6 +2,7 @@ const annotation = {
   attributes: {
     sent: {
       attribute1: {
+        order: 1,
         title: '1. Knowledge Awareness',
         attribute_key: 'Knowledge_Awareness',
         options: [
@@ -11,6 +12,7 @@ const annotation = {
         ]
       },
       attribute2: {
+        order: 2,
         title: '2. Verifiability',
         attribute_key: 'Verifiability',
         options: [
@@ -23,6 +25,7 @@ const annotation = {
         ]
       },
       attribute3: {
+        order: 3,
         title: '3. Disputability of the sentence',
         attribute_key: 'Disputability_of_the_sentence',
         options: [
@@ -35,6 +38,7 @@ const annotation = {
         ]
       },
       attribute4: {
+        order: 4,
         title: '4. Perceived Author Credibility for the upcoming sentences',
         attribute_key: 'Perceived_Author_Credibility_for_the_upcoming_sentences',
         options: [
@@ -50,6 +54,7 @@ const annotation = {
     },
     event: {
       attribute1: {
+        order: 1,
         title: '1. Knowledge Awareness',
         attribute_key: 'Knowledge_Awareness',
         options: [
@@ -58,6 +63,7 @@ const annotation = {
         ]
       },
       attribute2: {
+        order: 2,
         title: '2. Credibility',
         attribute_key: 'Credibility',
         options: [
@@ -70,6 +76,7 @@ const annotation = {
         ]
       },
       attribute3: {
+        order: 3,
         title: '3. Verifiability',
         attribute_key: 'Verifiability',
         options: [
@@ -82,6 +89,7 @@ const annotation = {
         ]
       },
       attribute4: {
+        order: 4,
         title: '4. Conditionality',
         attribute_key: 'Conditionality',
         options: [
@@ -91,6 +99,7 @@ const annotation = {
         ]
       },
       attribute5: {
+        order: 5,
         title: '5. Polarity',
         attribute_key: 'Conditionality',
         options: [
@@ -99,6 +108,7 @@ const annotation = {
         ]
       },
       attribute6: {
+        order: 6,
         title: '6. Tense',
         attribute_key: 'Tense',
         options: [
@@ -109,6 +119,7 @@ const annotation = {
         ]
       },
       attribute7: {
+        order: 7,
         title: '7. Genericity',
         attribute_key: 'Genericity',
         options: [
@@ -117,6 +128,7 @@ const annotation = {
         ]
       },
       attribute8: {
+        order: 8,
         title: '8. Source Type',
         attribute_key: 'Source_Type',
         options: [
@@ -127,6 +139,7 @@ const annotation = {
         ]
       },
       attribute9: {
+        order: 9,
         title: '9. Subjectivity',
         attribute_key: 'Subjectivity',
         options: [
@@ -137,6 +150,7 @@ const annotation = {
         ]
       },
       attribute10: {
+        order: 10,
         title: '10. Factuality',
         attribute_key: 'Factuality',
         options: [
@@ -146,6 +160,7 @@ const annotation = {
         ]
       },
       attribute11: {
+        order: 11,
         title: '11. Prominence',
         attribute_key: 'Prominence',
         options: [
@@ -247,5 +262,88 @@ const annotation = {
         break;
       }
     }
+  },
+  random: function (range) {
+    return Math.floor(Math.random() * range);
+  }
+};
+
+const api = {
+  get_doc: function (callback) {
+    const doc_id = $('#doc_id').val();
+    $.get({
+      url: '/api/doc/' + doc_id,
+    }).done(function (data) {
+      callback(JSON.parse(data));
+    })
+  },
+  get_doc_by_local: function (callback) {
+    let doc_id = $('#doc_id').val();
+    let doc = localStorage.getItem(doc_id);
+    if (doc) {
+      callback(JSON.parse(doc));
+    } else {
+      callback(null);
+    }
+  },
+  get_annotation: function (callback) {
+    const doc_id = $('#doc_id').val();
+    $.get({
+      url: '/api/doc/' + doc_id + '/annotation',
+    }).done(function (data) {
+      callback(JSON.parse(data));
+    })
+  },
+  post_annotation: function (item, callback) {
+    item.doc = $('#doc_id').val();
+    $.ajax({
+      url: '/api/annotation',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify(item),
+    }).done(function (data) {
+      callback(JSON.parse(data));
+    }).fail(function (data) {
+      console.error(data);
+      swal({
+        title: '',
+        text: 'Failed to save annotation, please check network.',
+        type: 'error',
+      });
+    })
+  },
+  delete_annotation: function (annotation_id, callback) {
+    $.ajax({
+      url: '/api/annotation/' + annotation_id,
+      type: 'DELETE',
+    }).done(function () {
+      toastr.success("Deleted");
+      callback();
+    }).fail(function (data) {
+      console.error(data);
+      swal({
+        title: '',
+        text: 'Failed to delete annotation, please check network.',
+        type: 'error',
+      });
+    })
+  },
+  put_annotation: function (item, callback) {
+    $.ajax({
+      url: '/api/annotation/' + item.id,
+      contentType: 'application/json',
+      type: 'PUT',
+      data: JSON.stringify(item),
+    }).done(function (data) {
+      toastr.success("Saved");
+      callback(JSON.parse(data));
+    }).fail(function (data) {
+      console.error(data);
+      swal({
+        title: '',
+        text: 'Failed to update annotation, please check network.',
+        type: 'error',
+      });
+    })
   },
 };
