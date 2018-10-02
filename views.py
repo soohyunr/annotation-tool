@@ -133,7 +133,7 @@ def get_annotation(doc_id):
     })
 
 
-@login_required
+@is_admin
 def download_dataset():
     docs = Doc.objects
 

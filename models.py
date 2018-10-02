@@ -102,6 +102,16 @@ class Annotation(db.Document):
     target_text = db.StringField()
 
     basket = db.DictField()
+    """
+    ### format ###
+    basket = {
+        'attribute_key': {
+            'value': 'attribute_value',
+            'memo': '',
+            'reason': '',
+        },
+    }
+    """
 
     memo = db.StringField()
 
