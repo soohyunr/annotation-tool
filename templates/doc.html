@@ -1078,12 +1078,6 @@
         $('#doc-upload-form').hide();
         renderer.state.sents = data['sents'];
         renderer.load_annotation_and_render_table();
-      } else {
-        swal({
-          title: '',
-          text: 'You should upload the document \n (#{{doc.seq}} {{doc.title}}).',
-          type: 'info',
-        });
       }
     });
     modal.init();
