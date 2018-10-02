@@ -1,6 +1,6 @@
 const annotation = {
   attributes: {
-    sent: {
+    sentence: {
       attribute1: {
         order: 1,
         title: '1. Knowledge Awareness',

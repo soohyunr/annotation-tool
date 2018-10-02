@@ -515,7 +515,7 @@
         dropdown.find('.dropdown-toggle').html(value.split('_').join(' '));
 
         $('#' + attribute_id + ' .dropdown-item').removeClass('active');
-        $('#' + attribute_id + ' .dropdown-item[data-value=' + value + ']').addClass('active');
+        $('#' + attribute_id + ' .dropdown-item[data-value="' + value + '"]').addClass('active');
 
         modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-val', ''));
         modal.next_step();
