@@ -101,7 +101,7 @@ const annotation = {
       attribute5: {
         order: 5,
         title: '5. Polarity',
-        attribute_key: 'Conditionality',
+        attribute_key: 'Polarity',
         options: [
           'negative',
           'positive',

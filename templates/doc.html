@@ -57,6 +57,7 @@
         font-size: 14px;
         height: 31px;
     }
+
     .memo-reason::placeholder {
         color: #adb5bd;
     }
@@ -207,8 +208,8 @@
             </div>
         </div>
         <div class="input-group">
-            <input type="text" class="form-control memo-reason" placeholder="memo">
-            <input type="text" class="form-control memo-reason" placeholder="reason">
+            <input type="text" class="form-control memo-reason" placeholder="memo" id="<%attribute%>-memo" value="">
+            <input type="text" class="form-control memo-reason" placeholder="reason" id="<%attribute%>-reason" value="">
         </div>
     </div>
 </script>
@@ -439,6 +440,9 @@
         let value = basket[attribute_key].value;
         if (!value) value = basket[attribute_key].initial_value;
 
+        $('#' + attribute_id + '-memo').val(basket[attribute_key].memo);
+        $('#' + attribute_id + '-reason').val(basket[attribute_key].reason);
+
         $('#' + attribute_id + '-val').html(value.split('_').join(' '));
 
         $('#' + attribute_id + ' .dropdown-item').removeClass('active');
@@ -512,6 +516,12 @@
         const value = $('#' + attribute_id + '-val').html().trim().split(' ').join('_');
         const attribute_key = annotation.attributes[annotation_type][attribute_id].attribute_key;
         this.state.annotation_item.basket[attribute_key].value = value;
+
+        const memo = $('#' + attribute_id + '-memo').val();
+        const reason =  $('#' + attribute_id + '-reason').val();
+
+        this.state.annotation_item.basket[attribute_key].memo = memo;
+        this.state.annotation_item.basket[attribute_key].reason = reason;
       }
 
       api.put_annotation(this.state.annotation_item, function () {
