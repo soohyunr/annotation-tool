@@ -117,7 +117,7 @@ def generate_encrypted_file(seq_id):
 
     data = json.dumps(data)
     data = str_xor(data, config.Config.ENCRYPTION_SECRET_KEY)
-    file_path = os.path.abspath(os.path.dirname(__file__) + '/../data/encrypted/{}.txt'.format(seq_id))
+    file_path = os.path.abspath(os.path.dirname(__file__) + '/../data/encrypted/#{}_{}'.format(seq_id, doc.title))
     with open(file_path, 'w') as f:
         f.write(data)
 
@@ -132,4 +132,6 @@ if __name__ == '__main__':
 
     # db_backup('backup memo')
 
-    generate_encrypted_file(seq_id=1)
+    docs = Doc.objects().all()
+    for doc in docs:
+        generate_encrypted_file(seq_id=doc.seq)
