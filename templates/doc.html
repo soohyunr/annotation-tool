@@ -64,7 +64,7 @@
         width: 100%;
     }
 
-    table .dropdown-toggle::after {
+    #modal .dropdown-toggle::after {
         position: absolute;
         right: 6px;
         top: 18px;
@@ -476,7 +476,7 @@
       ['attribute10', 'factuality'],
       ['attribute11', 'prominence'],
     ],
-    attributes_defalut: {
+    attributes_default: {
       knowledge_awareness: 'I_did_not_know',
       credibility: 'hard_to_judge',
       verifiability: 'verify_it_by_short_time_googling',
@@ -798,7 +798,7 @@
         const attribute_id = 'attribute' + i;
         const name = annotation.find_attribute_name_by_id(attribute_id);
         let value = basket[name];
-        if (!value) value = annotation.attributes_defalut[name];
+        if (!value) value = annotation.attributes_default[name];
 
         $('#' + attribute_id + '-val').html(value.split('_').join(' '));
 

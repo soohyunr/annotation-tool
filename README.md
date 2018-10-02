@@ -1,16 +1,17 @@
 # annotation-tool
 
 
-## prerequisites
-Step1. 
+## Prerequisites
+
+Step1.
+```bash
+pip3 install -r requirements.txt
+```
+
+Step2. 
 ```python
 import nltk
 nltk.download('punkt')
-```
-
-Step2.
-```bash
-pip3 install -r requirements.txt
 ```
 
 Step3.
@@ -20,7 +21,7 @@ vi config.sample.py
 mv config.smaple.py config.py
 ```
 
-## run
+## Run
 ```bash
 python app.py
 ```
