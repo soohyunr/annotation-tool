@@ -193,7 +193,6 @@
         <div class="dropdown attribute" id="<%attribute%>">
             <button class="btn btn-sm dropdown-toggle" type="button" id="<%attribute%>-val"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%initial_option%>
             </button>
             <div class="dropdown-menu" aria-labelledby="<%attribute%>-val">
             </div>
@@ -202,7 +201,7 @@
 </script>
 
 <script type='text/template' id='attribute-button-template'>
-    <button class="dropdown-item <%active%>" type="button" data-value="<%value%>">
+    <button class="dropdown-item" type="button" data-value="<%value%>">
         <%value_space%>
     </button>
 </script>
@@ -278,12 +277,27 @@
           anchor_offset: anchor_offset,
           focus_offset: focus_offset,
           type: type,
+          basket: {},
         };
 
         const range = selection.getRangeAt(0);
         const bound = range.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         modal.set_position(bound.left, bound.top + scrollTop);
+
+        let attributes = annotation.attributes[type];
+        for (let key in attributes) {
+          let options = attributes[key].options;
+          let attribute_key = attributes[key].attribute_key;
+          let initial_value = options[annotation.random(options.length)];
+          initial_value = initial_value.split(' ').join('_');
+          item.basket[attribute_key] = {
+            initial_value: initial_value,
+            value: '',
+            memo: '',
+            reason: '',
+          }
+        }
 
         api.post_annotation(item, function (data) {
           const annotation_item = data['annotation'];
@@ -364,6 +378,20 @@
       this.el.draggable({
         handle: '.modal-header',
       });
+
+      $('#modal-delete-btn').click(function () {
+        const annotation_id = modal.state.annotation_item.id;
+        api.delete_annotation(modal.state.annotation_item.id, function () {
+          annotation.remove(annotation_id);
+          renderer.render_table();
+          modal.el.modal('hide');
+        });
+      });
+
+      $('#modal-save-btn').click(function () {
+        modal.save();
+        modal.el.modal('hide');
+      });
     },
     next_step() {
       const step = this.state.step + 1;
@@ -389,29 +417,29 @@
       this.state.annotation_item = annotation_item;
     },
     load_attributes: function () {
+      const annotation_type = this.state.annotation_item.type;
       const basket = this.state.annotation_item.basket;
       for (let i = 1; i <= this.state.max_attribute; i++) {
         const attribute_id = 'attribute' + i;
-        const name = annotation.find_attribute_name_by_id(attribute_id);
-        let value = basket[name];
-        if (!value) value = annotation.attributes_default[name];
+
+        const attribute_key = annotation.attributes[annotation_type][attribute_id].attribute_key;
+        let value = basket[attribute_key].value;
+        if (!value) value = basket[attribute_key].initial_value;
 
         $('#' + attribute_id + '-val').html(value.split('_').join(' '));
 
         $('#' + attribute_id + ' .dropdown-item').removeClass('active');
-        $('#' + attribute_id + ' .dropdown-item[data-value=' + value + ']').addClass('active');
+        $('#' + attribute_id + ' .dropdown-item[data-value="' + value + '"]').addClass('active');
       }
-      $('#memo').val(this.state.annotation_item.memo);
     },
     show: function () {
-      // this.load_attributes();
       this.set_header();
       this.el.modal('show');
-
 
       const annotation_type = this.state.annotation_item.type;
       this.change_type(annotation_type);
       this.render_input(annotation_type);
+      this.load_attributes();
     },
     render_input: function (type) {
       $('#left-col').html('');
@@ -423,12 +451,10 @@
         let options = attributes[key].options;
         let order = attributes[key].order;
 
-        let initial_option = options[annotation.random(options.length)];
         let input_group_template = $('#attribute-input-group-template').html();
 
         input_group_template = input_group_template.split('<%attribute%>').join(key);
         input_group_template = input_group_template.split('<%title%>').join(title);
-        input_group_template = input_group_template.split('<%initial_option%>').join(initial_option);
 
         if (order <= 6) {
           $('#left-col').append(input_group_template);
@@ -442,15 +468,10 @@
           button_template = button_template.replace('<%value%>', option.split(' ').join('_'));
           button_template = button_template.replace('<%value_space%>', option);
 
-          if (option === initial_option) {
-            button_template = button_template.replace('<%active%>', 'active');
-          } else {
-            button_template = button_template.replace('<%active%>', '');
-          }
           $('#' + key + ' .dropdown-menu').append(button_template);
         }
       }
-      this.listen();
+      this.input_listen();
     },
     set_header: function () {
       const type = this.state.annotation_item.type;
@@ -471,14 +492,15 @@
       this.el.css('top', top + 50);
     },
     save: function () {
+      console.log('save called');
+      const annotation_type = this.state.annotation_item.type;
       for (let i = 1; i <= this.state.max_attribute; i++) {
         const attribute_id = 'attribute' + i;
-
         const value = $('#' + attribute_id + '-val').html().trim().split(' ').join('_');
-        this.state.annotation_item.basket[annotation.find_attribute_name_by_id(attribute_id)] = value;
+        const attribute_key = annotation.attributes[annotation_type][attribute_id].attribute_key;
+        this.state.annotation_item.basket[attribute_key].value = value;
       }
 
-      this.state.annotation_item.memo = $('#memo').val();
       api.put_annotation(this.state.annotation_item, function () {
         annotation.update(modal.state.annotation_item.id, modal.state.annotation_item);
         renderer.render_table();
@@ -505,7 +527,7 @@
         $('#modal .modal-content').css('width', '950px').css('min-width', '950px');
       }
     },
-    listen: function () {
+    input_listen: function () {
       $('.dropdown-item').click(function () {
         const dropdown = $(this).parents('.dropdown');
         const attribute_id = dropdown.attr('id');
@@ -526,21 +548,7 @@
           modal.next_step();
         }
       });
-
-      $('#modal-delete-btn').click(function () {
-        const annotation_id = modal.state.annotation_item.id;
-        api.delete_annotation(modal.state.annotation_item.id, function () {
-          annotation.remove(annotation_id);
-          renderer.render_table();
-          modal.el.modal('hide');
-        });
-      });
-
-      $('#modal-save-btn').click(function () {
-        modal.save();
-        modal.el.modal('hide');
-      });
-    }
+    },
   };
 
   const renderer = {
@@ -591,13 +599,13 @@
           }
         }
         if (sentence_type_index !== -1) {
-          const annotation = annotations[sentence_type_index];
+          const annotation_item = annotations[sentence_type_index];
           let badge_type = 'primary';
-          if (Object.keys(annotation.basket).length === 0) {
+          if (annotation.is_empty_basket(annotation_item.basket)) {
             badge_type = 'secondary';
           }
-          sent_markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '" ';
-          sent_markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation) + '">';
+          sent_markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation_item.id + '" ';
+          sent_markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation_item) + '">';
           sent_markup += sent_col + '</span>';
           tr = tr.replace('<%sent%>', sent_markup);
         } else {
@@ -623,14 +631,14 @@
 
       for (let i = 0; i < text.length; i++) {
         if (i in start) {
-          const annotation = annotations[start[i]];
+          const annotation_item = annotations[start[i]];
           let badge_type = 'success';
-          if (Object.keys(annotation.basket).length === 0) {
+          if (annotation.is_empty_basket(annotation_item.basket)) {
             badge_type = 'secondary';
           }
 
-          markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation.id + '" ';
-          markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation) + '">';
+          markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation_item.id + '" ';
+          markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation_item) + '">';
         }
 
         if (text[i] !== ' ') {

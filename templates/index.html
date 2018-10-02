@@ -67,7 +67,6 @@
   $(document).ready(function () {
     for (let i = 0; i <= localStorage.length - 1; i++) {
       let key = localStorage.key(i);
-      console.log('key :', key);
       $('#' + key).html('<i class="fas fa-check"></i>');
     }
   });

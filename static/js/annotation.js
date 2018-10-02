@@ -216,11 +216,13 @@ const annotation = {
      * }
      */
   ],
-  find_attribute_name_by_id: function (id) {
-    for (let i = 0; i < this.attributes.length; i++) {
-      if (this.attributes[i][0] === id) return this.attributes[i][1];
+  is_empty_basket: function(basket) {
+    for (let key in basket) {
+      if(!basket[key].value) {
+        return true;
+      }
     }
-    return '';
+    return false;
   },
   find_by_id: function (annotation_id) {
     for (let i = 0; i < this.data.length; i++) {

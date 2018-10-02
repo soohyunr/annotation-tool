@@ -96,6 +96,7 @@ def post_annotation():
     anchor_offset = data['anchor_offset']
     focus_offset = data['focus_offset']
     type = data['type']
+    basket = data['basket']
 
     doc = Doc.objects().get(id=doc)
     sent = Sent.objects().get(doc=doc, index=index)
@@ -111,6 +112,7 @@ def post_annotation():
         focus_offset=focus_offset,
         entire_text=entire_text,
         target_text=target_text,
+        basket=basket,
     )
     annotation.save()
 
@@ -151,7 +153,6 @@ def download_dataset():
                 'annotation_target_text': annotation.target_text,
                 'annotation_type': annotation.type,
                 'attributes': annotation.basket,
-                'memo': annotation.memo,
                 'title': doc.title,
                 'source': doc.source,
             })
@@ -171,10 +172,8 @@ def delete_annotation(annotation_id):
 def put_annotation(annotation_id):
     data = request.get_json()
     basket = data['basket']
-    memo = data['memo']
     annotation = Annotation.objects().get(id=annotation_id)
     annotation.basket = basket
-    annotation.memo = memo
     annotation.updated_at = datetime.datetime.now
     annotation.save()
 
