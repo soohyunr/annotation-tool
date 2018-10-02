@@ -4,6 +4,7 @@ from flask_mongoengine import Pagination
 
 from models import Doc, User, Sent, Annotation, DocLog
 from decorator import login_required, is_admin
+import config
 
 
 @login_required
@@ -67,7 +68,7 @@ def doc_page(doc_id):
     doc_log = DocLog(user=g.user, doc=doc, ip=request.remote_addr)
     doc_log.save()
 
-    return render_template('doc.html', doc=doc, g=g)
+    return render_template('doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
 
 
 @login_required

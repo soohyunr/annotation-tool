@@ -2,18 +2,18 @@
 
 
 ## prerequisites
-step1. 
+Step1. 
 ```python
 import nltk
 nltk.download('punkt')
 ```
 
-step2.
+Step2.
 ```bash
 pip3 install -r requirements.txt
 ```
 
-step3.
+Step3.
 ```bash
 # Modify the settings in config.sample.py
 vi config.sample.py

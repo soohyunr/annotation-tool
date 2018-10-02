@@ -100,7 +100,7 @@ def generate_encrypted_file(seq_id):
         result = []
         for (c1, c2) in zip(s1, cycle(s2)):
             result.append(str(ord(c1) ^ ord(c2)))
-        return "-".join(result)
+        return ",".join(result)
 
     doc = Doc.objects().get(seq=seq_id)
     sents = Sent.objects(doc=doc).order_by('index')
@@ -116,7 +116,7 @@ def generate_encrypted_file(seq_id):
         data['sents'].append(sent.dump())
 
     data = json.dumps(data)
-    data = str_xor(data, config.Config.ENCRYPTION_SECRET_KEY)
+    data = str_xor(data, config.Config.ENCRYPTION_KEY)
     file_path = os.path.abspath(os.path.dirname(__file__) + '/../data/encrypted/#{}_{}'.format(seq_id, doc.title))
     with open(file_path, 'w') as f:
         f.write(data)
