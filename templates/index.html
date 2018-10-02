@@ -6,6 +6,12 @@
         margin: 40px 20px 70px 0;
         float: right;
     }
+    table tr {
+        text-align: center;
+    }
+    table td {
+        text-align: center;
+    }
 </style>
 <body>
 {% include 'base/navbar.html' %}
@@ -16,6 +22,7 @@
             <th scope="col">#</th>
             <th>title</th>
             <th>my progress</th>
+            <th>upload status</th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +38,8 @@
             </td>
             <td>
                 {{doc['progress']}}/{{doc['sent_total']}}
+            </td>
+            <td id="{{doc.id}}">
             </td>
         </tr>
         {% endfor %}
@@ -53,5 +62,15 @@
     </nav>
 </div>
 {% include 'base/script.html' %}
+
+<script>
+  $(document).ready(function () {
+    for (let i = 0; i <= localStorage.length - 1; i++) {
+      let key = localStorage.key(i);
+      console.log('key :', key);
+      $('#' + key).html('<i class="fas fa-check"></i>');
+    }
+  });
+</script>
 </body>
 </html>

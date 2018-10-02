@@ -107,6 +107,8 @@ def generate_encrypted_file(seq_id):
 
     data = {
         'doc_id': str(doc.id),
+        'title': doc.title,
+        'seq': doc.seq,
         'sents': [],
     }
 
@@ -115,7 +117,6 @@ def generate_encrypted_file(seq_id):
 
     data = json.dumps(data)
     data = str_xor(data, config.Config.ENCRYPTION_SECRET_KEY)
-    print('data :',data)
     file_path = os.path.abspath(os.path.dirname(__file__) + '/../data/encrypted/{}.txt'.format(seq_id))
     with open(file_path, 'w') as f:
         f.write(data)

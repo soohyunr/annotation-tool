@@ -23,6 +23,7 @@ class Doc(db.Document):
         return {
             'title': self.title,
             'text': self.text,
+            'id': str(self.id),
             'seq': self.seq,
         }
 

@@ -16,7 +16,7 @@
     }
 
     #tbody td {
-        word-break: break-word;
+        word-break: break-all;
     }
 
     #tbody td:nth-child(1) {
@@ -155,9 +155,9 @@
     </div>
 
 
-    <form>
+    <form id="doc-upload-form">
         <div class="form-group">
-            <label for="doc-uploader">Document Upload</label>
+            <!--<label for="doc-uploader">Document Upload</label>-->
             <input type="file" class="form-control-file" id="doc-uploader">
         </div>
     </form>
@@ -680,6 +680,15 @@
         callback(JSON.parse(data));
       })
     },
+    get_doc_by_local: function (callback) {
+      let doc_id = $('#doc_id').val();
+      let doc = localStorage.getItem(doc_id);
+      if (doc) {
+        callback(JSON.parse(doc));
+      } else {
+        callback(null);
+      }
+    },
     get_annotation: function (callback) {
       const doc_id = $('#doc_id').val();
       $.get({
@@ -973,7 +982,6 @@
       }
       let markup = '';
 
-      // console.log('text :', text);
       for (let i = 0; i < text.length; i++) {
         if (i in start) {
           const annotation = annotations[start[i]];
@@ -1022,7 +1030,20 @@
           let reader = new FileReader();
           reader.addEventListener('load', function (e) {
             text_reader.data_text = e.target.result;
-            text_reader.data_json = JSON.parse(text_reader.decode_string(text_reader.data_text, 'nlpclnlpcl'));
+            text_reader.data_text = text_reader.decode_string(text_reader.data_text, 'nlpclnlpcl');
+            text_reader.data_json = JSON.parse(text_reader.data_text);
+            let doc_id = $('#doc_id').val();
+
+            if (doc_id === text_reader.data_json['doc_id']) {
+              localStorage.setItem(text_reader.data_json['doc_id'], text_reader.data_text);
+              location.reload();
+            } else {
+              swal({
+                title: '',
+                text: 'The document number does not match.',
+                type: 'error',
+              });
+            }
             console.log(text_reader.data_json);
           });
           reader.readAsBinaryString(myFile);
@@ -1051,9 +1072,18 @@
     text_reader.listen();
     // event.listen_key();
 
-    api.get_doc(function (data) {
-      renderer.state.sents = data['sents'];
-      renderer.load_annotation_and_render_table();
+    api.get_doc_by_local(function (data) {
+      if (data) {
+        $('#doc-upload-form').hide();
+        renderer.state.sents = data['sents'];
+        renderer.load_annotation_and_render_table();
+      } else {
+        swal({
+          title: '',
+          text: 'You should upload the document.',
+          type: 'info',
+        });
+      }
     });
     modal.init();
   })
