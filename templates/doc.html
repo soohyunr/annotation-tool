@@ -154,7 +154,6 @@
         <!--</a>-->
     </div>
 
-
     <form id="doc-upload-form">
         <div class="form-group">
             <!--<label for="doc-uploader">Document Upload</label>-->
@@ -176,6 +175,7 @@
 <input type="hidden" id="doc_id" value="{{doc.id}}"/>
 <input type="hidden" id="ENCRYPTION_KEY" value="{{ENCRYPTION_KEY}}"/>
 {% include 'base/script.html' %}
+<script src="{{ url_for('static', filename='js/annotation.js')}}?v={{g.random}}"></script>
 
 <script type='text/template' id='tr-template'>
     <tr class="">
@@ -183,6 +183,29 @@
         <!-- Warning: changing the location of the tag can cause an issue in which the annotation data are not matched. -->
         <td class="type-event" data-index="<%index%>"><%text%></td>
     </tr>
+</script>
+
+<script type='text/template' id='attribute-input-group-template'>
+    <div class="input-group row">
+        <div class="input-group-prepend">
+            <span class="input-group-text">{%title%}:</span>
+        </div>
+        <div class="dropdown attribute" id="{%attribute%}">
+            <button class="btn btn-sm dropdown-toggle" type="button" id="{%attribute%}-val"
+                    data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                {%default_option%}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="{%attribute%}-val">
+                <button class="dropdown-item active" type="button" data-value="I_already_know">I
+                    already know
+                </button>
+                <button class="dropdown-item" type="button" data-value="I_did_not_know">I did
+                    not know
+                </button>
+            </div>
+        </div>
+    </div>
 </script>
 
 <div class="modal fade" id="modal" aria-hidden="true">
@@ -196,259 +219,10 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="row">
+                    <div class="row" id="">
                         <div class="col-md-6" id="left-col">
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">1. Knowledge Awareness:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute1">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute1-val"
-                                            data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        I already know
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute1-val">
-                                        <button class="dropdown-item active" type="button" data-value="I_already_know">I
-                                            already know
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="I_did_not_know">I did
-                                            not know
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">2. Credibility:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute2">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute2-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        false
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute2-val">
-                                        <button class="dropdown-item active" type="button" data-value="false">false
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="feel_like_false">feel
-                                            like false
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="hard_to_judge">hard to
-                                            judge
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="feel_like_true">feel
-                                            like true
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="true">true</button>
-                                        <button class="dropdown-item" type="button" data-value="none">none</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">3. Verifiability:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute3">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute3-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        verify it with my knowledge
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute3-val">
-                                        <button class="dropdown-item active" type="button"
-                                                data-value="verify_it_with_my_knowledge">verify it with my knowledge
-                                        </button>
-                                        <button class="dropdown-item" type="button"
-                                                data-value="verify_it_by_short_time_googling">verify it by short time
-                                            googling
-                                        </button>
-                                        <button class="dropdown-item" type="button"
-                                                data-value="verify_it_by_long_time_googling">verify it by long time
-                                            googling
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="hard_to_verify_it">hard
-                                            to verify it
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="no_way_to_verify_it">no
-                                            way to verify it
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="none">none</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">4. Conditionality:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute4" data-name="conditionality">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute4-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        sufficient condition
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute4-val">
-                                        <button class="dropdown-item active" type="button"
-                                                data-value="sufficient_condition">sufficient condition
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="necessary_condition">
-                                            necessary condition
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="none">none</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">5. Polarity:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute5">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute5-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        negative
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute5-val">
-                                        <button class="dropdown-item active" type="button" data-value="negative">
-                                            negative
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="positive">positive
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">6. Tense:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute6">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute6-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        past
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute6-val">
-                                        <button class="dropdown-item active" type="button" data-value="past">past
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="present">present
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="future">future</button>
-                                        <button class="dropdown-item" type="button" data-value="unspecified">
-                                            unspecified
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="col-md-6" id="right-col">
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">7. Genericity:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute7">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute7-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        specific
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute7-val">
-                                        <button class="dropdown-item active" type="button" data-value="specific">
-                                            specific
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="generic">generic
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">8. Source Type:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute8">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute8-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        author
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute8-val">
-                                        <button class="dropdown-item active" type="button" data-value="author">author
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="involved">involved
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="named_third_party">named
-                                            third party
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="unnamed_third_party">
-                                            unnamed third party
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">9. Subjectivity:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute9">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute9-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        positive
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute9-val">
-                                        <button class="dropdown-item active" type="button" data-value="positive">
-                                            positive
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="negative">negative
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="neutral">neutral
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="multi_valued">multi
-                                            valued
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">10. Factuality:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute10">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute10-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        asserted
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute10-val">
-                                        <button class="dropdown-item active" type="button" data-value="asserted">
-                                            asserted
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="speculated">speculated
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="none">none</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="input-group row">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">11. Prominence:</span>
-                                </div>
-                                <div class="dropdown attribute" id="attribute11">
-                                    <button class="btn btn-sm dropdown-toggle" type="button" id="attribute11-val"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        new
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="attribute11-val">
-                                        <button class="dropdown-item active" type="button" data-value="new">new</button>
-                                        <button class="dropdown-item" type="button" data-value="prominent">prominent
-                                        </button>
-                                        <button class="dropdown-item" type="button" data-value="presupposed">
-                                            presupposed
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 mt-4">
-                            <div class="input-group no-border">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Memo</span>
-                                </div>
-                                <input type="text" class="form-control" placeholder="" id="memo" value=""
-                                       aria-describedby="basic-addon1">
-                            </div>
                         </div>
                     </div>
                 </form>
@@ -462,258 +236,6 @@
 </div>
 
 <script>
-  const annotation = {
-    attributes: {
-      sent: {
-        attribute1: {
-          title: '1. Knowledge Awareness',
-          attribute_key: 'Knowledge_Awareness',
-          options: [
-            'I did not know the information.',
-            'I already knew the information before I read this document.',
-            'I did not know the information before, but came to know it by reading the previous sentences.',
-          ]
-        },
-        attribute2: {
-          title: '2. Verifiability',
-          attribute_key: 'Verifiability',
-          options: [
-            'I can verify it using my knowledge.',
-            'I can verify it by short-time googling.',
-            'I can verify it by long-time googling.',
-            'I might find an off-line way to verify it, but it will be very hard.',
-            'There is no way to verify it.',
-            'None of the above',
-          ]
-        },
-        attribute3: {
-          title: '3. Disputability of the sentence',
-          attribute_key: 'Disputability_of_the_sentence',
-          options: [
-            'I can verify it using my knowledge.',
-            'I can verify it by short-time googling.',
-            'I can verify it by long-time googling.',
-            'I might find an off-line way to verify it, but it will be very hard.',
-            'There is no way to verify it.',
-            'None of the above',
-          ]
-        },
-        attribute4: {
-          title: '4. Perceived Author Credibility for the upcoming sentences',
-          attribute_key: 'Perceived_Author_Credibility_for_the_upcoming_sentences',
-          options: [
-            'Strong Credibility for the upcoming sentences',
-            'Credibility for the upcoming sentences',
-            'Weak Credibility for the upcoming sentences',
-            'Hard to Judge',
-            'Weak Suspicion for the upcoming sentencese',
-            'Suspicion for the upcoming sentences',
-            'Strong Suspicion for the upcoming sentences',
-          ]
-        },
-      },
-      event: {
-        attribute1: {
-          title: '1. Knowledge Awareness',
-          attribute_key: 'Knowledge_Awareness',
-          options: [
-            'I already know.',
-            'I did not know.',
-          ]
-        },
-        attribute2: {
-          title: '2. Credibility',
-          attribute_key: 'Credibility',
-          options: [
-            'false',
-            'feel like false',
-            'hard to judge',
-            'feel like true',
-            'true',
-            'none',
-          ]
-        },
-        attribute3: {
-          title: '3. Verifiability',
-          attribute_key: 'Verifiability',
-          options: [
-            'verify it with my knowledge',
-            'verify it by short time googling',
-            'verify it by long time googling',
-            'hard to verify it',
-            'no way to verify it',
-            'none',
-          ]
-        },
-        attribute4: {
-          title: '4. Conditionality',
-          attribute_key: 'Conditionality',
-          options: [
-            'sufficient condition',
-            'necessary condition',
-            'none',
-          ]
-        },
-        attribute5: {
-          title: '5. Polarity',
-          attribute_key: 'Conditionality',
-          options: [
-            'negative',
-            'positive',
-          ]
-        },
-        attribute6: {
-          title: '6. Tense',
-          attribute_key: 'Tense',
-          options: [
-            'past',
-            'present',
-            'future',
-            'unspecified',
-          ]
-        },
-        attribute7: {
-          title: '7. Genericity',
-          attribute_key: 'Genericity',
-          options: [
-            'specific',
-            'generic',
-          ]
-        },
-        attribute8: {
-          title: '8. Source Type',
-          attribute_key: 'Source_Type',
-          options: [
-            'author',
-            'involved',
-            'named third party',
-            'unnamed third party',
-          ]
-        },
-        attribute9: {
-          title: '9. Subjectivity',
-          attribute_key: 'Subjectivity',
-          options: [
-            'positive',
-            'negative',
-            'neutral',
-            'multi valued',
-          ]
-        },
-        attribute10: {
-          title: '10. Factuality',
-          attribute_key: 'Factuality',
-          options: [
-            'asserted',
-            'speculated',
-            'none',
-          ]
-        },
-        attribute11: {
-          title: '11. Prominence',
-          attribute_key: 'Prominence',
-          options: [
-            'new',
-            'prominent',
-            'presupposed',
-          ]
-        },
-      },
-    },
-    // attributes: [
-    //   ['attribute1', 'knowledge_awareness'],
-    //   ['attribute2', 'credibility'],
-    //   ['attribute3', 'verifiability'],
-    //   ['attribute4', 'conditionality'],
-    //   ['attribute5', 'polarity'],
-    //   ['attribute6', 'tense'],
-    //   ['attribute7', 'genericity'],
-    //   ['attribute8', 'source_type'],
-    //   ['attribute9', 'subjectivity'],
-    //   ['attribute10', 'factuality'],
-    //   ['attribute11', 'prominence'],
-    // ],
-    // attributes_default: {
-    //   knowledge_awareness: 'I_did_not_know',
-    //   credibility: 'hard_to_judge',
-    //   verifiability: 'verify_it_by_short_time_googling',
-    //   conditionality: 'none',
-    //   polarity: 'positive',
-    //   tense: 'present',
-    //   genericity: 'specific',
-    //   source_type: 'author',
-    //   subjectivity: 'neutral',
-    //   factuality: 'asserted',
-    //   prominence: 'new',
-    // },
-    data: [
-      /**
-       * {
-       *     type: String, // "event" or "sentence"
-       *     index: Integer,
-       *     sent: ObjectID,
-       *     doc: ObjectID,
-       *     user: ObjectID,
-       *     anchor_offset: Integer,
-       *     focus_offset: Integer,
-       *     entire_text: String,
-       *     target_text: String,
-       *     basket: {
-       *         KnowledgeAwareness: "2_I_did_not_know",
-       *         Tense: "1_past",
-       *     },
-       * }
-       */
-    ],
-    find_attribute_name_by_id: function (id) {
-      for (let i = 0; i < this.attributes.length; i++) {
-        if (this.attributes[i][0] === id) return this.attributes[i][1];
-      }
-      return '';
-    },
-    find_by_id: function (annotation_id) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.id === annotation_id) {
-          return item;
-        }
-      }
-      return null;
-    },
-    find_event: function (index, anchor_offset, focus_offset) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.type === 'event') continue;
-        if (item.index !== index) continue;
-        if (item.anchor_offset !== anchor_offset) continue;
-        if (item.focus_offset !== focus_offset) continue;
-        return i;
-      }
-      return -1;
-    },
-    add: function (item) {
-      if (item.type === 'event' && this.find_event(item.index, item.anchor_offset, item.focus_offset) !== -1) return;
-      this.data.push(item);
-    },
-    update: function (annotation_id, new_item) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.id === annotation_id) {
-          this.data[i] = new_item;
-        }
-      }
-    },
-    remove: function (annotation_id) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.id === annotation_id) {
-          this.data.splice(i, 1);
-          break;
-        }
-      }
-    },
-  };
-
   const event = {
       selection_listen: function () {
         document.onmouseup = document.onkeyup = function () {
@@ -970,6 +492,9 @@
       this.el.modal('show');
 
       this.change_type(this.state.annotation_item.type);
+    },
+    render: function () {
+
     },
     set_header: function () {
       const type = this.state.annotation_item.type;

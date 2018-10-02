@@ -1,4 +1,4 @@
-import os, sys, datetime
+import os, sys, datetime, random
 from flask import Flask, session, g, request, render_template, redirect
 from flask_mongoengine import MongoEngine
 import sentry_sdk
@@ -23,6 +23,7 @@ db = MongoEngine(app)
 
 @app.before_request
 def before_request():
+    g.random = random.randrange(1, 10000)
     if 'username' not in session:
         g.user = None
     else:
