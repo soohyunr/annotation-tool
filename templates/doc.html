@@ -127,7 +127,7 @@
     }
 
     .tooltip-inner {
-        max-width: 460px;
+        max-width: 1000px;
         text-align: left;
         background-color: white;
         border: 1px solid #CCC;
@@ -509,7 +509,6 @@
       this.el.css('top', top + 50);
     },
     save: function () {
-      console.log('save called');
       const annotation_type = this.state.annotation_item.type;
       for (let i = 1; i <= this.state.max_attribute; i++) {
         const attribute_id = 'attribute' + i;
@@ -518,7 +517,7 @@
         this.state.annotation_item.basket[attribute_key].value = value;
 
         const memo = $('#' + attribute_id + '-memo').val();
-        const reason =  $('#' + attribute_id + '-reason').val();
+        const reason = $('#' + attribute_id + '-reason').val();
 
         this.state.annotation_item.basket[attribute_key].memo = memo;
         this.state.annotation_item.basket[attribute_key].reason = reason;
@@ -679,10 +678,12 @@
     },
     render_tooltip_markup: function (annotation_item) {
       let markup = '';
-      for (let i = 0; i < annotation.attributes.length; i++) {
-        const attribute_name = annotation.attributes[i][1];
-        if (attribute_name in annotation_item.basket) {
-          markup += (i + 1) + '. ' + attribute_name + ': <em>' + annotation_item.basket[attribute_name] + '</em><br/>'
+      const annotation_type = annotation_item['type'];
+      for (let key in annotation.attributes[annotation_type]) {
+        const attribute_key = annotation.attributes[annotation_type][key].attribute_key;
+        const order = annotation.attributes[annotation_type][key].order;
+        if (attribute_key in annotation_item.basket) {
+          markup += order + '. ' + attribute_key + ': <em>' + annotation_item.basket[attribute_key].value + '</em><br/>'
         }
       }
       return markup;
