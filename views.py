@@ -143,7 +143,7 @@ def download_dataset():
     data = []
     for doc in docs:
         annotations = Annotation.objects(doc=doc)
-        for annotation in annotations[:10]:
+        for annotation in annotations:
             data.append({
                 'annotator': annotation.user.username,
                 'doc_id': doc.seq,
