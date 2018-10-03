@@ -208,12 +208,12 @@
       $('#view-mode-btn').click(function () {
         if (event.state.view_mode === 'paragraph') {
           event.state.view_mode = 'sentence';
-          $('#view-mode-btn span').html('sentence mode');
+          $('#view-mode-btn span').html('paragraph mode');
           $('table').removeClass('table-striped');
           $('.progress').show();
         } else {
           event.state.view_mode = 'paragraph';
-          $('#view-mode-btn span').html('paragraph mode');
+          $('#view-mode-btn span').html('sentence mode');
           $('table').addClass('table-striped');
           $('.progress').hide();
         }
