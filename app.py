@@ -54,5 +54,5 @@ app.add_url_rule('/api/annotation/<annotation_id>', view_func=views.put_annotati
 app.add_url_rule('/download/dataset', view_func=views.download_dataset, methods=['GET'])
 
 if __name__ == '__main__':
-    FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
+    FLASK_DEBUG = os.getenv('FLASK_DEBUG', False)
     app.run(host='0.0.0.0', debug=FLASK_DEBUG, port=8081)
