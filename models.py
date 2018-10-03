@@ -136,7 +136,6 @@ class Annotation(db.Document):
             'index': self.index,
             'anchor_offset': self.anchor_offset,
             'focus_offset': self.focus_offset,
-            'entire_text': self.entire_text,
             'target_text': self.target_text,
             'basket': self.basket,
             'created_at': str(self.created_at),

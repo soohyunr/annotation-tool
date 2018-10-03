@@ -161,7 +161,6 @@
         let type = 'event';
         if (anchorNodeParent.className === 'type-sentence') type = 'sentence';
         const item = {
-          entire_text: entire_text,
           target_text: entire_text.substr(anchor_offset, focus_offset - anchor_offset),
           index: index,
           anchor_offset: anchor_offset,

@@ -1,5 +1,5 @@
-import json, math, datetime
-from flask import request, render_template, Response, g, session, redirect, url_for
+import json, math, datetime, os
+from flask import request, render_template, Response, g, session, redirect, send_file
 from flask_mongoengine import Pagination
 
 from models import Doc, User, Sent, Annotation, DocLog
@@ -90,7 +90,6 @@ def post_annotation():
     data = request.get_json()
 
     doc = data['doc']
-    entire_text = data['entire_text']
     target_text = data['target_text']
     index = data['index']
     anchor_offset = data['anchor_offset']
@@ -102,6 +101,8 @@ def post_annotation():
     sent = Sent.objects().get(doc=doc, index=index)
     user = g.user
 
+    target_sent = Sent.objects().get(doc=doc, index=index)
+
     annotation = Annotation(
         doc=doc,
         sent=sent,
@@ -110,7 +111,7 @@ def post_annotation():
         index=index,
         anchor_offset=anchor_offset,
         focus_offset=focus_offset,
-        entire_text=entire_text,
+        entire_text=target_sent.text,
         target_text=target_text,
         basket=basket,
     )
@@ -142,7 +143,7 @@ def download_dataset():
     data = []
     for doc in docs:
         annotations = Annotation.objects(doc=doc)
-        for annotation in annotations:
+        for annotation in annotations[:10]:
             data.append({
                 'annotator': annotation.user.username,
                 'doc_id': doc.seq,
@@ -157,9 +158,12 @@ def download_dataset():
                 'source': doc.source,
             })
 
-    return Response(json.dumps({
-        'annotations': data,
-    }), mimetype='application/json')
+    dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset.json')
+    data_json = json.dumps(data)
+    with open(dataset_path, 'w', encoding='utf-8') as f:
+        f.write(data_json)
+
+    return send_file(dataset_path, as_attachment=True)
 
 
 @login_required
