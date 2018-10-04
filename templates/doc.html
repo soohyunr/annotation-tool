@@ -246,12 +246,14 @@
               event.state.target_sent.index--;
             }
             renderer.render_table();
+            e.preventDefault();
             break;
           case 39: // right
             if (event.state.target_sent.index < event.state.target_sent.max) {
               event.state.target_sent.index++;
             }
             renderer.render_table();
+            e.preventDefault();
             break;
           case 38: // up
             break;
@@ -270,7 +272,6 @@
           default:
             return;
         }
-        e.preventDefault();
       });
     }
   };
@@ -432,14 +433,14 @@
         $('#col1').removeClass('col-md-12').addClass('col-md-6');
         $('#col2').show();
         this.state.max_attribute = 11;
-        for (let i = 5; i <= 11; i++) {
+        for (let i = 6; i <= 11; i++) {
           $('#attribute' + i).parents('.input-group').show();
         }
       } else {
         $('#col1').removeClass('col-md-6').addClass('col-md-12');
         $('#col2').hide();
-        this.state.max_attribute = 4;
-        for (let i = 5; i <= 11; i++) {
+        this.state.max_attribute = 5;
+        for (let i = 6; i <= 11; i++) {
           $('#attribute' + i).parents('.input-group').hide();
         }
         width = '950px';
