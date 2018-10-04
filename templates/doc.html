@@ -242,6 +242,7 @@
           case 13: // enter
             break;
           case 37: // left
+            if (modal.state.open) break;
             if (event.state.target_sent.index > event.state.target_sent.min) {
               event.state.target_sent.index--;
             }
@@ -249,6 +250,7 @@
             e.preventDefault();
             break;
           case 39: // right
+            if (modal.state.open) break;
             if (event.state.target_sent.index < event.state.target_sent.max) {
               event.state.target_sent.index++;
             }
@@ -280,6 +282,7 @@
     el: null,
     state: {
       step: 1,
+      open: false,
       annotation_item: {},
       max_attribute: 11,
     },
@@ -290,6 +293,13 @@
       });
       this.el.draggable({
         handle: '.modal-header',
+      });
+
+      this.el.on('hidden.bs.modal', function (e) {
+        modal.state.open = false;
+      });
+      this.el.on('shown.bs.modal', function (e) {
+        modal.state.open = true;
       });
 
       $('#modal-delete-btn').click(function () {
@@ -307,12 +317,12 @@
       });
     },
     next_step() {
-      const step = this.state.step + 1;
-      if (step === this.state.max_attribute + 1) {
-        modal.save();
-        modal.el.modal('hide');
+      if (this.state.step === this.state.max_attribute) {
+        // modal.save();
+        // modal.el.modal('hide');
         return;
       }
+      const step = this.state.step + 1;
 
       setTimeout(function () {
         $('#attribute' + step + '-val').click();
@@ -351,6 +361,7 @@
     show: function () {
       this.set_header();
       this.el.modal('show');
+
 
       const annotation_type = this.state.annotation_item.type;
       this.change_type(annotation_type);
@@ -462,12 +473,6 @@
 
         modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-val', ''));
         modal.next_step();
-      });
-
-      this.el.keydown(function (e) {
-        if (e.keyCode === 13) {
-          modal.next_step();
-        }
       });
     },
   };

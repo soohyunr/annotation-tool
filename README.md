@@ -23,10 +23,10 @@ mv config.smaple.py config.py
 
 ## Run
 ```bash
-python app.py
+sudo python app.py
 ```
 
 ```bash
 # background
-nohup python3 app.py &
+sudo nohup python3 app.py &
 ```
