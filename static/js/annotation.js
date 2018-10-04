@@ -29,12 +29,10 @@ const annotation = {
         title: '3. Disputability of the sentence',
         attribute_key: 'Disputability_of_the_sentence',
         options: [
-          'I can verify it using my knowledge.',
-          'I can verify it by short-time googling.',
-          'I can verify it by long-time googling.',
-          'I might find an off-line way to verify it, but it will be very hard.',
-          'There is no way to verify it.',
-          'None of the above',
+          'Highly Disputable',
+          'Disputable',
+          'Weakly Disputable',
+          'Not Disputable',
         ]
       },
       attribute4: {
@@ -49,6 +47,20 @@ const annotation = {
           'Weak Suspicion for the upcoming sentencese',
           'Suspicion for the upcoming sentences',
           'Strong Suspicion for the upcoming sentences',
+        ]
+      },
+      attribute5: {
+        order: 5,
+        title: '5. Acceptance of the sentence as true',
+        attribute_key: 'Acceptance_of_the_sentence_as_true',
+        options: [
+          'Strong Accept',
+          'Accept',
+          'Week Accept',
+          'Hard to judge',
+          'Week Reject',
+          'Reject',
+          'Strong Reject',
         ]
       },
     },
