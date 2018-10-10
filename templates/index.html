@@ -6,11 +6,17 @@
         margin: 40px 20px 70px 0;
         float: right;
     }
+
     table tr {
         text-align: center;
     }
+
     table td {
         text-align: center;
+    }
+
+    .page-link {
+        color: #6c757d;
     }
 </style>
 <body>
@@ -58,6 +64,12 @@
             <li class="page-item">
                 <a class="page-link" href="/?p={{pagination['total_page']}}">Last</a>
             </li>
+            <div class="input-group mb-3 ml-3">
+                <input type="text" class="form-control" placeholder="Page number" id="page-number" aria-label="" aria-describedby="button-addon">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="page-number-button-addon">Go</button>
+                </div>
+            </div>
         </ul>
     </nav>
 </div>
@@ -69,6 +81,12 @@
       let key = localStorage.key(i);
       $('#' + key).html('<i class="fas fa-check"></i>');
     }
+
+    $('#page-number-button-addon').click(function () {
+      let page_number = $('#page-number').val();
+      if (!page_number) page_number = 1;
+      location.assign('/?p='+page_number);
+    })
   });
 </script>
 </body>
