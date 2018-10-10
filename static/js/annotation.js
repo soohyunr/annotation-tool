@@ -56,9 +56,9 @@ const annotation = {
         options: [
           'Strong Accept',
           'Accept',
-          'Week Accept',
+          'Weak Accept',
           'Hard to judge',
-          'Week Reject',
+          'Weak Reject',
           'Reject',
           'Strong Reject',
         ]
