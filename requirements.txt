@@ -13,6 +13,5 @@ nltk==3.3
 pymongo==3.7.1
 requests==2.20.0
 sentry-sdk==0.3.4
-urllib3==1.23
 Werkzeug==0.14.1
 WTForms==2.2.1
