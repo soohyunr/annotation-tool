@@ -1,8 +1,8 @@
 import os, sys, datetime, random
 from flask import Flask, session, g, request, render_template, redirect
 from flask_mongoengine import MongoEngine
-import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.flask import FlaskIntegration
 
 import views, config
 from models import User
@@ -10,10 +10,10 @@ from models import User
 base_dir = os.path.abspath(os.path.dirname(__file__) + '/')
 sys.path.append(base_dir)
 
-sentry_sdk.init(
-    dsn=config.Config.SENTRY_DSN,
-    integrations=[FlaskIntegration()]
-)
+# sentry_sdk.init(
+#     dsn=config.Config.SENTRY_DSN,
+#     integrations=[FlaskIntegration()]
+# )
 
 app = Flask(__name__)
 
