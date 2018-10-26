@@ -74,6 +74,22 @@ def db_backup(memo):
                          backup_path,
                          ])
 
+        # subprocess.call(['mongoimport',
+        #                  '-h',
+        #                  '{}:{}'.format(MONGODB_SETTINGS['host'], MONGODB_SETTINGS['port']),
+        #                  '-u',
+        #                  MONGODB_SETTINGS['username'],
+        #                  '-p',
+        #                  MONGODB_SETTINGS['password'],
+        #                  '-d',
+        #                  MONGODB_SETTINGS['db'],
+        #                  '-c',
+        #                  collection,
+        #                  '-o',
+        #                  backup_path,
+        #                  ])
+
+
 
 def generate_encrypted_file(seq_id):
     from itertools import cycle
@@ -114,6 +130,6 @@ if __name__ == '__main__':
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
 
-    db_backup('')
+    db_backup('before wiping')
 
     # generate_encrypted_files()
