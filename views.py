@@ -156,7 +156,7 @@ def download_dataset():
                 'attributes': annotation.basket,
                 'title': doc.title,
                 'source': doc.source,
-                'created_at': doc.created_at,
+                'created_at': annotation.created_at,
             })
 
     dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset.json')
