@@ -1,6 +1,7 @@
 import json, math, datetime, os
 from flask import request, render_template, Response, g, session, redirect, send_file
 from flask_mongoengine import Pagination
+from bson import json_util
 
 from models import Doc, User, Sent, Annotation, DocLog
 from decorator import login_required, is_admin
@@ -160,7 +161,7 @@ def download_dataset():
             })
 
     dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset.json')
-    data_json = json.dumps(data)
+    data_json = json.dumps(data, default=json_util.default)
     with open(dataset_path, 'w', encoding='utf-8') as f:
         f.write(data_json)
 
