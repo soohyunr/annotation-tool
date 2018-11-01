@@ -44,7 +44,7 @@ def insert_dataset(dirname, source):
 
 def db_backup(memo):
     import datetime
-    collections = ['doc', 'sent', 'annotation', 'user']
+    collections = ['doc', 'sent', 'annotation', 'user', 'doc_log']
 
     backup_dir = os.path.abspath(os.path.dirname(__file__) + '/../data/backup/' + datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S'))
     os.makedirs(backup_dir)
@@ -130,6 +130,6 @@ if __name__ == '__main__':
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
 
-    db_backup('before wiping')
+    db_backup('after migration 2')
 
     # generate_encrypted_files()
