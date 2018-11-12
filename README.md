@@ -16,8 +16,8 @@ mv config.smaple.py config.py
 ```bash
 sudo python3 app.py
 ```
-or
+
+To run background
 ```bash
-# To run background
 sudo nohup python3 app.py &
 ```
