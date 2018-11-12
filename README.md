@@ -21,3 +21,7 @@ or
 # To run background
 sudo nohup python3 app.py &
 ```
+
+## Licence
+
+https://drive.google.com/open?id=1s39qXoudepUPwrATgxMyy-OaKCVBxp84
