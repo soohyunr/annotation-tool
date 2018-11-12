@@ -22,3 +22,6 @@ To run background
 ```bash
 sudo nohup python3 app.py &
 ```
+## Contributor
+
+[Seungwon](http://nlp.kaist.ac.kr/~swyoon)
