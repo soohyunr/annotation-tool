@@ -1,6 +1,6 @@
 # annotation-tool
 
-This program is an annotation tool, which distributes texts that may arise copyright issue when distributing original text type, to several annotators without copyright issues. 
+This program is an annotation tool, which distributes texts that may show a copyright issue when distributing the original text type, to several annotators without copyright issues. 
 
 ## Prerequisites
 
