@@ -1,5 +1,6 @@
 # annotation-tool
 
+This program is an annotation tool, which distributes texts that may show a copyright issue when distributing the original text type, to several annotators without copyright issues. 
 
 ## Prerequisites
 
@@ -16,8 +17,11 @@ mv config.smaple.py config.py
 ```bash
 sudo python3 app.py
 ```
-or
+
+To run background
 ```bash
-# To run background
 sudo nohup python3 app.py &
 ```
+## Contributor
+
+[Seungwon](http://nlp.kaist.ac.kr/~swyoon)
