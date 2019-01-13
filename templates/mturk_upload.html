@@ -39,7 +39,7 @@
       var doc = JSON.parse(data);
       console.log('doc :', doc);
       localStorage.setItem(doc.doc_id, data);
-      location.assign('/mturk/' + doc.doc_id);
+      location.assign('/mturk/doc/' + doc.doc_id);
     }).fail(function () {
       swal({
         title: '',
