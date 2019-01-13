@@ -10,7 +10,7 @@
         <label for="text">Paste the given text.</label>
         <textarea class="form-control" id="text" rows="15"></textarea>
     </div>
-    <button type="button" class="btn btn-primary btn-block" id="next-btn" style="float: right;">Next</button>
+    <button type="button" class="btn btn-primary btn-block" id="next-btn">Next</button>
 </div>
 {% include 'base/script.html' %}
 
@@ -26,7 +26,8 @@
         title: '',
         text: 'Please enter text.',
         type: 'error',
-      })
+      });
+      return;
     }
     $.ajax({
       url: '/api/mturk/upload',
