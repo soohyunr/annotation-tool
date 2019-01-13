@@ -269,4 +269,4 @@ def mturk_doc_page(doc_id):
     doc_log = DocLog(doc=doc, ip=request.remote_addr)
     doc_log.save()
 
-    return render_template('doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+    return render_template('mturk_doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
