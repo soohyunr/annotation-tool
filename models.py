@@ -7,11 +7,13 @@ db = MongoEngine()
 
 
 class Doc(db.Document):
-    title = db.StringField()
-    text = db.StringField()
-    source = db.StringField()
-    seq = db.IntField()
+    title = db.StringField(default='')
+    text = db.StringField(default='')
+    source = db.StringField(default='')
+    seq = db.IntField(default=0)
     created_at = db.DateTimeField(default=datetime.datetime.now)
+    mturk = db.BooleanField(default=False)
+    mturk_ip = db.StringField(default='0.0.0.0')
 
     meta = {
         'indexes': [

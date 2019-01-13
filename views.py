@@ -234,3 +234,40 @@ def post_signup():
     user.save()
 
     return Response('success', status=200)
+
+
+def mturk_upload_page():
+    return render_template('mturk_upload.html', g=g)
+
+
+def post_mturk_upload():
+    data = request.get_json()
+    text = data['text']
+
+    from nltk.tokenize import sent_tokenize
+    sents = sent_tokenize(text)
+
+    doc = Doc(title='', text=text, source='mturk', mturk=True, mturk_ip=request.remote_addr)
+    doc.save()
+
+    res = {
+        'doc_id': str(doc.id),
+        'sents': list(),
+        'seq': doc.seq,
+        'title': doc.title,
+    }
+    for index in range(0, len(sents)):
+        sent = Sent(index=index, text=sents[index], doc=doc).save()
+        res['sents'].append(sent.dump())
+
+    return json.dumps(res)
+
+@login_required
+def mturk_doc_page(doc_id):
+    doc = Doc.objects.get(id=doc_id)
+
+    doc_log = DocLog(doc=doc, ip=request.remote_addr)
+    doc_log.save()
+
+    return render_template('doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+

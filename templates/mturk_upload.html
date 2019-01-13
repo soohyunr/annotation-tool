@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+{% include 'base/head.html' %}
+<style>
+</style>
+<body>
+<div class="container" style="max-width: 1000px;">
+    <h3>Amazon Mechanical Turk</h3>
+    <div class="form-group">
+        <label for="text">Paste the given text.</label>
+        <textarea class="form-control" id="text" rows="15"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary btn-block" id="next-btn" style="float: right;">Next</button>
+</div>
+{% include 'base/script.html' %}
+
+<script>
+  $(document).ready(function () {
+  });
+
+  $('#next-btn').click(function () {
+    var text = $('#text').val().trim();
+
+    if (!text) {
+      swal({
+        title: '',
+        text: 'Please enter text.',
+        type: 'error',
+      })
+    }
+    $.ajax({
+      url: '/api/mturk/upload',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify({
+        text: text,
+      }),
+    }).done(function (data) {
+      var doc = JSON.parse(data);
+      console.log('doc :', doc);
+      localStorage.setItem(doc.doc_id, data);
+      location.assign('/mturk/' + doc.doc_id);
+    }).fail(function () {
+      swal({
+        title: '',
+        text: 'Error occurred. Please contact the administrator.',
+        type: 'error',
+      });
+    })
+  })
+</script>
+</body>
+</html>

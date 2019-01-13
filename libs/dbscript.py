@@ -27,6 +27,16 @@ def insert_doc(title, text, source):
         Sent(index=index, text=text, doc=doc).save()
 
 
+def delete_doc(doc_id):
+    doc = Doc.objects().get(id=doc_id)
+    sents = Sent.objects(doc=doc).order_by('index')
+    for sent in sents:
+        sent.delete()
+    annotations = Sent.objects(doc=doc)
+    for annotation in annotations:
+        annotation.delete()
+    doc.delete()
+
 def insert_dataset(dirname, source):
     dir_path = os.path.abspath(os.path.dirname(__file__) + '/../data/{}'.format(dirname))
     filenames = os.listdir(dir_path)
@@ -125,11 +135,13 @@ def generate_encrypted_files():
         generate_encrypted_file(seq_id=doc.seq)
 
 
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
-
-    db_backup('after migration 2')
+    # db_backup('')
 
     # generate_encrypted_files()
+
+    delete_doc('5c3a3f36995fc151daee0df5')

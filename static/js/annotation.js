@@ -183,32 +183,6 @@ const annotation = {
       },
     },
   },
-  // attributes: [
-  //   ['attribute1', 'knowledge_awareness'],
-  //   ['attribute2', 'credibility'],
-  //   ['attribute3', 'verifiability'],
-  //   ['attribute4', 'conditionality'],
-  //   ['attribute5', 'polarity'],
-  //   ['attribute6', 'tense'],
-  //   ['attribute7', 'genericity'],
-  //   ['attribute8', 'source_type'],
-  //   ['attribute9', 'subjectivity'],
-  //   ['attribute10', 'factuality'],
-  //   ['attribute11', 'prominence'],
-  // ],
-  // attributes_default: {
-  //   knowledge_awareness: 'I_did_not_know',
-  //   credibility: 'hard_to_judge',
-  //   verifiability: 'verify_it_by_short_time_googling',
-  //   conditionality: 'none',
-  //   polarity: 'positive',
-  //   tense: 'present',
-  //   genericity: 'specific',
-  //   source_type: 'author',
-  //   subjectivity: 'neutral',
-  //   factuality: 'asserted',
-  //   prominence: 'new',
-  // },
   data: [
     /**
      * {

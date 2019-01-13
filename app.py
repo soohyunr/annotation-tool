@@ -53,6 +53,10 @@ app.add_url_rule('/api/annotation/<annotation_id>', view_func=views.put_annotati
 
 app.add_url_rule('/download/dataset', view_func=views.download_dataset, methods=['GET'])
 
+app.add_url_rule('/mturk_upload', view_func=views.mturk_upload_page, methods=['GET'])
+app.add_url_rule('/mturk/<doc_id>', view_func=views.mturk_doc_page, methods=['GET'])
+app.add_url_rule('/api/mturk/upload', view_func=views.post_mturk_upload, methods=['POST'])
+
 if __name__ == '__main__':
-    FLASK_DEBUG = os.getenv('FLASK_DEBUG', False)
+    FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
     app.run(host='0.0.0.0', debug=FLASK_DEBUG, port=8081)
