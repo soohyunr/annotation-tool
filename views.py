@@ -14,9 +14,9 @@ def index_page():
     page = request.args.get('p', 1)
     page = int(page)
 
-    total = Doc.objects.count()
+    total = Doc.objects.filter(mturk=False).count()
     total_page = math.ceil(total / item_per_page)
-    paginator = Pagination(Doc.objects().order_by('seq'), page, 50)
+    paginator = Pagination(Doc.objects(mturk=False).order_by('seq'), page, 50)
     docs = paginator.items
 
     docs_data = []
@@ -262,7 +262,7 @@ def post_mturk_upload():
 
     return json.dumps(res)
 
-@login_required
+
 def mturk_doc_page(doc_id):
     doc = Doc.objects.get(id=doc_id)
 
@@ -270,4 +270,3 @@ def mturk_doc_page(doc_id):
     doc_log.save()
 
     return render_template('doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
-
