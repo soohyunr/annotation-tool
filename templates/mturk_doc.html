@@ -69,43 +69,43 @@
 
 <script>
   $(document).ready(function () {
-    event.selection_listen();
-    event.listen_view_mode();
-    event.listen_key();
+    Event.selection_listen();
+    Event.listen_view_mode();
+    Event.listen_key();
 
-    api.get_doc_by_local(function (data) {
+    API.get_doc_by_local(function (data) {
       if (data) {
         $('#doc-upload-form').hide();
         const sents = data['sents'];
-        renderer.state.sents = sents;
+        Renderer.state.sents = sents;
 
-        event.state.target_sent.min = sents[0]['index'];
-        event.state.target_sent.index = sents[0]['index'];
-        event.state.target_sent.max = sents[sents.length - 1]['index'];
+        Event.state.target_sent.min = sents[0]['index'];
+        Event.state.target_sent.index = sents[0]['index'];
+        Event.state.target_sent.max = sents[sents.length - 1]['index'];
 
-        renderer.load_annotation_and_render_table();
+        Renderer.load_annotation_and_render_table();
       }
     });
-    modal.init();
+    Modal.init();
 
     $('#export-btn').click(function () {
-      var annotations = annotation.data;
+      var annotations = Annotation.data;
       var completed = 0;
       for (var i = 0; i < annotations.length; i++) {
         var annotation_item = annotations[i];
         if (annotation_item.type !== 'sentence') continue;
-        if (annotation.is_empty_basket(annotation_item.basket)) continue;
+        if (Annotation.is_empty_basket(annotation_item.basket)) continue;
         completed++;
       }
-      if (completed !== renderer.state.sents.length) {
+      if (completed !== Renderer.state.sents.length) {
         swal({
           title: '',
-          text: 'Please annotate on all sentences. (Current status: ' + completed + '/' + renderer.state.sents.length + ')',
+          text: 'Please annotate on all sentences. (Current status: ' + completed + '/' + Renderer.state.sents.length + ')',
           type: 'error',
         });
         return;
       }
-      $('#exportModalBody').html(JSON.stringify(annotation.data));
+      $('#exportModalBody').html(JSON.stringify(Annotation.data));
       $('#exportModal').modal('show');
     });
   })
