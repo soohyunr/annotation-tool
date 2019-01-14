@@ -268,6 +268,7 @@ def post_mturk_upload():
         'sents': list(),
         'seq': doc.seq,
         'title': doc.title,
+        'created_at': doc.created_at.isoformat(),
     }
     for index in range(0, len(sents)):
         sent = Sent(index=index, text=sents[index], doc=doc).save()
