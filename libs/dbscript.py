@@ -144,4 +144,4 @@ if __name__ == '__main__':
 
     # generate_encrypted_files()
 
-    delete_doc('5c3aa6c0995fc138b1239d57')
+    delete_doc('5c3c3975995fc1ab555950ea')

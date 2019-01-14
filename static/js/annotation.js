@@ -265,9 +265,9 @@ const API = {
       callback(JSON.parse(data));
     })
   },
-  get_doc_by_local: function (callback) {
+  get_doc_by_local: function (prefix, callback) {
     let doc_id = $('#doc_id').val();
-    let doc = localStorage.getItem(doc_id);
+    let doc = localStorage.getItem(prefix + doc_id);
     if (doc) {
       callback(JSON.parse(doc));
     } else {

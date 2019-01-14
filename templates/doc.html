@@ -65,7 +65,7 @@
 
     TextReader.listen();
 
-    API.get_doc_by_local(function (data) {
+    API.get_doc_by_local('', function (data) {
       if (data) {
         $('#doc-upload-form').hide();
         const sents = data['sents'];
