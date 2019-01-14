@@ -104,6 +104,8 @@ class Annotation(db.Document):
     target_text = db.StringField()
 
     basket = db.DictField()
+
+    ip = db.StringField(default='0.0.0.0')
     """
     ### format ###
     basket = {
