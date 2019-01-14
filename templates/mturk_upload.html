@@ -75,7 +75,6 @@
       }),
     }).done(function (data) {
       var doc = JSON.parse(data);
-      console.log('doc :', doc);
       localStorage.setItem('mturk_' + doc.doc_id, data);
       location.assign('/mturk/doc/' + doc.doc_id);
     }).fail(function () {

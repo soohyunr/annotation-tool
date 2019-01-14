@@ -13,15 +13,21 @@ vi config.sample.py
 mv config.smaple.py config.py
 ```
 
-## Run
+## Run Service
 ```bash
 sudo python3 app.py
 ```
-
 To run background
 ```bash
-sudo nohup python3 app.py &
+sudo nohup python app.py >> log.txt 2>&1 &
+echo $! > pid.txt
 ```
+
+## Stop Service
+```bash
+sudo kill -9 `cat pid.txt`
+```
+
 ## Contributor
 
 [Seungwon](http://nlp.kaist.ac.kr/~swyoon)
