@@ -1,7 +1,18 @@
 <!doctype html>
 <html lang="en">
 {% include 'base/head.html' %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/doc.css') }}?v=g.random}">
+<style>
+    .modal-export .modal .modal-dialog {
+        width: 700px;
+        max-width: 700px;
+    }
+
+    .modal-export .modal .modal-content {
+        width: 700px;
+        min-width: 700px;
+    }
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/doc.css') }}?v={{g.random}}">
 <body>
 <div class="container">
     <div class="header">
@@ -42,32 +53,55 @@
 <input type="hidden" id="doc_id" value="{{doc.id}}"/>
 <input type="hidden" id="ENCRYPTION_KEY" value="{{ENCRYPTION_KEY}}"/>
 {% include 'base/script.html' %}
-<script src="{{ url_for('static', filename='js/annotation.js')}}?v={{g.random}}"></script>
 {% include 'base/doc_template.html' %}
+<script src="{{ url_for('static', filename='js/annotation.js')}}?v={{g.random}}"></script>
 
 <!-- Modal -->
-<div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exportModalLabel">Export Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="exportModalBody">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+<div class="modal-export">
+    <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel">Export</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <code>Copy and paste</code> the code below into the Amazon Mechanical Turk.
+                    <textarea id="exportModalBody"
+                              rows="15"
+                              readonly
+                              style="background-color: #f8f9fa;
+                     /*word-break:break-all;*/
+                     outline: none;
+                     padding: 15px;
+                     border-radius: 10px;
+                     border: none;
+                     height: 400px;
+                     width: 100%;
+                     overflow: auto;
+                     margin-top: 10px;">
+                    </textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onClick="copyToClipboard()">Copy to clipboard</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+  function copyToClipboard() {
+    var copyText = document.getElementById("exportModalBody");
+    copyText.select();
+    document.execCommand("copy");
+    toastr.success("Copied");
+  }
+
   $(document).ready(function () {
     Event.selection_listen();
     Event.listen_view_mode();
@@ -105,7 +139,11 @@
         });
         return;
       }
-      $('#exportModalBody').html(JSON.stringify(Annotation.data));
+      var data = {
+        doc_id: $('#doc_id').val(),
+        data: Annotation.data,
+      };
+      $('#exportModalBody').html(JSON.stringify(data));
       $('#exportModal').modal('show');
     });
   })

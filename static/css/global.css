@@ -24,10 +24,6 @@ body {
     margin-top: 70px;
 }
 
-.modal-dialog {
-    margin: 0;
-}
-
 .modal-open {
     overflow: auto;
 }

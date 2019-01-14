@@ -19,16 +19,20 @@ body {
     width: 90px;
 }
 
-.modal {
+.modal-annotation .modal {
     width: 850px;
     min-height: 850px;
     max-width: 850px;
     position: absolute;
 }
 
-.modal .modal-content {
+.modal-annotation .modal .modal-content {
     width: 850px;
     min-width: 850px;
+}
+
+.modal-annotation .modal-dialog {
+    margin: 0;
 }
 
 .modal-body .input-group {
