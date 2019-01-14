@@ -53,6 +53,10 @@ def page_403():
     return render_template('403.html', g=g)
 
 
+def page_404():
+    return render_template('404.html', g=g)
+
+
 def signup_page():
     return render_template('signup.html', g=g)
 
@@ -64,7 +68,10 @@ def logout_page():
 
 @login_required
 def doc_page(doc_id):
-    doc = Doc.objects.get(seq=doc_id)
+    try:
+        doc = Doc.objects.get(seq=doc_id)
+    except Exception as e:
+        return redirect('/404')
 
     doc_log = DocLog(user=g.user, doc=doc, ip=request.remote_addr)
     doc_log.save()
@@ -86,7 +93,6 @@ def get_doc(doc_id):
     })
 
 
-@login_required
 def post_annotation():
     data = request.get_json()
 
@@ -115,6 +121,7 @@ def post_annotation():
         entire_text=target_sent.text,
         target_text=target_text,
         basket=basket,
+        ip=request.remote_addr
     )
     annotation.save()
 
@@ -123,7 +130,6 @@ def post_annotation():
     })
 
 
-@login_required
 def get_annotation(doc_id):
     doc = Doc.objects().get(id=doc_id)
     annotations = Annotation.objects(doc=doc, user=g.user)
@@ -134,6 +140,29 @@ def get_annotation(doc_id):
 
     return json.dumps({
         'annotations': data,
+    })
+
+
+def delete_annotation(annotation_id):
+    annotation = Annotation.objects().get(id=annotation_id)
+    if annotation.user.id != g.user.id:
+        return Response('permission error', status=403)
+    annotation.delete()
+    return Response('success', status=200)
+
+
+def put_annotation(annotation_id):
+    data = request.get_json()
+    basket = data['basket']
+    annotation = Annotation.objects().get(id=annotation_id)
+    if annotation.user.id != g.user.id:
+        return Response('permission error', status=403)
+    annotation.basket = basket
+    annotation.updated_at = datetime.datetime.now
+    annotation.save()
+
+    return json.dumps({
+        'annotation': annotation.dump(),
     })
 
 
@@ -166,26 +195,6 @@ def download_dataset():
         f.write(data_json)
 
     return send_file(dataset_path, as_attachment=True)
-
-
-@login_required
-def delete_annotation(annotation_id):
-    Annotation.objects(id=annotation_id).delete()
-    return Response('success', status=200)
-
-
-@login_required
-def put_annotation(annotation_id):
-    data = request.get_json()
-    basket = data['basket']
-    annotation = Annotation.objects().get(id=annotation_id)
-    annotation.basket = basket
-    annotation.updated_at = datetime.datetime.now
-    annotation.save()
-
-    return json.dumps({
-        'annotation': annotation.dump(),
-    })
 
 
 @is_admin
@@ -237,6 +246,10 @@ def post_signup():
 
 
 def mturk_upload_page():
+    user = User.objects.get(username='mturk')
+    g.user = user.dump()
+    session['username'] = 'mturk'
+
     return render_template('mturk_upload.html', g=g)
 
 
@@ -264,7 +277,15 @@ def post_mturk_upload():
 
 
 def mturk_doc_page(doc_id):
-    doc = Doc.objects.get(id=doc_id)
+    user = User.objects.get(username='mturk')
+    g.user = user.dump()
+    session['username'] = 'mturk'
+
+    try:
+        doc = Doc.objects.get(id=doc_id)
+    except Exception as e:
+        return redirect('/404')
+
 
     doc_log = DocLog(doc=doc, ip=request.remote_addr)
     doc_log.save()
