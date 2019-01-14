@@ -765,7 +765,7 @@ const Renderer = {
       $('.tr-sentence').hide();
       $('#tr-' + Event.state.target_sent.index).show();
 
-      const target_sent = event.state.target_sent;
+      const target_sent = Event.state.target_sent;
       let ratio = (target_sent.index - target_sent.min + 1) / (target_sent.max - target_sent.min + 1) * 100;
       $('.progress-bar').css('width', ratio + '%');
     }
