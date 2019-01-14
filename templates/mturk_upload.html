@@ -11,11 +11,47 @@
         <textarea class="form-control" id="text" rows="15"></textarea>
     </div>
     <button type="button" class="btn btn-primary btn-block" id="next-btn">Next</button>
+    <h3 style="margin-top: 40px;">History</h3>
+    <div id="history">
+        <div>[2018-12-13] In recent years, South Korea’s door-to-door.. (edit) (delete)</div>
+    </div>
 </div>
 {% include 'base/script.html' %}
 
+<script type='text/template' id='history-template'>
+    <div>[<%date%>] <%text%> <a href="/mturk/doc/<%doc_id%>">(edit)</a> <a href="#" onClick="delete_key('<%key%>')">(delete)</a></div>
+</script>
+
 <script>
+  function delete_key(key) {
+    localStorage.removeItem(key);
+    load_history();
+  }
+
+  function load_history() {
+    var history_el = $('#history');
+    var is_empty = true;
+    history_el.html('');
+    for (var key in localStorage) {
+      if (key.indexOf('mturk_') === 0) {
+        is_empty = false;
+        var value = JSON.parse(localStorage[key]);
+        var new_div = $('#history-template').html();
+        new_div = new_div.replace('<%date%>', moment(value.created_at).format('YYYY-MM-DD HH:mm'));
+        new_div = new_div.replace('<%text%>', value.sents[0].text.substr(0, 55) + '...');
+        new_div = new_div.replace('<%doc_id%>', value.doc_id);
+        new_div = new_div.replace('<%key%>', 'mturk_'+value.doc_id);
+        console.log('new_div :', new_div);
+        history_el.append(new_div);
+      }
+    }
+    if (is_empty) {
+      history_el.html('No history');
+    }
+  }
+
   $(document).ready(function () {
+    load_history();
   });
 
   $('#next-btn').click(function () {
@@ -39,7 +75,7 @@
     }).done(function (data) {
       var doc = JSON.parse(data);
       console.log('doc :', doc);
-      localStorage.setItem('mturk_'+doc.doc_id, data);
+      localStorage.setItem('mturk_' + doc.doc_id, data);
       location.assign('/mturk/doc/' + doc.doc_id);
     }).fail(function () {
       swal({
