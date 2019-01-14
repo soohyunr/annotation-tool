@@ -1,4 +1,4 @@
-const annotation = {
+const Annotation = {
   attributes: {
     sentence: {
       attribute1: {
@@ -256,7 +256,7 @@ const annotation = {
   }
 };
 
-const api = {
+const API = {
   get_doc: function (callback) {
     const doc_id = $('#doc_id').val();
     $.get({
@@ -336,7 +336,7 @@ const api = {
   },
 };
 
-const event = {
+const Event = {
   state: {
     view_mode: 'paragraph',
     target_sent: {
@@ -392,13 +392,13 @@ const event = {
       const range = selection.getRangeAt(0);
       const bound = range.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      modal.set_position(bound.left, bound.top + scrollTop);
+      Modal.set_position(bound.left, bound.top + scrollTop);
 
-      let attributes = annotation.attributes[type];
+      let attributes = Annotation.attributes[type];
       for (let key in attributes) {
         let options = attributes[key].options;
         let attribute_key = attributes[key].attribute_key;
-        let initial_value = options[annotation.random(options.length)];
+        let initial_value = options[Annotation.random(options.length)];
         initial_value = initial_value.split(' ').join('_');
         item.basket[attribute_key] = {
           initial_value: initial_value,
@@ -408,17 +408,17 @@ const event = {
         }
       }
 
-      api.post_annotation(item, function (data) {
+      API.post_annotation(item, function (data) {
         const annotation_item = data['annotation'];
-        annotation.add(annotation_item);
-        renderer.render_table();
+        Annotation.add(annotation_item);
+        Renderer.render_table();
 
-        modal.set_annotation_item(annotation_item);
+        Modal.set_annotation_item(annotation_item);
 
         if (annotation_item.type === 'sentence') {
-          modal.show();
-          modal.state.step = 0;
-          modal.next_step();
+          Modal.show();
+          Modal.state.step = 0;
+          Modal.next_step();
         }
       });
 
@@ -426,30 +426,30 @@ const event = {
   },
   listen_view_mode: function () {
     $('#view-mode-btn').click(function () {
-      if (event.state.view_mode === 'paragraph') {
-        event.state.view_mode = 'sentence';
+      if (Event.state.view_mode === 'paragraph') {
+        Event.state.view_mode = 'sentence';
         $('#view-mode-btn span').html('paragraph mode');
         $('table').removeClass('table-striped');
         $('.progress').show();
       } else {
-        event.state.view_mode = 'paragraph';
+        Event.state.view_mode = 'paragraph';
         $('#view-mode-btn span').html('sentence mode');
         $('table').addClass('table-striped');
         $('.progress').hide();
       }
-      renderer.render_table();
+      Renderer.render_table();
     });
   },
   listen_annotation_badge: function () {
     $('.annotation-badge').click(function (e) {
       const annotation_id = $(this).attr('data-id');
-      const annotation_item = annotation.find_by_id(annotation_id);
+      const annotation_item = Annotation.find_by_id(annotation_id);
 
-      modal.set_position(e.pageX, e.pageY);
-      modal.set_annotation_item(annotation_item);
-      modal.show();
-      modal.state.step = 0;
-      modal.next_step();
+      Modal.set_position(e.pageX, e.pageY);
+      Modal.set_annotation_item(annotation_item);
+      Modal.show();
+      Modal.state.step = 0;
+      Modal.next_step();
     });
   },
   listen_tooltip: function () {
@@ -462,19 +462,19 @@ const event = {
         case 13: // enter
           break;
         case 37: // left
-          if (modal.state.open) break;
-          if (event.state.target_sent.index > event.state.target_sent.min) {
-            event.state.target_sent.index--;
+          if (Modal.state.open) break;
+          if (Event.state.target_sent.index > Event.state.target_sent.min) {
+            Event.state.target_sent.index--;
           }
-          renderer.render_table();
+          Renderer.render_table();
           e.preventDefault();
           break;
         case 39: // right
-          if (modal.state.open) break;
-          if (event.state.target_sent.index < event.state.target_sent.max) {
-            event.state.target_sent.index++;
+          if (Modal.state.open) break;
+          if (Event.state.target_sent.index < Event.state.target_sent.max) {
+            Event.state.target_sent.index++;
           }
-          renderer.render_table();
+          Renderer.render_table();
           e.preventDefault();
           break;
         case 38: // up
@@ -498,7 +498,7 @@ const event = {
   }
 };
 
-const modal = {
+const Modal = {
   el: null,
   state: {
     step: 1,
@@ -516,24 +516,24 @@ const modal = {
     });
 
     this.el.on('hidden.bs.modal', function (e) {
-      modal.state.open = false;
+      Modal.state.open = false;
     });
     this.el.on('shown.bs.modal', function (e) {
-      modal.state.open = true;
+      Modal.state.open = true;
     });
 
     $('#modal-delete-btn').click(function () {
-      const annotation_id = modal.state.annotation_item.id;
-      api.delete_annotation(modal.state.annotation_item.id, function () {
-        annotation.remove(annotation_id);
-        renderer.render_table();
-        modal.el.modal('hide');
+      const annotation_id = Modal.state.annotation_item.id;
+      API.delete_annotation(Modal.state.annotation_item.id, function () {
+        Annotation.remove(annotation_id);
+        Renderer.render_table();
+        Modal.el.modal('hide');
       });
     });
 
     $('#modal-save-btn').click(function () {
-      modal.save();
-      modal.el.modal('hide');
+      Modal.save();
+      Modal.el.modal('hide');
     });
   },
   next_step() {
@@ -565,7 +565,7 @@ const modal = {
     for (let i = 1; i <= this.state.max_attribute; i++) {
       const attribute_id = 'attribute' + i;
 
-      const attribute_key = annotation.attributes[annotation_type][attribute_id].attribute_key;
+      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
       let value = basket[attribute_key].value;
       if (!value) value = basket[attribute_key].initial_value;
 
@@ -592,7 +592,7 @@ const modal = {
     $('#col1').html('');
     $('#col2').html('');
 
-    let attributes = annotation.attributes[type];
+    let attributes = Annotation.attributes[type];
     for (let key in attributes) {
       let title = attributes[key].title;
       let options = attributes[key].options;
@@ -643,7 +643,7 @@ const modal = {
     for (let i = 1; i <= this.state.max_attribute; i++) {
       const attribute_id = 'attribute' + i;
       const value = $('#' + attribute_id + '-val').html().trim().split(' ').join('_');
-      const attribute_key = annotation.attributes[annotation_type][attribute_id].attribute_key;
+      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
       this.state.annotation_item.basket[attribute_key].value = value;
 
       const memo = $('#' + attribute_id + '-memo').val();
@@ -653,9 +653,9 @@ const modal = {
       this.state.annotation_item.basket[attribute_key].reason = reason;
     }
 
-    api.put_annotation(this.state.annotation_item, function () {
-      annotation.update(modal.state.annotation_item.id, modal.state.annotation_item);
-      renderer.render_table();
+    API.put_annotation(this.state.annotation_item, function () {
+      Annotation.update(Modal.state.annotation_item.id, Modal.state.annotation_item);
+      Renderer.render_table();
     });
   },
   change_type: function (type) {
@@ -691,20 +691,20 @@ const modal = {
       $('#' + attribute_id + ' .dropdown-item').removeClass('active');
       $('#' + attribute_id + ' .dropdown-item[data-value="' + value + '"]').addClass('active');
 
-      modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-val', ''));
-      modal.next_step();
+      Modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-val', ''));
+      Modal.next_step();
     });
   },
 };
 
-const renderer = {
+const Renderer = {
   state: {
     sents: [],
   },
   load_annotation_and_render_table: function () {
-    api.get_annotation(function (data) {
-      annotation.data = data['annotations'];
-      renderer.render_table();
+    API.get_annotation(function (data) {
+      Annotation.data = data['annotations'];
+      Renderer.render_table();
     });
   },
   render_table: function () {
@@ -718,8 +718,8 @@ const renderer = {
     for (let i = 0; i < sents.length; i++) {
       annotation_map[sents[i].index] = [];
     }
-    for (let i = 0; i < annotation.data.length; i++) {
-      const item = annotation.data[i];
+    for (let i = 0; i < Annotation.data.length; i++) {
+      const item = Annotation.data[i];
       annotation_map[item.index].push(item);
     }
 
@@ -747,7 +747,7 @@ const renderer = {
       if (sentence_type_index !== -1) {
         const annotation_item = annotations[sentence_type_index];
         let badge_type = 'primary';
-        if (annotation.is_empty_basket(annotation_item.basket)) {
+        if (Annotation.is_empty_basket(annotation_item.basket)) {
           badge_type = 'secondary';
         }
         sent_markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation_item.id + '" ';
@@ -761,16 +761,16 @@ const renderer = {
       tbody.append(tr);
     }
 
-    if (event.state.view_mode === 'sentence') {
+    if (Event.state.view_mode === 'sentence') {
       $('.tr-sentence').hide();
-      $('#tr-' + event.state.target_sent.index).show();
+      $('#tr-' + Event.state.target_sent.index).show();
 
       const target_sent = event.state.target_sent;
       let ratio = (target_sent.index - target_sent.min + 1) / (target_sent.max - target_sent.min + 1) * 100;
       $('.progress-bar').css('width', ratio + '%');
     }
-    event.listen_annotation_badge();
-    event.listen_tooltip();
+    Event.listen_annotation_badge();
+    Event.listen_tooltip();
   },
   render_markup_sentence: function (index, text, annotations) {
     const start = {}, end = {};
@@ -787,7 +787,7 @@ const renderer = {
       if (i in start) {
         const annotation_item = annotations[start[i]];
         let badge_type = 'success';
-        if (annotation.is_empty_basket(annotation_item.basket)) {
+        if (Annotation.is_empty_basket(annotation_item.basket)) {
           badge_type = 'secondary';
         }
 
@@ -805,15 +805,14 @@ const renderer = {
         markup += '</span>';
       }
     }
-    // console.log('markup :', markup, start, end);
     return markup;
   },
   render_tooltip_markup: function (annotation_item) {
     let markup = '';
     const annotation_type = annotation_item['type'];
-    for (let key in annotation.attributes[annotation_type]) {
-      const attribute_key = annotation.attributes[annotation_type][key].attribute_key;
-      const order = annotation.attributes[annotation_type][key].order;
+    for (let key in Annotation.attributes[annotation_type]) {
+      const attribute_key = Annotation.attributes[annotation_type][key].attribute_key;
+      const order = Annotation.attributes[annotation_type][key].order;
       if (attribute_key in annotation_item.basket && annotation_item.basket[attribute_key].value) {
         markup += order + '. ' + attribute_key + ': <em>' + annotation_item.basket[attribute_key].value + '</em><br/>'
       }
@@ -822,7 +821,7 @@ const renderer = {
   },
 };
 
-const text_reader = {
+const TextReader = {
   data_text: '',
   data_json: {},
   listen: function () {
@@ -832,13 +831,13 @@ const text_reader = {
         let myFile = this.files[0];
         let reader = new FileReader();
         reader.addEventListener('load', function (e) {
-          text_reader.data_text = e.target.result;
-          text_reader.data_text = text_reader.decode_string(text_reader.data_text, $('#ENCRYPTION_KEY').val());
-          text_reader.data_json = JSON.parse(text_reader.data_text);
+          TextReader.data_text = e.target.result;
+          TextReader.data_text = TextReader.decode_string(TextReader.data_text, $('#ENCRYPTION_KEY').val());
+          TextReader.data_json = JSON.parse(TextReader.data_text);
           let doc_id = $('#doc_id').val();
 
-          if (doc_id === text_reader.data_json['doc_id']) {
-            localStorage.setItem(text_reader.data_json['doc_id'], text_reader.data_text);
+          if (doc_id === TextReader.data_json['doc_id']) {
+            localStorage.setItem(TextReader.data_json['doc_id'], TextReader.data_text);
             location.reload();
           } else {
             swal({
@@ -847,7 +846,7 @@ const text_reader = {
               type: 'error',
             });
           }
-          console.log(text_reader.data_json);
+          console.log(TextReader.data_json);
         });
         reader.readAsBinaryString(myFile);
       }

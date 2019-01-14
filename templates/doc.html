@@ -59,26 +59,26 @@
 
 <script>
   $(document).ready(function () {
-    event.selection_listen();
-    event.listen_view_mode();
-    event.listen_key();
+    Event.selection_listen();
+    Event.listen_view_mode();
+    Event.listen_key();
 
-    text_reader.listen();
+    TextReader.listen();
 
-    api.get_doc_by_local(function (data) {
+    API.get_doc_by_local(function (data) {
       if (data) {
         $('#doc-upload-form').hide();
         const sents = data['sents'];
-        renderer.state.sents = sents;
+        Renderer.state.sents = sents;
 
-        event.state.target_sent.min = sents[0]['index'];
-        event.state.target_sent.index = sents[0]['index'];
-        event.state.target_sent.max = sents[sents.length - 1]['index'];
+        Event.state.target_sent.min = sents[0]['index'];
+        Event.state.target_sent.index = sents[0]['index'];
+        Event.state.target_sent.max = sents[sents.length - 1]['index'];
 
-        renderer.load_annotation_and_render_table();
+        Renderer.load_annotation_and_render_table();
       }
     });
-    modal.init();
+    Modal.init();
   })
 </script>
 </body>
