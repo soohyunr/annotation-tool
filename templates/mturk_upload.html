@@ -55,6 +55,7 @@
   });
 
   $('#next-btn').click(function () {
+    $(this).hide();
     var text = $('#text').val().trim();
 
     if (!text) {
@@ -78,6 +79,7 @@
       localStorage.setItem('mturk_' + doc.doc_id, data);
       location.assign('/mturk/doc/' + doc.doc_id);
     }).fail(function () {
+      $(this).show();
       swal({
         title: '',
         text: 'Error occurred. Please contact the administrator.',
