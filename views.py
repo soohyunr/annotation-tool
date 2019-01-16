@@ -6,7 +6,7 @@ from bson import json_util
 from models import Doc, User, Sent, Annotation, DocLog
 from decorator import login_required, is_admin
 import config
-
+from tqdm import tqdm
 
 @login_required
 def index_page():
@@ -168,10 +168,10 @@ def put_annotation(annotation_id):
 
 @is_admin
 def download_dataset():
-    docs = Doc.objects
+    docs = Doc.objects.filter(mturk=False)
 
     data = []
-    for doc in docs:
+    for doc in tqdm(docs):
         annotations = Annotation.objects(doc=doc)
         for annotation in annotations:
             data.append({
