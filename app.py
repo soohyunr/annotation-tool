@@ -59,5 +59,5 @@ app.add_url_rule('/mturk/doc/<doc_id>', view_func=views.mturk_doc_page, methods=
 app.add_url_rule('/api/mturk/upload', view_func=views.post_mturk_upload, methods=['POST'])
 
 if __name__ == '__main__':
-    FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
+    FLASK_DEBUG = os.getenv('FLASK_DEBUG', False)
     app.run(host='0.0.0.0', debug=FLASK_DEBUG, port=8081)
