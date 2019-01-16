@@ -55,9 +55,7 @@
   });
 
   $('#next-btn').click(function () {
-    $(this).hide();
     var text = $('#text').val().trim();
-
     if (!text) {
       swal({
         title: '',
@@ -66,6 +64,8 @@
       });
       return;
     }
+
+    $(this).hide();
     $.ajax({
       url: '/api/mturk/upload',
       contentType: 'application/json',
