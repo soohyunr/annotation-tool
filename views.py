@@ -8,6 +8,7 @@ from decorator import login_required, is_admin
 import config
 from tqdm import tqdm
 
+
 @login_required
 def index_page():
     item_per_page = 50
@@ -250,7 +251,7 @@ def mturk_upload_page():
     g.user = user.dump()
     session['username'] = 'mturk'
 
-    return render_template('mturk_upload.html', g=g)
+    return render_template('mturk/upload.html', g=g)
 
 
 def post_mturk_upload():
@@ -287,8 +288,45 @@ def mturk_doc_page(doc_id):
     except Exception as e:
         return redirect('/404')
 
-
     doc_log = DocLog(doc=doc, ip=request.remote_addr)
     doc_log.save()
 
-    return render_template('mturk_doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+    return render_template('mturk/doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+
+
+@is_admin
+def review_index_page(user_id):
+    try:
+        user = User.objects.get(id=user_id)
+    except Exception as e:
+        return redirect('/404')
+
+    doc_map = dict()
+    annotations = Annotation.objects(user=user).order_by('-created_at')
+
+    for annotation in annotations:
+        doc = annotation.doc
+
+        if not (doc.id in doc_map):
+            doc_map[doc.id] = {
+                'doc': doc,
+                'sent_total': Sent.objects(doc=doc).count(),
+                'annotation_sent_total': Annotation.objects(doc=doc, user=user, type='sentence').count(),
+                'annotation_total': Annotation.objects(doc=doc, user=user).count()
+            }
+
+    return render_template('review/index.html', doc_map=doc_map, user=user, g=g)
+
+
+@is_admin
+def review_doc_page(user_id, doc_id):
+    try:
+        doc = Doc.objects.get(seq=doc_id)
+        user = User.objects.get(id=user_id)
+    except Exception as e:
+        return redirect('/404')
+
+    doc_log = DocLog(user=user, doc=doc, ip=request.remote_addr)
+    doc_log.save()
+
+    return render_template('doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)

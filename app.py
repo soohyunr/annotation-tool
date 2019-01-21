@@ -43,6 +43,7 @@ app.add_url_rule('/signup', view_func=views.signup_page, methods=['GET'])
 app.add_url_rule('/logout', view_func=views.logout_page, methods=['GET'])
 app.add_url_rule('/doc/<doc_id>', view_func=views.doc_page, methods=['GET'])
 
+# for api
 app.add_url_rule('/api/login', view_func=views.post_login, methods=['POST'])
 app.add_url_rule('/api/signup', view_func=views.post_signup, methods=['POST'])
 app.add_url_rule('/api/user/<user_id>/active', view_func=views.put_user_active, methods=['PUT'])
@@ -52,11 +53,17 @@ app.add_url_rule('/api/annotation', view_func=views.post_annotation, methods=['P
 app.add_url_rule('/api/annotation/<annotation_id>', view_func=views.delete_annotation, methods=['DELETE'])
 app.add_url_rule('/api/annotation/<annotation_id>', view_func=views.put_annotation, methods=['PUT'])
 
+# for admin
 app.add_url_rule('/download/dataset', view_func=views.download_dataset, methods=['GET'])
 
+# for mturk
 app.add_url_rule('/mturk/upload', view_func=views.mturk_upload_page, methods=['GET'])
 app.add_url_rule('/mturk/doc/<doc_id>', view_func=views.mturk_doc_page, methods=['GET'])
 app.add_url_rule('/api/mturk/upload', view_func=views.post_mturk_upload, methods=['POST'])
+
+# for review
+app.add_url_rule('/review/<user_id>', view_func=views.review_index_page, methods=['GET'])
+app.add_url_rule('/review/<user_id>/doc/<doc_id>', view_func=views.review_doc_page, methods=['GET'])
 
 if __name__ == '__main__':
     FLASK_DEBUG = os.getenv('FLASK_DEBUG', False)

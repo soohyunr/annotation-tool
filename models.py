@@ -146,3 +146,30 @@ class Annotation(db.Document):
             'updated_at': str(self.updated_at),
             'memo': self.memo,
         }
+
+
+class AnnotationReview(db.Document):
+    annotation = db.ReferenceField(Annotation)
+    user = db.ReferenceField(User)
+    basket = db.DictField()
+
+    ip = db.StringField(default='0.0.0.0')
+
+    created_at = db.DateTimeField(default=datetime.datetime.now)
+    updated_at = db.DateTimeField(default=datetime.datetime.now)
+
+    meta = {
+        'indexes': [
+            ('user'),
+        ]
+    }
+
+    def dump(self):
+        return {
+            'id': str(self.id),
+            'user': str(self.user.id),
+            'type': self.type,
+            'basket': self.basket,
+            'created_at': str(self.created_at),
+            'updated_at': str(self.updated_at),
+        }

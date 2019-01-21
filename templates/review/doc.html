@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+{% include 'base/head.html' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/doc.css') }}?v={{g.random}}">
+<body>
+{% include 'base/navbar.html' %}
+<div class="container">
+    <div class="header">
+        <h4>
+            {% if doc.seq != 1 %}
+            <a href="/doc/{{doc['seq']-1}}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+
+            #{{doc.seq}} {{doc['title']}}
+            <a href="/doc/{{doc['seq']+1}}">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            <button type="button"
+                    id="view-mode-btn"
+                    style="float:right; margin-top: -5px;"
+                    class="btn btn-light">
+                <i class="fas fa-exchange-alt"></i> <span>sentence mode</span>
+            </button>
+        </h4>
+    </div>
+
+    <form id="doc-upload-form">
+        <div class="form-group">
+            <!--<label for="doc-uploader">Document Upload</label>-->
+            <input type="file" class="form-control-file" id="doc-uploader">
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </table>
+
+    <div class="progress" style="position: fixed; bottom: 0; left: 0; height: 10px; width: 100%; display: none">
+        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
+             aria-valuemax="100">
+        </div>
+    </div>
+</div>
+<input type="hidden" id="doc_id" value="{{doc.id}}"/>
+<input type="hidden" id="ENCRYPTION_KEY" value="{{ENCRYPTION_KEY}}"/>
+{% include 'base/script.html' %}
+{% include 'base/doc_template.html' %}
+<script src="{{ url_for('static', filename='js/annotation.js')}}?v={{g.random}}"></script>
+
+
+<script>
+  $(document).ready(function () {
+    Event.selection_listen();
+    Event.listen_view_mode();
+    Event.listen_key();
+
+    TextReader.listen();
+
+    API.get_doc_by_local('', function (data) {
+      if (data) {
+        $('#doc-upload-form').hide();
+        const sents = data['sents'];
+        Renderer.state.sents = sents;
+
+        Event.state.target_sent.min = sents[0]['index'];
+        Event.state.target_sent.index = sents[0]['index'];
+        Event.state.target_sent.max = sents[sents.length - 1]['index'];
+
+        Renderer.load_annotation_and_render_table();
+      }
+    });
+    Modal.init();
+  })
+</script>
+</body>
+</html>
