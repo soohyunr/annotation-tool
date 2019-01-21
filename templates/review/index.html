@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+{% include 'base/head.html' %}
+<style>
+    .pagination {
+        margin: 40px 20px 70px 0;
+        float: right;
+    }
+
+    table tr {
+        text-align: center;
+    }
+
+    table td {
+        text-align: center;
+    }
+
+    .page-link {
+        color: #6c757d;
+    }
+</style>
+<body>
+{% include 'base/navbar.html' %}
+<div class="container">
+    <div style="margin-top: 90px; margin-bottom: 30px;">
+        <h3>Annotation Review </h3>
+        <h6>for {{user.first_name}} {{user.last_name}}</h6>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th>title</th>
+            <th>progress</th>
+            <th>annotation count</th>
+            <th>upload status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for id in doc_map %}
+        <tr>
+            <td>
+                {{doc_map[id].doc.seq}}
+            </td>
+            <td>
+                <a href="/doc/{{doc_map[id].doc.id}}">
+                    {{doc_map[id].doc.title}}
+                </a>
+            </td>
+            <td>
+                {{doc_map[id].annotation_sent_total}}/{{doc_map[id].sent_total}}
+            </td>
+            <td>
+                {{doc_map[id].annotation_total}}
+            </td>
+            <td id="{{doc_map[id].doc.id}}">
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'base/script.html' %}
+
+<script>
+  $(document).ready(function () {
+    for (let i = 0; i <= localStorage.length - 1; i++) {
+      let key = localStorage.key(i);
+      $('#' + key).html('<i class="fas fa-check"></i>');
+    }
+
+    $('#page-number-button-addon').click(function () {
+      let page_number = $('#page-number').val();
+      if (!page_number) page_number = 1;
+      location.assign('/?p=' + page_number);
+    })
+  });
+</script>
+</body>
+</html>
