@@ -148,6 +148,7 @@ class Annotation(db.Document):
         }
 
 
+
 class AnnotationReview(db.Document):
     annotation = db.ReferenceField(Annotation)
     user = db.ReferenceField(User)
@@ -168,7 +169,6 @@ class AnnotationReview(db.Document):
         return {
             'id': str(self.id),
             'user': str(self.user.id),
-            'type': self.type,
             'basket': self.basket,
             'created_at': str(self.created_at),
             'updated_at': str(self.updated_at),

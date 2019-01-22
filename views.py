@@ -3,7 +3,7 @@ from flask import request, render_template, Response, g, session, redirect, send
 from flask_mongoengine import Pagination
 from bson import json_util
 
-from models import Doc, User, Sent, Annotation, DocLog
+from models import Doc, User, Sent, Annotation, DocLog, AnnotationReview
 from decorator import login_required, is_admin
 import config
 from tqdm import tqdm
@@ -349,4 +349,35 @@ def get_review_annotation(user_id, doc_id):
 
     return json.dumps({
         'annotations': data,
+    })
+
+
+# @is_admin
+def put_review_annotation(annotation_id):
+    data = request.get_json()
+    basket = data['basket']
+
+    try:
+        annotation = Annotation.objects().get(id=annotation_id)
+    except Exception:
+        return Response('404', status=404)
+    try:
+        annotation_review = AnnotationReview.objects().get(annotation=annotation, user=g.user)
+    except AnnotationReview.DoesNotExist:
+        annotation_review = AnnotationReview(annotation=annotation, user=g.user)
+
+    review_basket = dict()
+    for key in basket:
+        if '-review' in key:
+            review_basket[key] = basket[key]
+
+    annotation_review.ip = request.remote_addr
+    annotation_review.basket = review_basket
+    annotation_review.updated_at = datetime.datetime.now
+    annotation_review.save()
+
+    annotation.basket = {**annotation.basket, **review_basket}
+
+    return json.dumps({
+        'annotation': annotation.dump(),
     })

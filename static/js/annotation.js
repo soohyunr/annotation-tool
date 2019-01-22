@@ -343,6 +343,24 @@ const API = {
       });
     })
   },
+  put_review_annotation: function (item, callback) {
+    $.ajax({
+      url: '/api/review/annotation/' + item.id,
+      contentType: 'application/json',
+      type: 'PUT',
+      data: JSON.stringify(item),
+    }).done(function (data) {
+      toastr.success("Saved");
+      callback(JSON.parse(data));
+    }).fail(function (data) {
+      console.error(data);
+      swal({
+        title: '',
+        text: 'Failed to update review, please check network.',
+        type: 'error',
+      });
+    })
+  },
 };
 
 const Event = {
@@ -524,13 +542,17 @@ const Event = {
 const Modal = {
   el: null,
   state: {
+    mode: 'annotation', // annotation, review
     step: 1,
     open: false,
     annotation_item: {},
     max_attribute: 11,
   },
-  init: function () {
+  init: function (mode) {
     this.el = $('#modal');
+    if (mode) {
+      this.state.mode = mode;
+    }
     this.el.modal({
       show: false,
     });
@@ -555,7 +577,11 @@ const Modal = {
     });
 
     $('#modal-save-btn').click(function () {
-      Modal.save();
+      if (mode === 'review') {
+        Modal.save_review();
+      } else {
+        Modal.save();
+      }
       Modal.el.modal('hide');
     });
   },
@@ -629,7 +655,7 @@ const Modal = {
 
       let memo_reason = basket[attribute_key].memo;
       if (memo_reason) {
-        memo_reason = 'Memo: '+ memo_reason + ', Reason: ' + basket[attribute_key].reason;
+        memo_reason = 'Memo: ' + memo_reason + ', Reason: ' + basket[attribute_key].reason;
       }
       else memo_reason += 'Reason: ' + basket[attribute_key].reason;
 
@@ -772,20 +798,17 @@ const Modal = {
     const annotation_type = this.state.annotation_item.type;
     for (let i = 1; i <= this.state.max_attribute; i++) {
       const attribute_id = 'attribute' + i;
-      const value = $('#' + attribute_id + '-val').html().trim().split(' ').join('_');
+      const value = $('#' + attribute_id + '-review-val').html().trim().split(' ').join('_');
       const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
-      this.state.annotation_item.basket[attribute_key].value = value;
-
-      const memo = $('#' + attribute_id + '-memo').val();
-      const reason = $('#' + attribute_id + '-reason').val();
-
-      this.state.annotation_item.basket[attribute_key].memo = memo;
-      this.state.annotation_item.basket[attribute_key].reason = reason;
+      const attribute_review_key = attribute_key + '-review';
+      this.state.annotation_item.basket[attribute_review_key] = {
+        initial_value: this.state.annotation_item.basket[attribute_key].value,
+        value: value,
+      }
     }
-
-    API.put_annotation(this.state.annotation_item, function () {
-      Annotation.update(Modal.state.annotation_item.id, Modal.state.annotation_item);
-      Renderer.render_table();
+    API.put_review_annotation(this.state.annotation_item, function () {
+      // Annotation.update(Modal.state.annotation_item.id, Modal.state.annotation_item);
+      // Renderer.render_table();
     });
   },
   change_type: function (type) {
