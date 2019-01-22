@@ -650,18 +650,25 @@ const Modal = {
       const attribute_id = 'attribute' + i;
 
       const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
-      let value = basket[attribute_key].value;
-      if (!value) value = basket[attribute_key].initial_value;
+      const attribute_review_key = attribute_key + '-review';
 
-      let memo_reason = basket[attribute_key].memo;
-      if (memo_reason) {
-        memo_reason = 'Memo: ' + memo_reason + ', Reason: ' + basket[attribute_key].reason;
+      let value = '', review_value = '';
+      if (attribute_review_key in basket) {
+        value = basket[attribute_key].value;
+        review_value = basket[attribute_review_key].value;
+      } else {
+        value = basket[attribute_key].value;
+        review_value = basket[attribute_key].value;
       }
-      else memo_reason += 'Reason: ' + basket[attribute_key].reason;
+
+      let memo_reason = 'Memo: ';
+      if (basket[attribute_key].memo) memo_reason += basket[attribute_key].memo;
+      memo_reason += ' Reason: ';
+      if (basket[attribute_key].reason) memo_reason += basket[attribute_key].reason;
 
       $('#' + attribute_id).html(value.split('_').join(' ')).attr('title', memo_reason);
 
-      $('#' + attribute_id + '-review-val').html(value.split('_').join(' '));
+      $('#' + attribute_id + '-review-val').html(review_value.split('_').join(' '));
       $('#' + attribute_id + '-review .dropdown-item').removeClass('active');
       $('#' + attribute_id + '-review .dropdown-item[data-value="' + value + '"]').addClass('active');
     }
@@ -804,11 +811,13 @@ const Modal = {
       this.state.annotation_item.basket[attribute_review_key] = {
         initial_value: this.state.annotation_item.basket[attribute_key].value,
         value: value,
+        memo: '',
+        reason: '',
       }
     }
     API.put_review_annotation(this.state.annotation_item, function () {
-      // Annotation.update(Modal.state.annotation_item.id, Modal.state.annotation_item);
-      // Renderer.render_table();
+      Annotation.update(Modal.state.annotation_item.id, Modal.state.annotation_item);
+      Renderer.render_table();
     });
   },
   change_type: function (type) {

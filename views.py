@@ -345,6 +345,12 @@ def get_review_annotation(user_id, doc_id):
 
     data = []
     for annotation in annotations:
+        try:
+            annotation_review = AnnotationReview.objects().get(annotation=annotation, user=g.user)
+            annotation.basket = {**annotation.basket, **annotation_review.basket}
+        except AnnotationReview.DoesNotExist:
+            pass
+
         data.append(annotation.dump())
 
     return json.dumps({
