@@ -66,6 +66,7 @@ app.add_url_rule('/review/<user_id>', view_func=views.review_index_page, methods
 app.add_url_rule('/review/<user_id>/doc/<doc_id>', view_func=views.review_doc_page, methods=['GET'])
 app.add_url_rule('/api/review/<user_id>/doc/<doc_id>/annotation', view_func=views.get_review_annotation, methods=['GET'])
 app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.put_review_annotation, methods=['PUT'])
+app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.delete_review_annotation, methods=['DELETE'])
 
 if __name__ == '__main__':
     FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)

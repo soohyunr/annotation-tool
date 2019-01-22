@@ -358,7 +358,7 @@ def get_review_annotation(user_id, doc_id):
     })
 
 
-# @is_admin
+@is_admin
 def put_review_annotation(annotation_id):
     data = request.get_json()
     basket = data['basket']
@@ -387,3 +387,15 @@ def put_review_annotation(annotation_id):
     return json.dumps({
         'annotation': annotation.dump(),
     })
+
+
+@is_admin
+def delete_review_annotation(annotation_id):
+    try:
+        annotation = Annotation.objects().get(id=annotation_id)
+        annotation_review = AnnotationReview.objects().get(annotation=annotation, user=g.user)
+        annotation_review.delete()
+    except AnnotationReview.DoesNotExist:
+        return Response('not found', status=404)
+
+    return Response('success', status=200)
