@@ -251,6 +251,21 @@ const Annotation = {
       }
     }
   },
+  remove_review: function (annotation_id) {
+    for (let i = 0; i < this.data.length; i++) {
+      const item = this.data[i];
+      if (item.id === annotation_id) {
+        const new_basket = JSON.parse(JSON.stringify(item.basket));
+        for (let key in item.basket) {
+          if (key.indexOf('-review') >= 0) {
+            delete new_basket[key];
+          }
+        }
+        this.data[i].basket = new_basket;
+        break;
+      }
+    }
+  },
   random: function (range) {
     return Math.floor(Math.random() * range);
   }
@@ -325,6 +340,22 @@ const API = {
       });
     })
   },
+  delete_review_annotation: function (annotation_id, callback) {
+    $.ajax({
+      url: '/api/review/annotation/' + annotation_id,
+      type: 'DELETE',
+    }).done(function () {
+      toastr.success("Review was deleted");
+      callback();
+    }).fail(function (data) {
+      console.error(data);
+      swal({
+        title: '',
+        text: 'Failed to delete annotation, please check network.',
+        type: 'error',
+      });
+    })
+  },
   put_annotation: function (item, callback) {
     $.ajax({
       url: '/api/annotation/' + item.id,
@@ -350,7 +381,7 @@ const API = {
       type: 'PUT',
       data: JSON.stringify(item),
     }).done(function (data) {
-      toastr.success("Saved");
+      toastr.success("Review was saved");
       callback(JSON.parse(data));
     }).fail(function (data) {
       console.error(data);
@@ -569,12 +600,21 @@ const Modal = {
 
     $('#modal-delete-btn').click(function () {
       const annotation_id = Modal.state.annotation_item.id;
-      API.delete_annotation(Modal.state.annotation_item.id, function () {
-        Annotation.remove(annotation_id);
-        Renderer.render_table();
-        Modal.el.modal('hide');
-      });
+      if (mode === 'review') {
+        API.delete_review_annotation(Modal.state.annotation_item.id, function () {
+          Annotation.remove_review(annotation_id);
+          Renderer.render_table();
+          Modal.el.modal('hide');
+        });
+      } else {
+        API.delete_annotation(Modal.state.annotation_item.id, function () {
+          Annotation.remove(annotation_id);
+          Renderer.render_table();
+          Modal.el.modal('hide');
+        });
+      }
     });
+    // delete_review_annotation
 
     $('#modal-save-btn').click(function () {
       if (mode === 'review') {
