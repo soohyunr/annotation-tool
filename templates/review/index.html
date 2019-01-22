@@ -32,7 +32,6 @@
             <th scope="col">#</th>
             <th>title</th>
             <th>progress</th>
-            <th>annotation count</th>
             <th>upload status</th>
         </tr>
         </thead>
@@ -43,15 +42,19 @@
                 {{doc_map[id].doc.seq}}
             </td>
             <td>
-                <a href="/doc/{{doc_map[id].doc.id}}">
+                <a href="/review/{{user.id}}/doc/{{doc_map[id].doc.id}}">
                     {{doc_map[id].doc.title}}
                 </a>
             </td>
             <td>
-                {{doc_map[id].annotation_sent_total}}/{{doc_map[id].sent_total}}
-            </td>
-            <td>
-                {{doc_map[id].annotation_total}}
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: {{doc_map[id].progress}}%;"
+                         aria-valuenow="{{doc_map[id].progress}}"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div style="margin-top: 5px;">
+                    {{doc_map[id].annotation_sent_total}}/{{doc_map[id].sent_total}}
+                </div>
             </td>
             <td id="{{doc_map[id].doc.id}}">
             </td>
@@ -73,7 +76,7 @@
       let page_number = $('#page-number').val();
       if (!page_number) page_number = 1;
       location.assign('/?p=' + page_number);
-    })
+    });
   });
 </script>
 </body>

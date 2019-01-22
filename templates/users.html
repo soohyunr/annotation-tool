@@ -19,6 +19,7 @@
             <th>last_ip</th>
             <th>is_active</th>
             <th>annotation_count</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -51,6 +52,11 @@
             </td>
             <td>
                 {{user.annotation_count}}
+            </td>
+            <td>
+                <a href="/review/{{user.id}}">
+                    <button type="button" class="btn btn-light">review</button>
+                </a>
             </td>
         </tr>
         {% endfor %}
