@@ -27,21 +27,17 @@
 
 <!-- for review -->
 <script type='text/template' id='attribute-review-input-group-template'>
-    <div class="input-group attribute-input-group row pb-2" style="border-bottom: none;">
+    <div class="input-group attribute-input-group row pb-2" style="border-bottom: none;padding-bottom: 0 !important;">
         <div class="input-group-prepend">
             <span class="input-group-text"><%title%>:</span>
         </div>
-        <div class="dropdown attribute" id="<%attribute%>">
-
-        </div>
-        <div class="input-group">
-            <div id="<%attribute%>-memo-reason" style="padding-left: 13px; font-size: 14px; color: #757474;">
-            </div>
-        </div>
+        <span class="memo-reason-tooltip" id="<%attribute%>" data-html="true" data-toggle="tooltip" title="" data-placement="top"
+             style="padding-top: 7px;padding-left: 9px;color: #495057;cursor: pointer;">
+        </span>
     </div>
-    <div class="input-group attribute-input-group row pb-2" style="margin-top: -5px;">
+    <div class="input-group attribute-input-group row pb-2" style="margin-top: -5px;padding-bottom: 0 !important;">
         <div class="input-group-prepend">
-            <span class="input-group-text">↳ Review:</span>
+            <span class="input-group-text" style="opacity: 0;"><%title%>:</span>
         </div>
         <div class="dropdown attribute" id="<%attribute%>-review">
             <button class="btn btn-sm dropdown-toggle" type="button" id="<%attribute%>-review-val"

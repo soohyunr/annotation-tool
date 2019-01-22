@@ -470,7 +470,7 @@ const Event = {
       Modal.set_annotation_item(annotation_item);
       Modal.show_review();
       Modal.state.step = 0;
-      Modal.next_step();
+      Modal.next_review_step();
     });
   },
   listen_tooltip: function () {
@@ -561,8 +561,6 @@ const Modal = {
   },
   next_step() {
     if (this.state.step === this.state.max_attribute) {
-      // modal.save();
-      // modal.el.modal('hide');
       return;
     }
     const step = this.state.step + 1;
@@ -578,6 +576,24 @@ const Modal = {
     $('#attribute' + step).parents('.input-group').find('.input-group-text').addClass('text-primary');
     $('.dropdown-toggle').removeClass('text-primary');
     $('#attribute' + step + '-val').addClass('text-primary');
+  },
+  next_review_step() {
+    if (this.state.step === this.state.max_attribute) {
+      return;
+    }
+    const step = this.state.step + 1;
+
+    setTimeout(function () {
+      $('#attribute' + step + '-review-val').click();
+      setTimeout(function () {
+        $('#attribute' + step + '-review .active').focus();
+      }, 100);
+    }, 200);
+
+    $('.input-group-text').removeClass('text-primary');
+    $('#attribute' + step + '-review').parents('.input-group').find('.input-group-text').addClass('text-primary');
+    $('.dropdown-toggle').removeClass('text-primary');
+    $('#attribute' + step + '-review-val').addClass('text-primary');
   },
   set_annotation_item: function (annotation_item) {
     this.state.annotation_item = annotation_item;
@@ -601,6 +617,30 @@ const Modal = {
       $('#' + attribute_id + ' .dropdown-item[data-value="' + value + '"]').addClass('active');
     }
   },
+  load_review_attributes: function () {
+    const annotation_type = this.state.annotation_item.type;
+    const basket = this.state.annotation_item.basket;
+    for (let i = 1; i <= this.state.max_attribute; i++) {
+      const attribute_id = 'attribute' + i;
+
+      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
+      let value = basket[attribute_key].value;
+      if (!value) value = basket[attribute_key].initial_value;
+
+      let memo_reason = basket[attribute_key].memo;
+      if (memo_reason) {
+        memo_reason = 'Memo: '+ memo_reason + ', Reason: ' + basket[attribute_key].reason;
+      }
+      else memo_reason += 'Reason: ' + basket[attribute_key].reason;
+
+      $('#' + attribute_id).html(value.split('_').join(' ')).attr('title', memo_reason);
+
+      $('#' + attribute_id + '-review-val').html(value.split('_').join(' '));
+      $('#' + attribute_id + '-review .dropdown-item').removeClass('active');
+      $('#' + attribute_id + '-review .dropdown-item[data-value="' + value + '"]').addClass('active');
+    }
+    $('.memo-reason-tooltip').tooltip('update');
+  },
   show: function () {
     this.set_header();
     this.el.modal('show');
@@ -611,13 +651,13 @@ const Modal = {
     this.load_attributes();
   },
   show_review: function () {
-    this.set_header();
+    this.set_review_header();
     this.el.modal('show');
 
     const annotation_type = this.state.annotation_item.type;
     this.change_type(annotation_type);
     this.render_review_input(annotation_type);
-    // this.load_attributes();
+    this.load_review_attributes();
   },
   render_input: function (type) {
     $('#col1').html('');
@@ -681,16 +721,23 @@ const Modal = {
         $('#' + key + '-review .dropdown-menu').append(button_template);
       }
     }
-    this.input_listen();
+    this.input_review_listen();
   },
   set_header: function () {
     const type = this.state.annotation_item.type;
     let title = 'Event: ' + this.state.annotation_item.target_text;
     if (type === 'sentence') {
-      title = 'Sentence' + this.state.annotation_item.index;
+      title = 'Sentence ' + this.state.annotation_item.index;
     }
-
     this.el.find('.modal-title').html(title);
+  },
+  set_review_header: function () {
+    const type = this.state.annotation_item.type;
+    let title = 'Event: ' + this.state.annotation_item.target_text;
+    if (type === 'sentence') {
+      title = 'Sentence ' + this.state.annotation_item.index;
+    }
+    this.el.find('.modal-title').html(title + ' Review');
   },
   set_position: function (left, top) {
     const window_width = document.body.clientWidth;
@@ -702,6 +749,26 @@ const Modal = {
     this.el.css('top', top + 50);
   },
   save: function () {
+    const annotation_type = this.state.annotation_item.type;
+    for (let i = 1; i <= this.state.max_attribute; i++) {
+      const attribute_id = 'attribute' + i;
+      const value = $('#' + attribute_id + '-val').html().trim().split(' ').join('_');
+      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
+      this.state.annotation_item.basket[attribute_key].value = value;
+
+      const memo = $('#' + attribute_id + '-memo').val();
+      const reason = $('#' + attribute_id + '-reason').val();
+
+      this.state.annotation_item.basket[attribute_key].memo = memo;
+      this.state.annotation_item.basket[attribute_key].reason = reason;
+    }
+
+    API.put_annotation(this.state.annotation_item, function () {
+      Annotation.update(Modal.state.annotation_item.id, Modal.state.annotation_item);
+      Renderer.render_table();
+    });
+  },
+  save_review: function () {
     const annotation_type = this.state.annotation_item.type;
     for (let i = 1; i <= this.state.max_attribute; i++) {
       const attribute_id = 'attribute' + i;
@@ -756,6 +823,22 @@ const Modal = {
 
       Modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-val', ''));
       Modal.next_step();
+    });
+  },
+  input_review_listen: function () {
+    $('.dropdown-item').click(function () {
+      const dropdown = $(this).parents('.dropdown');
+      const attribute_id = dropdown.attr('id');
+      const dropdown_toggle = dropdown.find('.dropdown-toggle');
+      const value = $(this).attr('data-value');
+
+      dropdown.find('.dropdown-toggle').html(value.split('_').join(' '));
+
+      $('#' + attribute_id + '-review .dropdown-item').removeClass('active');
+      $('#' + attribute_id + '-review .dropdown-item[data-value="' + value + '"]').addClass('active');
+
+      Modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-review-val', ''));
+      Modal.next_review_step();
     });
   },
 };
