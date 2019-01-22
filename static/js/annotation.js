@@ -987,6 +987,9 @@ const Renderer = {
         if (Annotation.is_empty_basket(annotation_item.basket)) {
           badge_type = 'secondary';
         }
+        if (Annotation.has_review(annotation_item)) {
+          badge_type = 'dark';
+        }
         sent_markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation_item.id + '" ';
         sent_markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation_item) + '">';
         sent_markup += sent_col + '</span>';
