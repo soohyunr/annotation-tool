@@ -64,7 +64,8 @@ app.add_url_rule('/api/mturk/upload', view_func=views.post_mturk_upload, methods
 # for review
 app.add_url_rule('/review/<user_id>', view_func=views.review_index_page, methods=['GET'])
 app.add_url_rule('/review/<user_id>/doc/<doc_id>', view_func=views.review_doc_page, methods=['GET'])
+app.add_url_rule('/api/review/<user_id>/doc/<doc_id>/annotation', view_func=views.get_review_annotation, methods=['GET'])
 
 if __name__ == '__main__':
-    FLASK_DEBUG = os.getenv('FLASK_DEBUG', False)
+    FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
     app.run(host='0.0.0.0', debug=FLASK_DEBUG, port=8081)

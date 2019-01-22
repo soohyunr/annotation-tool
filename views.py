@@ -308,11 +308,13 @@ def review_index_page(user_id):
         doc = annotation.doc
 
         if not (doc.id in doc_map):
+            sent_total = Sent.objects(doc=doc).count()
+            annotation_sent_total = Annotation.objects(doc=doc, user=user, type='sentence').count()
             doc_map[doc.id] = {
                 'doc': doc,
-                'sent_total': Sent.objects(doc=doc).count(),
-                'annotation_sent_total': Annotation.objects(doc=doc, user=user, type='sentence').count(),
-                'annotation_total': Annotation.objects(doc=doc, user=user).count()
+                'sent_total': sent_total,
+                'annotation_sent_total': annotation_sent_total,
+                'progress': annotation_sent_total / sent_total * 100,
             }
 
     return render_template('review/index.html', doc_map=doc_map, user=user, g=g)
@@ -321,7 +323,7 @@ def review_index_page(user_id):
 @is_admin
 def review_doc_page(user_id, doc_id):
     try:
-        doc = Doc.objects.get(seq=doc_id)
+        doc = Doc.objects.get(id=doc_id)
         user = User.objects.get(id=user_id)
     except Exception as e:
         return redirect('/404')
@@ -329,4 +331,22 @@ def review_doc_page(user_id, doc_id):
     doc_log = DocLog(user=user, doc=doc, ip=request.remote_addr)
     doc_log.save()
 
-    return render_template('doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+    return render_template('review/doc.html', doc=doc, annotator=user, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+
+
+@is_admin
+def get_review_annotation(user_id, doc_id):
+    try:
+        doc = Doc.objects.get(id=doc_id)
+        user = User.objects.get(id=user_id)
+    except Exception as e:
+        return redirect('/404')
+    annotations = Annotation.objects(doc=doc, user=user)
+
+    data = []
+    for annotation in annotations:
+        data.append(annotation.dump())
+
+    return json.dumps({
+        'annotations': data,
+    })

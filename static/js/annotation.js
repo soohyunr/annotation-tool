@@ -282,6 +282,15 @@ const API = {
       callback(JSON.parse(data));
     })
   },
+  get_review_annotation: function (callback) {
+    const doc_id = $('#doc_id').val();
+    const annotator_id = $('#annotator_id').val();
+    $.get({
+      url: '/api/review/' + annotator_id + '/doc/' + doc_id + '/annotation',
+    }).done(function (data) {
+      callback(JSON.parse(data));
+    })
+  },
   post_annotation: function (item, callback) {
     item.doc = $('#doc_id').val();
     $.ajax({
@@ -452,6 +461,18 @@ const Event = {
       Modal.next_step();
     });
   },
+  listen_annotation_review_badge: function () {
+    $('.annotation-badge').click(function (e) {
+      const annotation_id = $(this).attr('data-id');
+      const annotation_item = Annotation.find_by_id(annotation_id);
+
+      Modal.set_position(e.pageX, e.pageY);
+      Modal.set_annotation_item(annotation_item);
+      Modal.show_review();
+      Modal.state.step = 0;
+      Modal.next_step();
+    });
+  },
   listen_tooltip: function () {
     $('[data-toggle="tooltip"]').tooltip();
     // $('[data-toggle="tooltip"]').tooltip('show');
@@ -584,11 +605,19 @@ const Modal = {
     this.set_header();
     this.el.modal('show');
 
-
     const annotation_type = this.state.annotation_item.type;
     this.change_type(annotation_type);
     this.render_input(annotation_type);
     this.load_attributes();
+  },
+  show_review: function () {
+    this.set_header();
+    this.el.modal('show');
+
+    const annotation_type = this.state.annotation_item.type;
+    this.change_type(annotation_type);
+    this.render_review_input(annotation_type);
+    // this.load_attributes();
   },
   render_input: function (type) {
     $('#col1').html('');
@@ -618,6 +647,38 @@ const Modal = {
         button_template = button_template.replace('<%value_space%>', option);
 
         $('#' + key + ' .dropdown-menu').append(button_template);
+      }
+    }
+    this.input_listen();
+  },
+  render_review_input: function (type) {
+    $('#col1').html('');
+    $('#col2').html('');
+
+    let attributes = Annotation.attributes[type];
+    for (let key in attributes) {
+      let title = attributes[key].title;
+      let options = attributes[key].options;
+      let order = attributes[key].order;
+
+      let input_group_template = $('#attribute-review-input-group-template').html();
+
+      input_group_template = input_group_template.split('<%attribute%>').join(key);
+      input_group_template = input_group_template.split('<%title%>').join(title);
+
+      if (order <= 6) {
+        $('#col1').append(input_group_template);
+      } else {
+        $('#col2').append(input_group_template);
+      }
+
+      for (let i = 0; i < options.length; i++) {
+        let option = options[i];
+        let button_template = $('#attribute-button-template').html();
+        button_template = button_template.replace('<%value%>', option.split(' ').join('_'));
+        button_template = button_template.replace('<%value_space%>', option);
+
+        $('#' + key + '-review .dropdown-menu').append(button_template);
       }
     }
     this.input_listen();
@@ -702,6 +763,10 @@ const Modal = {
 const Renderer = {
   state: {
     sents: [],
+    mode: 'annotation', // annotation, review,
+  },
+  set_mode: function (mode) {
+    this.state.mode = mode;
   },
   load_annotation_and_render_table: function () {
     API.get_annotation(function (data) {
@@ -771,7 +836,13 @@ const Renderer = {
       let ratio = (target_sent.index - target_sent.min + 1) / (target_sent.max - target_sent.min + 1) * 100;
       $('.progress-bar').css('width', ratio + '%');
     }
-    Event.listen_annotation_badge();
+
+    if (this.state.mode === 'review') {
+      Event.listen_annotation_review_badge();
+    } else {
+      Event.listen_annotation_badge();
+    }
+
     Event.listen_tooltip();
   },
   render_markup_sentence: function (index, text, annotations) {

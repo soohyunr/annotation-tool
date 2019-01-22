@@ -5,25 +5,21 @@
 <body>
 {% include 'base/navbar.html' %}
 <div class="container">
-    <div class="header">
-        <h4>
-            {% if doc.seq != 1 %}
-            <a href="/doc/{{doc['seq']-1}}">
+    <div class="header" style="margin-top: 20px; margin-bottom: 30px;">
+        <h3>
+            <a href="/review/{{annotator.id}}">
                 <i class="fas fa-chevron-left"></i>
-            </a>
-            {% endif %}
-
-            #{{doc.seq}} {{doc['title']}}
-            <a href="/doc/{{doc['seq']+1}}">
-                <i class="fas fa-chevron-right"></i>
-            </a>
+            </a>Annotation Review
             <button type="button"
                     id="view-mode-btn"
                     style="float:right; margin-top: -5px;"
                     class="btn btn-light">
                 <i class="fas fa-exchange-alt"></i> <span>sentence mode</span>
             </button>
-        </h4>
+        </h3>
+        <h6 style="margin-top: 15px;">
+            Annotator: {{annotator.first_name}} {{annotator.last_name}}, Document: #{{doc.seq}} {{doc['title']}}
+        </h6>
     </div>
 
     <form id="doc-upload-form">
@@ -51,6 +47,7 @@
     </div>
 </div>
 <input type="hidden" id="doc_id" value="{{doc.id}}"/>
+<input type="hidden" id="annotator_id" value="{{annotator.id}}"/>
 <input type="hidden" id="ENCRYPTION_KEY" value="{{ENCRYPTION_KEY}}"/>
 {% include 'base/script.html' %}
 {% include 'base/doc_template.html' %}
@@ -59,10 +56,11 @@
 
 <script>
   $(document).ready(function () {
-    Event.selection_listen();
     Event.listen_view_mode();
     Event.listen_key();
+    Event.listen_annotation_review_badge();
 
+    Renderer.set_mode('review');
     TextReader.listen();
 
     API.get_doc_by_local('', function (data) {
@@ -75,7 +73,10 @@
         Event.state.target_sent.index = sents[0]['index'];
         Event.state.target_sent.max = sents[sents.length - 1]['index'];
 
-        Renderer.load_annotation_and_render_table();
+        API.get_review_annotation(function (data) {
+          Annotation.data = data['annotations'];
+          Renderer.render_table();
+        });
       }
     });
     Modal.init();

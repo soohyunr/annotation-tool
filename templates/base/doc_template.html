@@ -25,6 +25,34 @@
     </div>
 </script>
 
+<!-- for review -->
+<script type='text/template' id='attribute-review-input-group-template'>
+    <div class="input-group attribute-input-group row pb-2" style="border-bottom: none;">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><%title%>:</span>
+        </div>
+        <div class="dropdown attribute" id="<%attribute%>">
+
+        </div>
+        <div class="input-group">
+            <div id="<%attribute%>-memo-reason" style="padding-left: 13px; font-size: 14px; color: #757474;">
+            </div>
+        </div>
+    </div>
+    <div class="input-group attribute-input-group row pb-2" style="margin-top: -5px;">
+        <div class="input-group-prepend">
+            <span class="input-group-text">↳ Review:</span>
+        </div>
+        <div class="dropdown attribute" id="<%attribute%>-review">
+            <button class="btn btn-sm dropdown-toggle" type="button" id="<%attribute%>-review-val"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu" aria-labelledby="<%attribute%>-val">
+            </div>
+        </div>
+    </div>
+</script>
+
 <script type='text/template' id='attribute-button-template'>
     <button class="dropdown-item" type="button" data-value="<%value%>">
         <%value_space%>
