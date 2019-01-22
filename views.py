@@ -315,6 +315,8 @@ def review_index_page(user_id):
                 'sent_total': sent_total,
                 'annotation_sent_total': annotation_sent_total,
                 'progress': annotation_sent_total / sent_total * 100,
+                'annotation_total': Annotation.objects(doc=doc, user=user).count(),
+                'review_total': AnnotationReview.objects(doc=doc, user=g.user).count(),
             }
 
     return render_template('review/index.html', doc_map=doc_map, user=user, g=g)
@@ -377,6 +379,7 @@ def put_review_annotation(annotation_id):
         if '-review' in key:
             review_basket[key] = basket[key]
 
+    annotation_review.doc = annotation.doc
     annotation_review.ip = request.remote_addr
     annotation_review.basket = review_basket
     annotation_review.updated_at = datetime.datetime.now

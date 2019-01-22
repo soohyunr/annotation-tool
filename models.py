@@ -150,6 +150,7 @@ class Annotation(db.Document):
 
 
 class AnnotationReview(db.Document):
+    doc = db.ReferenceField(Doc)
     annotation = db.ReferenceField(Annotation)
     user = db.ReferenceField(User)
     basket = db.DictField()

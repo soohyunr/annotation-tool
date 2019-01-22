@@ -31,7 +31,8 @@
         <tr>
             <th scope="col">#</th>
             <th>title</th>
-            <th>progress</th>
+            <th>annotation progress</th>
+            <th>my review</th>
             <th>upload status</th>
         </tr>
         </thead>
@@ -55,6 +56,9 @@
                 <div style="margin-top: 5px;">
                     {{doc_map[id].annotation_sent_total}}/{{doc_map[id].sent_total}}
                 </div>
+            </td>
+            <td>
+                {{doc_map[id].review_total}}/{{doc_map[id].annotation_total}}
             </td>
             <td id="{{doc_map[id].doc.id}}">
             </td>
