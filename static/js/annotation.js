@@ -266,6 +266,14 @@ const Annotation = {
       }
     }
   },
+  has_review: function (annotation) {
+    for (let key in annotation.basket) {
+      if (key.indexOf('-review') >= 0) {
+        return true;
+      }
+    }
+    return false;
+  },
   random: function (range) {
     return Math.floor(Math.random() * range);
   }
@@ -731,6 +739,13 @@ const Modal = {
     this.change_type(annotation_type);
     this.render_review_input(annotation_type);
     this.load_review_attributes();
+
+    // whether to show delete button or not
+    if (Annotation.has_review(this.state.annotation_item)) {
+      $('#modal-delete-btn').show();
+    } else {
+      $('#modal-delete-btn').hide();
+    }
   },
   render_input: function (type) {
     $('#col1').html('');
