@@ -305,7 +305,11 @@ def review_index_page(user_id):
     annotations = Annotation.objects(user=user).order_by('-created_at')
 
     for annotation in annotations:
-        doc = annotation.doc
+        try:
+            # for situation in which the annotated document was deleted
+            doc = annotation.doc
+        except Exception:
+            continue
 
         if not (doc.id in doc_map):
             sent_total = Sent.objects(doc=doc).count()
