@@ -69,5 +69,5 @@ app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.put_r
 app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.delete_review_annotation, methods=['DELETE'])
 
 if __name__ == '__main__':
-    FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
+    FLASK_DEBUG = os.getenv('FLASK_DEBUG', False)
     app.run(host='0.0.0.0', debug=FLASK_DEBUG, port=8081)
