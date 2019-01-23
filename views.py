@@ -7,6 +7,7 @@ from models import Doc, User, Sent, Annotation, DocLog, AnnotationReview
 from decorator import login_required, is_admin
 import config
 from tqdm import tqdm
+import utils
 
 
 @login_required
@@ -353,7 +354,7 @@ def get_review_annotation(user_id, doc_id):
     for annotation in annotations:
         try:
             annotation_review = AnnotationReview.objects().get(annotation=annotation, user=g.user)
-            annotation.basket = {**annotation.basket, **annotation_review.basket}
+            annotation.basket = utils.merge_dict(annotation.basket, annotation_review.basket)
         except AnnotationReview.DoesNotExist:
             pass
 
@@ -389,7 +390,7 @@ def put_review_annotation(annotation_id):
     annotation_review.updated_at = datetime.datetime.now
     annotation_review.save()
 
-    annotation.basket = {**annotation.basket, **review_basket}
+    annotation.basket = utils.merge_dict(annotation.basket, review_basket)
 
     return json.dumps({
         'annotation': annotation.dump(),
