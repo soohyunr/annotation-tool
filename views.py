@@ -112,19 +112,19 @@ def post_annotation():
 
     target_sent = Sent.objects().get(doc=doc, index=index)
 
-    annotation = Annotation(
-        doc=doc,
-        sent=sent,
-        user=user,
-        type=type,
-        index=index,
-        anchor_offset=anchor_offset,
-        focus_offset=focus_offset,
-        entire_text=target_sent.text,
-        target_text=target_text,
-        basket=basket,
-        ip=request.remote_addr
-    )
+    annotations = Annotation.objects.filter(doc=doc, sent=sent, index=index, user=g.user, type=type, anchor_offset=anchor_offset)
+    if annotations.count() > 0:
+        annotation = annotations[0]
+    else:
+        annotation = Annotation(doc=doc, sent=sent, user=user, index=index, type=type, anchor_offset=anchor_offset)
+
+    annotation.anchor_offset = anchor_offset
+    annotation.focus_offset = focus_offset
+    annotation.entire_text = target_sent.text
+    annotation.target_text = target_text
+    annotation.basket = basket
+    annotation.ip = request.remote_addr
+
     annotation.save()
 
     return json.dumps({
@@ -133,9 +133,11 @@ def post_annotation():
 
 
 def get_annotation(doc_id):
-    doc = Doc.objects().get(id=doc_id)
-    annotations = Annotation.objects(doc=doc, user=g.user)
-
+    try:
+        doc = Doc.objects().get(id=doc_id)
+        annotations = Annotation.objects(doc=doc, user=g.user)
+    except Exception as e:
+        return Response('not found', status=404)
     data = []
     for annotation in annotations:
         data.append(annotation.dump())
@@ -146,7 +148,11 @@ def get_annotation(doc_id):
 
 
 def delete_annotation(annotation_id):
-    annotation = Annotation.objects().get(id=annotation_id)
+    try:
+        annotation = Annotation.objects().get(id=annotation_id)
+    except Annotation.DoesNotExist:
+        return Response('not found', status=404)
+
     if annotation.user.id != g.user.id:
         return Response('permission error', status=403)
     annotation.delete()
@@ -156,7 +162,10 @@ def delete_annotation(annotation_id):
 def put_annotation(annotation_id):
     data = request.get_json()
     basket = data['basket']
-    annotation = Annotation.objects().get(id=annotation_id)
+    try:
+        annotation = Annotation.objects().get(id=annotation_id)
+    except Exception:
+        return Response('not found', status=404)
     if annotation.user.id != g.user.id:
         return Response('permission error', status=403)
     annotation.basket = basket
