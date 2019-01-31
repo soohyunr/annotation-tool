@@ -156,7 +156,7 @@
         if (Annotation.is_empty_basket(annotation_item.basket)) continue;
         completed++;
       }
-      if (completed !== Renderer.state.sents.length) {
+      if (completed < Renderer.state.sents.length) {
         swal({
           title: '',
           text: 'Please annotate on all sentences. (Current status: ' + completed + '/' + Renderer.state.sents.length + ')',
