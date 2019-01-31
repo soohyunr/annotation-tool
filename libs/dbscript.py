@@ -2,7 +2,7 @@ import os, json
 
 from mongoengine import connect
 
-from models import Doc, User, Sent
+from models import Doc, User, Sent,Annotation
 import config
 
 
@@ -135,13 +135,37 @@ def generate_encrypted_files():
         generate_encrypted_file(seq_id=doc.seq)
 
 
+def delete_duplicate_annotations():
+    annotations = Annotation.objects().all()
+
+    progress = 0
+    total = annotations.count()
+    for annotation in annotations:
+        progress += 1
+        print('progress {}/{}'.format(progress, total))
+
+        targets = Annotation.objects.filter(
+            doc=annotation.doc,
+            sent=annotation.sent,
+            index=annotation.index,
+            user=annotation.user,
+            type=annotation.type,
+            anchor_offset=annotation.anchor_offset)
+
+        if targets.count() >= 2:
+            print('count >= 2! :', targets.count())
+            if targets[0].id != annotation.id:
+                targets[0].delete()
+            else:
+                targets[1].delete()
+
 
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
-    db_backup('before review')
-
+    # db_backup('before remove duplicate annotations')
+    # delete_duplicate_annotations()
     # generate_encrypted_files()
 
     # delete_doc('5c3c3975995fc1ab555950ea')
