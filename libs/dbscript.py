@@ -121,9 +121,11 @@ def generate_encrypted_file(seq_id):
         for (c1, c2) in zip(s1, cycle(s2)):
             result.append(str(ord(c1) ^ ord(c2)))
         return ",".join(result)
-
-    doc = Doc.objects().get(seq=seq_id)
-    sents = Sent.objects(doc=doc).order_by('index')
+    try:
+        doc = Doc.objects().get(seq=seq_id)
+        sents = Sent.objects(doc=doc).order_by('index')
+    except Exception:
+        return
 
     data = {
         'doc_id': str(doc.id),
@@ -144,7 +146,7 @@ def generate_encrypted_file(seq_id):
 
 def generate_encrypted_files():
     docs = Doc.objects().all()
-    for doc in docs:
+    for doc in tqdm(docs):
         generate_encrypted_file(seq_id=doc.seq)
 
 
@@ -216,6 +218,6 @@ if __name__ == '__main__':
     # delete_duplicate_annotations()
     # change_all_attribute_key()
     # doc_migration()
-    # generate_encrypted_files()
+    generate_encrypted_files()
 
     # delete_doc('5c3c3975995fc1ab555950ea')

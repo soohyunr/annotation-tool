@@ -1019,6 +1019,9 @@ const Renderer = {
     Event.listen_tooltip();
   },
   render_markup_sentence: function (index, text, annotations) {
+    text = text.split('<').join('&lt;');
+    text = text.split('>').join('&gt;');
+
     const start = {}, end = {};
     for (let i = 0; i < annotations.length; i++) {
       const item = annotations[i];
