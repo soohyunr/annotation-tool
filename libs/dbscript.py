@@ -8,7 +8,14 @@ import config
 
 
 def insert_doc(title, text, source):
-    doc = Doc(title=title, text=text, source=source)
+    try:
+        doc = Doc.objects.get(title=title)
+        print('already exist -> pass')
+        return
+    except Doc.DoesNotExist:
+        pass
+
+    doc = Doc(title=title, text=text, source=source, type='v2')
     total = Doc.objects.count()
     doc.seq = total + 1
     doc.save()
@@ -42,14 +49,19 @@ def insert_dataset(dirname, source):
     dir_path = os.path.abspath(os.path.dirname(__file__) + '/../data/{}'.format(dirname))
     filenames = os.listdir(dir_path)
 
-    for filename in filenames:
+    for filename in tqdm(filenames):
         print('filename : {}'.format(filename))
         path = os.path.join(dir_path, filename)
+
+        # to exclude hidden files
+        if filename[0] == '.':
+            continue
 
         with open(path, 'r') as f:
             text = f.read()
             if len(text) == 0:
                 continue
+
             insert_doc(title=filename, source=source, text=text)
 
 
@@ -186,15 +198,24 @@ def change_all_attribute_key():
         annotation.save()
 
 
-
+def doc_migration():
+    docs = Doc.objects().all()
+    for doc in tqdm(docs):
+        if doc.mturk:
+            doc.type = 'mturk'
+        else:
+            doc.type = 'v1'
+        doc.save()
 
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
+    # insert_dataset('v2/guardian_paragraph_to_annotate', source='guardian')
     # db_backup('before remove duplicate annotations')
     # delete_duplicate_annotations()
-    change_all_attribute_key()
+    # change_all_attribute_key()
+    # doc_migration()
     # generate_encrypted_files()
 
     # delete_doc('5c3c3975995fc1ab555950ea')

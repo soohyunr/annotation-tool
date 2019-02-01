@@ -12,8 +12,7 @@ class Doc(db.Document):
     source = db.StringField(default='')
     seq = db.IntField(default=0)
     created_at = db.DateTimeField(default=datetime.datetime.now)
-    mturk = db.BooleanField(default=False)
-    mturk_ip = db.StringField(default='0.0.0.0')
+    type = db.StringField(default='v1') # v1, mturk, v2
 
     meta = {
         'indexes': [

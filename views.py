@@ -4,21 +4,21 @@ from flask_mongoengine import Pagination
 from bson import json_util
 
 from models import Doc, User, Sent, Annotation, DocLog, AnnotationReview
-from decorator import login_required, is_admin
+from decorator import is_user, is_active_user, is_admin
 import config
 from tqdm import tqdm
 import utils
 
 
-@login_required
+@is_active_user
 def index_page():
     item_per_page = 50
     page = request.args.get('p', 1)
     page = int(page)
 
-    total = Doc.objects.filter(mturk=False).count()
+    total = Doc.objects.filter(type='v1').count()
     total_page = math.ceil(total / item_per_page)
-    paginator = Pagination(Doc.objects(mturk=False).order_by('seq'), page, 50)
+    paginator = Pagination(Doc.objects(type='v1').order_by('seq'), page, 50)
     docs = paginator.items
 
     docs_data = []
@@ -36,7 +36,36 @@ def index_page():
         'right': min(page + 5, total_page),
     }
 
-    return render_template('index.html', docs=docs_data, g=g, pagination=pagination)
+    return render_template('index.html', title='', docs=docs_data, g=g, pagination=pagination)
+
+
+@is_active_user
+def index_v2_page():
+    item_per_page = 50
+    page = request.args.get('p', 1)
+    page = int(page)
+
+    total = Doc.objects.filter(type='v2').count()
+    total_page = math.ceil(total / item_per_page)
+    paginator = Pagination(Doc.objects(type='v2').order_by('seq'), page, 50)
+    docs = paginator.items
+
+    docs_data = []
+    for doc in docs:
+        item = doc.dump()
+        item['sent_total'] = Sent.objects(doc=doc).count()
+        item['progress'] = Annotation.objects(doc=doc, user=g.user, type='sentence').count()
+
+        docs_data.append(item)
+
+    pagination = {
+        'page': page,
+        'total_page': total_page,
+        'left': max(1, page - 5),
+        'right': min(page + 5, total_page),
+    }
+
+    return render_template('index.html', title='TARGET_ONLY', docs=docs_data, g=g, pagination=pagination)
 
 
 @is_admin
@@ -48,7 +77,8 @@ def users_page():
 
 
 def login_page():
-    return render_template('login.html', g=g)
+    callback = request.args.get('callback', '')
+    return render_template('login.html', g=g, callback=callback)
 
 
 def page_403():
@@ -68,7 +98,7 @@ def logout_page():
     return redirect('/login')
 
 
-@login_required
+@is_active_user
 def doc_page(doc_id):
     try:
         doc = Doc.objects.get(seq=doc_id)
@@ -81,7 +111,7 @@ def doc_page(doc_id):
     return render_template('doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
 
 
-@login_required
+@is_active_user
 def get_doc(doc_id):
     doc = Doc.objects.get(id=doc_id)
     sents = Sent.objects(doc=doc).order_by('index')
@@ -95,6 +125,7 @@ def get_doc(doc_id):
     })
 
 
+@is_user
 def post_annotation():
     data = request.get_json()
 
@@ -132,6 +163,7 @@ def post_annotation():
     })
 
 
+@is_user
 def get_annotation(doc_id):
     try:
         doc = Doc.objects().get(id=doc_id)
@@ -147,6 +179,7 @@ def get_annotation(doc_id):
     })
 
 
+@is_user
 def delete_annotation(annotation_id):
     try:
         annotation = Annotation.objects().get(id=annotation_id)
@@ -159,6 +192,7 @@ def delete_annotation(annotation_id):
     return Response('success', status=200)
 
 
+@is_user
 def put_annotation(annotation_id):
     data = request.get_json()
     basket = data['basket']
@@ -179,7 +213,7 @@ def put_annotation(annotation_id):
 
 @is_admin
 def download_dataset():
-    docs = Doc.objects.filter(mturk=False)
+    docs = Doc.objects.filter()
 
     data = []
     for doc in tqdm(docs):
@@ -256,11 +290,8 @@ def post_signup():
     return Response('success', status=200)
 
 
+@is_user
 def mturk_upload_page():
-    user = User.objects.get(username='mturk')
-    g.user = user.dump()
-    session['username'] = 'mturk'
-
     return render_template('mturk/upload.html', g=g)
 
 
@@ -271,7 +302,7 @@ def post_mturk_upload():
     from nltk.tokenize import sent_tokenize
     sents = sent_tokenize(text)
 
-    doc = Doc(title='', text=text, source='mturk', mturk=True, mturk_ip=request.remote_addr)
+    doc = Doc(title='', text=text, source='mturk', type='mturk')
     doc.save()
 
     res = {
@@ -288,11 +319,8 @@ def post_mturk_upload():
     return json.dumps(res)
 
 
+@is_user
 def mturk_doc_page(doc_id):
-    user = User.objects.get(username='mturk')
-    g.user = user.dump()
-    session['username'] = 'mturk'
-
     try:
         doc = Doc.objects.get(id=doc_id)
     except Exception as e:
