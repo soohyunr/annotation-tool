@@ -59,7 +59,7 @@ app.add_url_rule('/download/dataset', view_func=views.download_dataset, methods=
 # for mturk
 app.add_url_rule('/mturk/upload', view_func=views.mturk_upload_page, methods=['GET'])
 app.add_url_rule('/mturk/doc/<doc_id>', view_func=views.mturk_doc_page, methods=['GET'])
-app.add_url_rule('/api/mturk/upload', view_func=views.post_mturk_upload, methods=['POST'])
+app.add_url_rule('/api/mturk/rapid-annotation', view_func=views.post_mturk_upload, methods=['POST'])
 
 # for review
 app.add_url_rule('/review/<user_id>', view_func=views.review_index_page, methods=['GET'])
