@@ -35,6 +35,7 @@ def before_request():
 
 
 app.add_url_rule('/', view_func=views.index_page, methods=['GET'])
+app.add_url_rule('/v2', view_func=views.index_v2_page, methods=['GET'])
 app.add_url_rule('/403', view_func=views.page_403, methods=['GET'])
 app.add_url_rule('/404', view_func=views.page_404, methods=['GET'])
 app.add_url_rule('/users', view_func=views.users_page, methods=['GET'])
@@ -57,9 +58,9 @@ app.add_url_rule('/api/annotation/<annotation_id>', view_func=views.put_annotati
 app.add_url_rule('/download/dataset', view_func=views.download_dataset, methods=['GET'])
 
 # for mturk
-app.add_url_rule('/mturk/upload', view_func=views.mturk_upload_page, methods=['GET'])
+app.add_url_rule('/mturk/rapid-annotation', view_func=views.mturk_upload_page, methods=['GET'])
 app.add_url_rule('/mturk/doc/<doc_id>', view_func=views.mturk_doc_page, methods=['GET'])
-app.add_url_rule('/api/mturk/rapid-annotation', view_func=views.post_mturk_upload, methods=['POST'])
+app.add_url_rule('/api/mturk/upload', view_func=views.post_mturk_upload, methods=['POST'])
 
 # for review
 app.add_url_rule('/review/<user_id>', view_func=views.review_index_page, methods=['GET'])

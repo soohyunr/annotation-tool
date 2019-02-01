@@ -72,7 +72,7 @@
         password: $('#password').val(),
       }),
     }).done(function () {
-      location.assign('/')
+      location.assign('{{callback}}')
     }).fail(function () {
       swal({
         title: '',

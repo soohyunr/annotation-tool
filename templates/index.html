@@ -22,6 +22,11 @@
 <body>
 {% include 'base/navbar.html' %}
 <div class="container">
+    <div style="padding: 20px 0;">
+        <h3>{{title}} Documents</h3>
+        <a href="/"><button type="button" class="btn btn-light">NORMAL</button></a>
+        <a href="/v2"><button type="button" class="btn btn-light">TARGET_ONLY</button></a>
+    </div>
     <table class="table">
         <thead>
         <tr>
@@ -54,18 +59,19 @@
     <nav aria-label="Page navigation">
         <ul class="pagination">
             <li class="page-item">
-                <a class="page-link" href="/?p=1">First</a>
+                <a class="page-link" href="javascript:go('1')">First</a>
             </li>
             {% for i in range(pagination['left'], pagination['right'] +1) %}
             <li class="page-item {% if pagination['page'] == i %} active {% endif %}">
-                <a class="page-link" href="/?p={{i}}">{{i}}</a>
+                <a class="page-link" href="javascript:go('{{i}}')">{{i}}</a>
             </li>
             {% endfor %}
             <li class="page-item">
-                <a class="page-link" href="/?p={{pagination['total_page']}}">Last</a>
+                <a class="page-link" href="javascript:go('{{pagination.total_page}}')">Last</a>
             </li>
             <div class="input-group mb-3 ml-3">
-                <input type="text" class="form-control" placeholder="Page number" id="page-number" aria-label="" aria-describedby="button-addon">
+                <input type="text" class="form-control" placeholder="Page number" id="page-number" aria-label=""
+                       aria-describedby="button-addon">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button" id="page-number-button-addon">Go</button>
                 </div>
@@ -76,6 +82,10 @@
 {% include 'base/script.html' %}
 
 <script>
+  function go(page_number) {
+    location.assign(location.pathname + '?p=' + page_number);
+  }
+
   $(document).ready(function () {
     for (let i = 0; i <= localStorage.length - 1; i++) {
       let key = localStorage.key(i);
@@ -85,7 +95,7 @@
     $('#page-number-button-addon').click(function () {
       let page_number = $('#page-number').val();
       if (!page_number) page_number = 1;
-      location.assign('/?p='+page_number);
+      go(page_number)
     })
   });
 </script>
