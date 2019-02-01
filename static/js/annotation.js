@@ -26,8 +26,8 @@ const Annotation = {
       },
       attribute3: {
         order: 3,
-        title: '3. Disputability of the sentence',
-        attribute_key: 'Disputability_of_the_sentence',
+        title: '3. Disputability',
+        attribute_key: 'Disputability',
         options: [
           'Highly Disputable',
           'Disputable',
@@ -37,8 +37,8 @@ const Annotation = {
       },
       attribute4: {
         order: 4,
-        title: '4. Perceived Author Credibility for the upcoming sentences',
-        attribute_key: 'Perceived_Author_Credibility_for_the_upcoming_sentences',
+        title: '4. Perceived Author Credibility',
+        attribute_key: 'Perceived_Author_Credibility',
         options: [
           'Strong Credibility for the upcoming sentences',
           'Credibility for the upcoming sentences',
@@ -51,8 +51,8 @@ const Annotation = {
       },
       attribute5: {
         order: 5,
-        title: '5. Acceptance of the sentence as true',
-        attribute_key: 'Acceptance_of_the_sentence_as_true',
+        title: '5. Acceptance',
+        attribute_key: 'Acceptance',
         options: [
           'Strong Accept',
           'Accept',

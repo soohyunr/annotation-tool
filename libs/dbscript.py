@@ -1,4 +1,5 @@
 import os, json
+from tqdm import tqdm
 
 from mongoengine import connect
 
@@ -163,13 +164,37 @@ def delete_duplicate_annotations():
         except:
             pass
 
+def change_all_attribute_key():
+    annotations = Annotation.objects().all()
+
+    for annotation in tqdm(annotations):
+        basket = annotation.basket
+        new_basket = dict()
+
+        for key in basket:
+            new_key = key
+            value = basket[key]
+            if key == 'Disputability_of_the_sentence':
+                new_key = 'Disputability'
+            elif key == 'Perceived_Author_Credibility_for_the_upcoming_sentences':
+                new_key = 'Perceived_Author_Credibility'
+            elif key =='Acceptance_of_the_sentence_as_true':
+                new_key = 'Acceptance'
+            new_basket[new_key] = value
+
+        annotation.basket = new_basket
+        annotation.save()
+
+
+
 
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
     # db_backup('before remove duplicate annotations')
-    delete_duplicate_annotations()
+    # delete_duplicate_annotations()
+    change_all_attribute_key()
     # generate_encrypted_files()
 
     # delete_doc('5c3c3975995fc1ab555950ea')
