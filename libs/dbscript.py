@@ -142,22 +142,26 @@ def delete_duplicate_annotations():
     total = annotations.count()
     for annotation in annotations:
         progress += 1
-        print('progress {}/{}'.format(progress, total))
+        if progress % 100 == 0:
+            print('progress {}/{}'.format(progress, total))
 
-        targets = Annotation.objects.filter(
-            doc=annotation.doc,
-            sent=annotation.sent,
-            index=annotation.index,
-            user=annotation.user,
-            type=annotation.type,
-            anchor_offset=annotation.anchor_offset)
+        try:
+            targets = Annotation.objects.filter(
+                doc=annotation.doc,
+                sent=annotation.sent,
+                index=annotation.index,
+                user=annotation.user,
+                type=annotation.type,
+                anchor_offset=annotation.anchor_offset)
 
-        if targets.count() >= 2:
-            print('count >= 2! :', targets.count())
-            if targets[0].id != annotation.id:
-                targets[0].delete()
-            else:
-                targets[1].delete()
+            if targets.count() >= 2:
+                print('count >= 2! :', targets.count())
+                if targets[0].id != annotation.id:
+                    targets[0].delete()
+                else:
+                    targets[1].delete()
+        except:
+            pass
 
 
 if __name__ == '__main__':
@@ -165,7 +169,7 @@ if __name__ == '__main__':
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
     # db_backup('before remove duplicate annotations')
-    # delete_duplicate_annotations()
+    delete_duplicate_annotations()
     # generate_encrypted_files()
 
     # delete_doc('5c3c3975995fc1ab555950ea')
