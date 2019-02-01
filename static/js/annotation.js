@@ -182,6 +182,34 @@ const Annotation = {
         ]
       },
     },
+    event_v2: {
+      attribute1: {
+        order: 1,
+        title: '1. Persuasiveness Score',
+        attribute_key: 'Persuasiveness_Score',
+        options: [
+          'A very strong, clear argument.',
+          'A strong, pretty clear argument.',
+          'A decent, fairly clear argument.',
+          'A poor, understandable argument.',
+          'It is unclear what the author is trying to argue.',
+          'The author does not appear to make any argument.',
+        ]
+      },
+      attribute2: {
+        order: 2,
+        title: '2. Evidence Score',
+        attribute_key: 'Evidence_Score',
+        options: [
+          'A very strong, very persuasive argument body.',
+          'A strong, persuasive argument body.',
+          'A decent, fairly persuasive argument body.',
+          'A poor, possibly persuasive argument body.',
+          'A totally unpersuasive argument body.',
+          'There is no argument body for the given component.',
+        ]
+      },
+    },
   },
   data: [
     /**
