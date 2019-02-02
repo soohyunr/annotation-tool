@@ -20,11 +20,12 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right">
             {% if g.user.is_admin %}
-            <a class="dropdown-item" href="/users">User Management</a>
-            <a class="dropdown-item" href="/download/dataset" target="_blank">Download Dataset</a>
+            <a class="dropdown-item" href="/users">User management</a>
+            <a class="dropdown-item" href="/download/dataset" target="_blank">Download dataset</a>
+            <a class="dropdown-item" href="/download/encrypted" target="_blank">Download encrypted documents</a>
             <div class="dropdown-divider"></div>
             {% endif %}
-            <a class="dropdown-item" href="javascript:logout()">Log Out</a>
+            <a class="dropdown-item" href="javascript:logout()">Log out</a>
         </div>
     </div>
     {% endif %}

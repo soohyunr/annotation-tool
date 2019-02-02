@@ -241,6 +241,10 @@ def download_dataset():
 
     return send_file(dataset_path, as_attachment=True)
 
+@is_admin
+def download_encrypted():
+    dataset_path = os.path.abspath(os.path.dirname(__file__) + '/encrypted.zip')
+    return send_file(dataset_path, as_attachment=True)
 
 @is_admin
 def put_user_active(user_id):
