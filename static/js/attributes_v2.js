@@ -238,7 +238,9 @@ const Annotation = {
     }
     return false;
   },
-  random: function (range) {
+  random: function (range, type) {
+    // to set initial value
+    if (type === 'sentence') return 0;
     return Math.floor(Math.random() * range);
   }
 };
