@@ -56,6 +56,7 @@ app.add_url_rule('/api/annotation/<annotation_id>', view_func=views.put_annotati
 
 # for admin
 app.add_url_rule('/download/dataset', view_func=views.download_dataset, methods=['GET'])
+app.add_url_rule('/download/encrypted', view_func=views.download_encrypted, methods=['GET'])
 
 # for mturk
 app.add_url_rule('/mturk/rapid-annotation', view_func=views.mturk_upload_page, methods=['GET'])
