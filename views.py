@@ -36,7 +36,7 @@ def index_page():
         'right': min(page + 5, total_page),
     }
 
-    return render_template('index.html', title='', docs=docs_data, g=g, pagination=pagination)
+    return render_template('index.html', type='v1', docs=docs_data, g=g, pagination=pagination)
 
 
 @is_active_user
@@ -65,7 +65,7 @@ def index_v2_page():
         'right': min(page + 5, total_page),
     }
 
-    return render_template('index.html', title='TARGET_ONLY', docs=docs_data, g=g, pagination=pagination)
+    return render_template('index.html', type='v2',docs=docs_data, g=g, pagination=pagination)
 
 
 @is_admin
