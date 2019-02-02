@@ -77,7 +77,7 @@ def users_page():
 
 
 def login_page():
-    callback = request.args.get('callback', '')
+    callback = request.args.get('callback', '/')
     return render_template('login.html', g=g, callback=callback)
 
 
@@ -90,7 +90,8 @@ def page_404():
 
 
 def signup_page():
-    return render_template('signup.html', g=g)
+    callback = request.args.get('callback', '/')
+    return render_template('signup.html', callback=callback, g=g)
 
 
 def logout_page():

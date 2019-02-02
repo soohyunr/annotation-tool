@@ -17,7 +17,7 @@
 <div class="container">
     <div class="header">
         <h4>
-            <a href="/mturk/upload">
+            <a href="/mturk/rapid-annotation">
                 <i class="fas fa-chevron-left"></i>
             </a>
             Amazon Mechanical Turk
@@ -55,6 +55,8 @@
 <input type="hidden" id="ENCRYPTION_KEY" value="{{ENCRYPTION_KEY}}"/>
 {% include 'base/script.html' %}
 {% include 'base/doc_template.html' %}
+
+<script src="{{url_for('static', filename='js/attributes_v1.js')}}?v={{g.random}}"></script>
 <script src="{{ url_for('static', filename='js/annotation.js')}}?v={{g.random}}"></script>
 
 <!-- Modal -->
