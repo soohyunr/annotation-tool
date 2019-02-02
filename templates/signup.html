@@ -100,7 +100,7 @@
         last_name: $('#last_name').val(),
       }),
     }).done(function () {
-      location.assign('/login')
+      location.assign('{{callback}}')
     }).fail(function () {
       swal({
         title: '',

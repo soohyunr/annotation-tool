@@ -209,6 +209,19 @@ def doc_migration():
             doc.type = 'v1'
         doc.save()
 
+
+def target_migration():
+    docs = Doc.objects().all()
+    for doc in tqdm(docs):
+        doc.text = doc.text.replace('<<TARGET>>', '(TARGET)')
+        doc.save()
+
+    sents = Sent.objects()
+    for sent in tqdm(sents):
+        sent.text = sent.text.replace('<<TARGET>>', '(TARGET)')
+        sent.save()
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
@@ -219,5 +232,6 @@ if __name__ == '__main__':
     # change_all_attribute_key()
     # doc_migration()
     generate_encrypted_files()
+    # target_migration()
 
     # delete_doc('5c3c3975995fc1ab555950ea')
