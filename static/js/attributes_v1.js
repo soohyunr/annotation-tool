@@ -302,7 +302,7 @@ const Annotation = {
     }
     return false;
   },
-  random: function (range) {
+  random: function (range, type) {
     return Math.floor(Math.random() * range);
   }
 };

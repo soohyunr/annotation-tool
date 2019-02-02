@@ -183,7 +183,7 @@ const Event = {
       for (let key in attributes) {
         let options = attributes[key].options;
         let attribute_key = attributes[key].attribute_key;
-        let initial_value = options[Annotation.random(options.length)];
+        let initial_value = options[Annotation.random(options.length, type)];
         initial_value = initial_value.split(' ').join('_');
         item.basket[attribute_key] = {
           initial_value: initial_value,
