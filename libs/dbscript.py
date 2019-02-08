@@ -227,11 +227,11 @@ if __name__ == '__main__':
 
     # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
     # insert_dataset('v2/guardian_paragraph_to_annotate', source='guardian')
-    # db_backup('before remove duplicate annotations')
+    db_backup('')
     # delete_duplicate_annotations()
     # change_all_attribute_key()
     # doc_migration()
-    generate_encrypted_files()
+    # generate_encrypted_files()
     # target_migration()
 
     # delete_doc('5c3c3975995fc1ab555950ea')

@@ -627,14 +627,14 @@ const Modal = {
   },
   input_listen: function () {
     $('.dropdown-item').click(function () {
-      const annotation_type = this.state.annotation_item.type;
+      const annotation_type = Modal.state.annotation_item.type;
       const dropdown = $(this).parents('.dropdown');
       const attribute_id = dropdown.attr('id');
       const dropdown_toggle = dropdown.find('.dropdown-toggle');
       const value = $(this).attr('data-value');
 
       const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
-      this.state.annotation_item.basket[attribute_key].updated_at = new Date().toISOString();
+      Modal.state.annotation_item.basket[attribute_key].updated_at = new Date().toISOString();
 
       dropdown.find('.dropdown-toggle').html(value.split('_').join(' '));
 
@@ -647,14 +647,14 @@ const Modal = {
   },
   input_review_listen: function () {
     $('.dropdown-item').click(function () {
-      const annotation_type = this.state.annotation_item.type;
+      const annotation_type = Modal.state.annotation_item.type;
       const dropdown = $(this).parents('.dropdown');
       const attribute_id = dropdown.attr('id');
       const dropdown_toggle = dropdown.find('.dropdown-toggle');
       const value = $(this).attr('data-value');
 
       const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
-      this.state.annotation_item.basket[attribute_key].updated_at = new Date().toISOString();
+      Modal.state.annotation_item.basket[attribute_key].updated_at = new Date().toISOString();
 
       dropdown.find('.dropdown-toggle').html(value.split('_').join(' '));
 
