@@ -60,7 +60,7 @@
 
 {% include 'base/script.html' %}
 <script>
-  $('form').submit(function () {
+  $('form').submit(function (event) {
     event.preventDefault();
 
     $.ajax({
