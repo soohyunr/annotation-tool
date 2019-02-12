@@ -51,6 +51,11 @@
 <input type="hidden" id="ENCRYPTION_KEY" value="{{ENCRYPTION_KEY}}"/>
 {% include 'base/script.html' %}
 {% include 'base/doc_template.html' %}
+{% if doc.type == 'v2' %}
+<script src="{{url_for('static', filename='js/attributes_v2.js')}}?v={{g.random}}"></script>
+{% else %}
+<script src="{{url_for('static', filename='js/attributes_v1.js')}}?v={{g.random}}"></script>
+{% endif %}
 <script src="{{ url_for('static', filename='js/annotation.js')}}?v={{g.random}}"></script>
 
 

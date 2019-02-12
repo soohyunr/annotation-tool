@@ -3,7 +3,7 @@ from tqdm import tqdm
 
 from mongoengine import connect
 
-from models import Doc, User, Sent,Annotation
+from models import Doc, User, Sent, Annotation
 import config
 
 
@@ -44,6 +44,7 @@ def delete_doc(doc_id):
     for annotation in annotations:
         annotation.delete()
     doc.delete()
+
 
 def insert_dataset(dirname, source):
     dir_path = os.path.abspath(os.path.dirname(__file__) + '/../data/{}'.format(dirname))
@@ -113,7 +114,6 @@ def db_backup(memo):
         #                  ])
 
 
-
 def generate_encrypted_file(seq_id):
     from itertools import cycle
     def str_xor(s1, s2):
@@ -121,6 +121,7 @@ def generate_encrypted_file(seq_id):
         for (c1, c2) in zip(s1, cycle(s2)):
             result.append(str(ord(c1) ^ ord(c2)))
         return ",".join(result)
+
     try:
         doc = Doc.objects().get(seq=seq_id)
         sents = Sent.objects(doc=doc).order_by('index')
@@ -178,6 +179,7 @@ def delete_duplicate_annotations():
         except:
             pass
 
+
 def change_all_attribute_key():
     annotations = Annotation.objects().all()
 
@@ -192,7 +194,7 @@ def change_all_attribute_key():
                 new_key = 'Disputability'
             elif key == 'Perceived_Author_Credibility_for_the_upcoming_sentences':
                 new_key = 'Perceived_Author_Credibility'
-            elif key =='Acceptance_of_the_sentence_as_true':
+            elif key == 'Acceptance_of_the_sentence_as_true':
                 new_key = 'Acceptance'
             new_basket[new_key] = value
 
@@ -222,16 +224,16 @@ def target_migration():
         sent.save()
 
 
+def remove_invalid_annotation():
+    user = User.objects.get(id='5c3c3741995fc1a8b4fa7154')
+    annotations = Annotation.objects(user=user)
+    for annotation in annotations:
+        print('remove!')
+        annotation.delete()
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
-    # insert_dataset('XXX_paragraph_to_annotate', source='XXX')
-    # insert_dataset('v2/guardian_paragraph_to_annotate', source='guardian')
-    db_backup('')
-    # delete_duplicate_annotations()
-    # change_all_attribute_key()
-    # doc_migration()
-    # generate_encrypted_files()
-    # target_migration()
-
-    # delete_doc('5c3c3975995fc1ab555950ea')
+    # db_backup('')
+    remove_invalid_annotation()
