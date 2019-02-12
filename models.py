@@ -2,6 +2,7 @@ import datetime
 from flask_mongoengine import MongoEngine
 import uuid
 import hashlib
+import logging
 
 db = MongoEngine()
 
@@ -145,6 +146,7 @@ class Annotation(db.Document):
             'updated_at': str(self.updated_at),
             'memo': self.memo,
         }
+
 
 
 
