@@ -9,6 +9,17 @@ from models import Doc, User, Sent, Annotation
 import config
 
 
+def clean_text(x):
+    x = str(x)
+    for punct in "/-'":
+        x = x.replace(punct, ' ')
+    for punct in '&':
+        x = x.replace(punct, ' {} '.format(punct))
+    for punct in '?!.,"#$%\'()*+-/:;<=>@[\\]^_`{|}~' + '“”’':
+        x = x.replace(punct, '')
+    return x
+
+
 def draw_word_cloud():
     """
     attribute_reason = {
@@ -65,19 +76,26 @@ def draw_word_cloud():
                 continue
 
             reason = reason.lower()
+            reason = reason.replace("'s", '')
+            reason = reason.replace("'d", ' had')
+            reason = reason.replace("n't", ' not')
             reason = reason.replace('.', '')
             reason = reason.replace(',', '')
             reason = reason.replace('the', '')
+            reason = reason.replace('would', '')
+            reason = reason.replace('could', '')
+
+            reason = clean_text(reason)
 
             tokens = word_tokenize(reason)
             clean_tokens = []
             for token in tokens:
-                if token not in stop_words:
+                if token not in stop_words or token == 'not':
                     # token = stemmer.stem(token)
                     token = lemmatizer.lemmatize(token, pos='v')
                     clean_tokens.append(token)
 
-            attribute_reason[attribute_key][value] += get_ngrams(clean_tokens, 2)
+            # attribute_reason[attribute_key][value] += get_ngrams(clean_tokens, 2)
             attribute_reason[attribute_key][value] += get_ngrams(clean_tokens, 3)
 
     frequencies = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
@@ -89,7 +107,11 @@ def draw_word_cloud():
     import matplotlib.pyplot as plt
     from wordcloud import WordCloud
 
-    attribute_key = 'Perceived_Author_Credibility'
+    # attribute_key = 'Perceived_Author_Credibility'
+    # attribute_key = 'Knowledge_Awareness'
+    # attribute_key = 'Verifiability'
+    # attribute_key = 'Disputability'
+    attribute_key = 'Acceptance'
     max_words = 150
 
     for option in attribute_reason[attribute_key]:
