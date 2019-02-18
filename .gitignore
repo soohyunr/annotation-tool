@@ -7,5 +7,6 @@
 *.mo
 /ENV/
 /data/
+/analysis/plt/
 
 config.py
