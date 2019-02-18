@@ -235,5 +235,5 @@ def remove_invalid_annotation():
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
-    # db_backup('')
-    remove_invalid_annotation()
+    db_backup('')
+    # remove_invalid_annotation()
