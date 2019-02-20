@@ -33,21 +33,14 @@ def clean_reason(reason):
         reason = reason.replace(punct, '')
     return reason
 
+
 def tokenize_and_stem(text):
     stems = []
+    text = text.lower()
     words = [word for word in word_tokenize(text) if word.isalpha()]
-    words = [word for word in words if word not in stopwords]
+    words = [word for word in words if word not in stop_words]
     for word in words: stems.append(stemmer.stem(word))
     return stems
-
-def get_attribute_words(attribute_key, attribute_value):
-    tokens = word_tokenize(attribute_key.replace('_', ' '))
-    tokens += word_tokenize(attribute_value.replace('_', ' '))
-    result = []
-    for token in tokens:
-        token = lemmatizer.lemmatize(token, pos='v')
-        result.append(token.lower())
-    return result
 
 
 def get_attribute_reason():
@@ -135,15 +128,15 @@ def clustering(df):
                 ('selector', TextSelector(key='reason')),
                 ('tfidf', TfidfVectorizer(min_df=0.1, tokenizer=tokenize_and_stem, ngram_range=(1, 2)))
             ])),
-            ('user', Pipeline([
-                ('selector', NumberSelector(key='user')),
-                ('onehot', OneHotEncoder(categories='auto'))
-            ])),
+            # ('user', Pipeline([
+            #     ('selector', NumberSelector(key='user')),
+            #     ('onehot', OneHotEncoder(categories='auto'))
+            # ])),
         ],
         # weight components in FeatureUnion
         transformer_weights={
             'reason': 2.0,
-            'user': 1.0,
+            # 'user': 1.0,
         },
     )
 
@@ -168,7 +161,7 @@ def clustering(df):
 
         for item in dis[:5]:
             doc_id = item[0]
-            print(doc_id, ', title :', df.iloc[doc_id]['title'])
+            print(doc_id, ', reason :', df.iloc[doc_id]['reason'])
 
 
 if __name__ == '__main__':
@@ -188,3 +181,5 @@ if __name__ == '__main__':
             })
 
             print('{}-{}'.format(attribute_key, attribute_value))
+
+            clustering(df)
