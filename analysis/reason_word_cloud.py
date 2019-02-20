@@ -39,8 +39,7 @@ def get_attribute_words(attribute_key, attribute_value):
     tokens += word_tokenize(attribute_value.replace('_', ' '))
     result = []
     for token in tokens:
-        if token == 'not':
-            continue
+        token = lemmatizer.lemmatize(token, pos='v')
         result.append(token.lower())
     return result
 
@@ -97,13 +96,15 @@ def draw_word_cloud():
             tokens = word_tokenize(reason)
             clean_tokens = []
             for token in tokens:
+                # token = stemmer.stem(token)
+                token = lemmatizer.lemmatize(token, pos='v')
+
                 if token in stop_words and token != 'not':
                     continue
+
                 if token in attribute_words and token != 'not':
                     continue
 
-                # token = stemmer.stem(token)
-                token = lemmatizer.lemmatize(token, pos='v')
                 clean_tokens.append(token)
 
             # attribute_reason[attribute_key][value] += get_ngrams(clean_tokens, 2)
@@ -118,8 +119,8 @@ def draw_word_cloud():
     import matplotlib.pyplot as plt
     from wordcloud import WordCloud
 
-    # attribute_key = 'Knowledge_Awareness'
-    attribute_key = 'Verifiability'
+    attribute_key = 'Knowledge_Awareness'
+    # attribute_key = 'Verifiability'
     # attribute_key = 'Disputability'
     # attribute_key = 'Perceived_Author_Credibility'
     # attribute_key = 'Acceptance'
@@ -132,6 +133,10 @@ def draw_word_cloud():
             continue
 
         print('{}-{}'.format(attribute_key, option))
+
+        # top_phrase = target.items()
+        # top_phrase = sorted(top_phrase, key=lambda x: -x[1])
+        # write_attribute_frequency('{}-{}'.format(attribute_key, option), top_phrase)
 
         wordcloud = WordCloud(
             width=1200,
@@ -146,6 +151,13 @@ def draw_word_cloud():
         plt.imshow(wordcloud)
         plt.axis('off')
         plt.savefig('./plt/{}-{}'.format(attribute_key, option))
+
+
+def write_attribute_frequency(key, frequencies):
+    with open('./frequency/{}.txt'.format(key), 'w+') as f:
+        count = len(frequencies)
+        for item in frequencies[:10]:
+            f.write('{} ({}, {:.2f}%)\n'.format(item[0], item[1], (item[1]/count)*100))
 
 
 if __name__ == '__main__':
