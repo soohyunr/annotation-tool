@@ -66,7 +66,6 @@ def get_attribute_reason():
                 dumps.append(row)
             except Exception as e:
                 logging.exception(e)
-                annotation.delete()
         pickle.dump(dumps, open(bin_path, "wb"))
 
     random.shuffle(dumps)
