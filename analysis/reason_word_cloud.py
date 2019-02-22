@@ -67,7 +67,6 @@ def draw_word_cloud():
                 dumps.append(annotation.dump())
             except Exception as e:
                 logging.exception(e)
-                annotation.delete()
         pickle.dump(dumps, open(bin_path, "wb"))
 
     random.shuffle(dumps)
