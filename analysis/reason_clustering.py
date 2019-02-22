@@ -52,17 +52,18 @@ def get_attribute_reason():
     }
     """
     attribute_reason = defaultdict(lambda: defaultdict(lambda: []))
-    annotations = Annotation.objects(type='sentence')
-
     dumps = []
     bin_path = './annotations.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
         print('generate ' + bin_path)
+        annotations = Annotation.objects(type='sentence')
         for annotation in tqdm(annotations):
             try:
-                dumps.append(annotation.dump())
+                row = annotation.dump()
+                row['user_name'] = annotation.user.first_name + ' ' + annotation.user.last_name
+                dumps.append(row)
             except Exception as e:
                 logging.exception(e)
                 annotation.delete()
@@ -85,6 +86,7 @@ def get_attribute_reason():
                 continue
 
             option['user'] = annotation['user']
+            option['user_name'] = annotation['user_name']
 
             attribute_reason[attribute_key][attribute_value].append(option)
 
@@ -128,15 +130,15 @@ def clustering(df):
                 ('selector', TextSelector(key='reason')),
                 ('tfidf', TfidfVectorizer(min_df=0.1, tokenizer=tokenize_and_stem, ngram_range=(1, 2)))
             ])),
-            # ('user', Pipeline([
-            #     ('selector', NumberSelector(key='user')),
-            #     ('onehot', OneHotEncoder(categories='auto'))
-            # ])),
+            ('user', Pipeline([
+                ('selector', NumberSelector(key='user')),
+                ('onehot', OneHotEncoder(categories='auto'))
+            ])),
         ],
         # weight components in FeatureUnion
         transformer_weights={
             'reason': 2.0,
-            # 'user': 1.0,
+            'user': 0.5,
         },
     )
 
@@ -150,10 +152,10 @@ def clustering(df):
     df['cluster'] = model.labels_
 
     closest, _ = pairwise_distances_argmin_min(model.cluster_centers_, X)
-    print('closest :', closest)
+    # print('closest :', closest)
 
     for c in range(true_k):
-        print('cluster {}'.format(c))
+        print('\ncluster {}'.format(c))
 
         dis = model.transform(X)[:, c]
         dis = [(i, dis[i]) for i in range(len(dis))]
@@ -161,7 +163,7 @@ def clustering(df):
 
         for item in dis[:5]:
             doc_id = item[0]
-            print(doc_id, ', reason :', df.iloc[doc_id]['reason'])
+            print('[{}] reason: {}'.format(df.iloc[doc_id]['user_name'], df.iloc[doc_id]['reason']))
 
 
 if __name__ == '__main__':
@@ -170,16 +172,24 @@ if __name__ == '__main__':
     attribute_reason = get_attribute_reason()
 
     # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-    attribute_keys = ['Knowledge_Awareness']
+    attribute_keys = ['Acceptance']
+
     for attribute_key in attribute_keys:
         for attribute_value in attribute_reason[attribute_key]:
             options = attribute_reason[attribute_key][attribute_value]
 
+            print('{}-{}'.format(attribute_key, attribute_value))
+            print('options :', len(options))
+
             df = pd.DataFrame({
                 'reason': [option['reason'] for option in options],
                 'user': [option['user'] for option in options],
+                'user_name': [option['user_name'] for option in options],
             })
+            # print(df['reason'])
 
-            print('{}-{}'.format(attribute_key, attribute_value))
-
-            clustering(df)
+            print('Clustering')
+            try:
+                clustering(df)
+            except:
+                print('pass!!!!')

@@ -108,7 +108,14 @@ def draw_word_cloud():
                 clean_tokens.append(token)
 
             # attribute_reason[attribute_key][value] += get_ngrams(clean_tokens, 2)
+
+            if value == 'Weak_Reject':
+                print('Weak_Reject reason :', reason, ', annotation :', annotation)
+
             attribute_reason[attribute_key][value] += get_ngrams(clean_tokens, 3)
+
+            if value == 'Weak_Reject':
+                print('Week_Reject :', attribute_reason['Acceptance']['Weak_Reject'])
 
     frequencies = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
     for attribute_key in attribute_reason:
@@ -119,11 +126,11 @@ def draw_word_cloud():
     import matplotlib.pyplot as plt
     from wordcloud import WordCloud
 
-    attribute_key = 'Knowledge_Awareness'
+    # attribute_key = 'Knowledge_Awareness'
     # attribute_key = 'Verifiability'
     # attribute_key = 'Disputability'
     # attribute_key = 'Perceived_Author_Credibility'
-    # attribute_key = 'Acceptance'
+    attribute_key = 'Acceptance'
     max_words = 150
 
     for option in attribute_reason[attribute_key]:
@@ -133,31 +140,32 @@ def draw_word_cloud():
             continue
 
         print('{}-{}'.format(attribute_key, option))
+        print('target.keys() :', len(target.keys()))
 
         # top_phrase = target.items()
         # top_phrase = sorted(top_phrase, key=lambda x: -x[1])
         # write_attribute_frequency('{}-{}'.format(attribute_key, option), top_phrase)
 
-        wordcloud = WordCloud(
-            width=1200,
-            height=1200,
-            font_path='/Library/Fonts/NotoSans-Black.ttf',
-            background_color='white',
-            max_font_size=140,
-            max_words=max_words,
-        ).generate_from_frequencies(target)
-
-        plt.figure(figsize=(25, 25))
-        plt.imshow(wordcloud)
-        plt.axis('off')
-        plt.savefig('./plt/{}-{}'.format(attribute_key, option))
+        # wordcloud = WordCloud(
+        #     width=1200,
+        #     height=1200,
+        #     font_path='/Library/Fonts/NotoSans-Black.ttf',
+        #     background_color='white',
+        #     max_font_size=140,
+        #     max_words=max_words,
+        # ).generate_from_frequencies(target)
+        #
+        # plt.figure(figsize=(25, 25))
+        # plt.imshow(wordcloud)
+        # plt.axis('off')
+        # plt.savefig('./plt/{}-{}'.format(attribute_key, option))
 
 
 def write_attribute_frequency(key, frequencies):
     with open('./frequency/{}.txt'.format(key), 'w+') as f:
         count = len(frequencies)
         for item in frequencies[:10]:
-            f.write('{} ({}, {:.2f}%)\n'.format(item[0], item[1], (item[1]/count)*100))
+            f.write('{} ({}, {:.2f}%)\n'.format(item[0], item[1], (item[1] / count) * 100))
 
 
 if __name__ == '__main__':
