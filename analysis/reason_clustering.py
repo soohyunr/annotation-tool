@@ -191,7 +191,7 @@ def load_glove():
         return w2v
 
 
-def clustering_with_glove(df, w2v):
+def clustering_with_glove(df, w2v, file_key):
     from sklearn.base import BaseEstimator, TransformerMixin
     from sklearn.pipeline import FeatureUnion, Pipeline
     from sklearn.preprocessing import OneHotEncoder, LabelEncoder
@@ -254,24 +254,25 @@ def clustering_with_glove(df, w2v):
 
     true_k = 5
     from sklearn.cluster import KMeans
-    model = KMeans(n_clusters=true_k, init='k-means++', max_iter=100, n_init=1)
+    model = KMeans(n_clusters=true_k, init='k-means++', max_iter=300, n_init=1)
     model.fit(X)
 
     df['cluster'] = model.labels_
 
-    for c in range(true_k):
-        print('\ncluster {}'.format(c))
+    with open('./clustering/{}.txt'.format(file_key), 'w+') as f:
+        f.write(file_key + '\n')
+        for c in range(true_k):
+            f.write('\ncluster {}\n'.format(c))
+            dis = model.transform(X)[:, c]
+            dis = [(i, dis[i]) for i in range(len(dis))]
+            dis = sorted(dis, key=lambda x: x[1])
 
-        dis = model.transform(X)[:, c]
-        dis = [(i, dis[i]) for i in range(len(dis))]
-        dis = sorted(dis, key=lambda x: x[1])
+            dis = dis[:15]
+            random.shuffle(dis)
 
-        # dis = dis[:50]
-        # random.shuffle(dis)
-
-        for item in dis[:5]:
-            doc_id = item[0]
-            print('[{}] reason: {}'.format(df.iloc[doc_id]['user_name'], df.iloc[doc_id]['reason']))
+            for item in dis[:5]:
+                doc_id = item[0]
+                f.write('[{}] reason: {}\n'.format(df.iloc[doc_id]['user_name'], df.iloc[doc_id]['reason']))
 
 
 if __name__ == '__main__':
@@ -280,14 +281,15 @@ if __name__ == '__main__':
     attribute_reason = get_attribute_reason()
 
     # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-    attribute_keys = ['Knowledge_Awareness']
+    attribute_keys =['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
 
     w2v = load_glove()
     for attribute_key in attribute_keys:
         for attribute_value in attribute_reason[attribute_key]:
             options = attribute_reason[attribute_key][attribute_value]
 
-            print('{}-{}'.format(attribute_key, attribute_value))
+            file_key = '{}-{}'.format(attribute_key, attribute_value)
+            print(file_key)
             print('options number :', len(options))
 
             df = pd.DataFrame({
@@ -296,10 +298,8 @@ if __name__ == '__main__':
                 'user_name': [option['user_name'] for option in options],
             })
             # print(df['reason'])
-
-            print('Clustering')
             try:
-                clustering_with_glove(df, w2v)
+                clustering_with_glove(df, w2v, file_key)
                 # clustering(df)
             except Exception as e:
                 logging.exception(e)
