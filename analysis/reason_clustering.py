@@ -191,6 +191,25 @@ def load_glove():
         return w2v
 
 
+def get_ngrams(tokens, n):
+    ngrams_ = ngrams(tokens, n)
+    return [' '.join(grams) for grams in ngrams_]
+
+
+def get_top_phrase(sents):
+    frequencies = defaultdict(lambda: 0)
+    grams = []
+    for sent in sents:
+        grams += get_ngrams(tokenize_and_lemmatize(clean_reason(sent)), 2)
+
+    for gram in grams:
+        frequencies[gram] += 1
+
+    top_phrase = frequencies.items()
+    top_phrase = sorted(top_phrase, key=lambda x: -x[1])
+    return top_phrase
+
+
 def clustering_with_glove(df, w2v, file_key):
     from sklearn.base import BaseEstimator, TransformerMixin
     from sklearn.pipeline import FeatureUnion, Pipeline
@@ -267,8 +286,16 @@ def clustering_with_glove(df, w2v, file_key):
             dis = [(i, dis[i]) for i in range(len(dis))]
             dis = sorted(dis, key=lambda x: x[1])
 
-            dis = dis[:15]
+            dis = dis[:30]
             random.shuffle(dis)
+
+            reasons = []
+            for item in dis:
+                doc_id = item[0]
+                reasons.append(df.iloc[doc_id]['reason'])
+            top_phrase = get_top_phrase(reasons)
+            top_phrase = ['{}({})'.format(phrase[0], phrase[1]) for phrase in top_phrase]
+            f.write('title: {}\n\n'.format(', '.join(top_phrase[:4])))
 
             for item in dis[:5]:
                 doc_id = item[0]
@@ -281,7 +308,7 @@ if __name__ == '__main__':
     attribute_reason = get_attribute_reason()
 
     # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-    attribute_keys =['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+    attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
 
     w2v = load_glove()
     for attribute_key in attribute_keys:
