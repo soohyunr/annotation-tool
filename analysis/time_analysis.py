@@ -5,6 +5,8 @@ from mongoengine.queryset.visitor import Q
 from tqdm import tqdm
 from collections import defaultdict
 import pandas as pd
+from matplotlib import pyplot as plt
+import dateutil.parser
 import numpy as np
 
 from nltk import ngrams, word_tokenize
@@ -44,59 +46,53 @@ def get_annotations():
     return dumps
 
 
-if __name__ == '__main__':
-    connect(**config.Config.MONGODB_SETTINGS)
-    annotations = get_annotations()
+def draw_attribute_distribution(anntations):
+    keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+    for key in keys:
+        success = 0
+        fail = 0
+        time_avg = 0
+        times = []
+        for annotation in tqdm(annotations):
+            if not ('opened_at' in annotation['basket'][key]):
+                fail += 1
+                continue
+            if not ('updated_at' in annotation['basket'][key]):
+                fail += 1
+                continue
 
-    import dateutil.parser
+            opened_at = dateutil.parser.parse(annotation['basket'][key]['opened_at'])
+            updated_at = dateutil.parser.parse(annotation['basket'][key]['updated_at'])
+            diff = (updated_at - opened_at)
+            if diff.total_seconds() < 0:
+                fail += 1
+                continue
 
-    from matplotlib import pyplot as plt
-    import numpy as np
+            if diff.total_seconds() > 60:
+                fail += 1
+                continue
 
-    # keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-    # for key in keys:
-    #     success = 0
-    #     fail = 0
-    #     time_avg = 0
-    #     times = []
-    #     for annotation in tqdm(annotations):
-    #         if not ('opened_at' in annotation['basket'][key]):
-    #             fail += 1
-    #             continue
-    #         if not ('updated_at' in annotation['basket'][key]):
-    #             fail += 1
-    #             continue
-    #
-    #         opened_at = dateutil.parser.parse(annotation['basket'][key]['opened_at'])
-    #         updated_at = dateutil.parser.parse(annotation['basket'][key]['updated_at'])
-    #         diff = (updated_at - opened_at)
-    #         if diff.total_seconds() < 0:
-    #             fail += 1
-    #             continue
-    #
-    #         if diff.total_seconds() > 60:
-    #             fail += 1
-    #             continue
-    #
-    #         success += 1
-    #         times.append(diff.total_seconds())
-    #         time_avg += diff.total_seconds()
-    #
-    #     time_avg /= success
-    #     print('{} : {}\n'.format(key, time_avg))
-    #     print('success: {}, fail: {}\n\n'.format(success, fail))
-    #
-    #     # print('times :', times)
-    #     times = np.array(times)
-    #     plt.hist(times, [i for i in range(0, 30, 1)], histtype='bar', rwidth=0.9)
-    #     plt.ylabel('Frequency')
-    #     plt.xlabel('Seconds')
-    #     plt.title('{} (avg: {:.2f})'.format(key, times.mean()), y=1.05)
-    #     # plt.show()
-    #     plt.grid(b=True, which='major', color='#999999', linestyle='-', alpha=0.2)
-    #     plt.savefig('./time/{}.png'.format(key))
-    #     plt.close()
+            success += 1
+            times.append(diff.total_seconds())
+            time_avg += diff.total_seconds()
 
+        time_avg /= success
+        print('{} : {}\n'.format(key, time_avg))
+        print('success: {}, fail: {}\n\n'.format(success, fail))
+
+        # print('times :', times)
+        times = np.array(times)
+        plt.hist(times, [i for i in range(0, 30, 1)], histtype='bar', rwidth=0.9)
+        plt.ylabel('Frequency')
+        plt.xlabel('Seconds')
+        plt.title('{} (avg: {:.2f})'.format(key, times.mean()), y=1.05)
+        # plt.show()
+        plt.grid(b=True, which='major', color='#999999', linestyle='-', alpha=0.2)
+        plt.savefig('./time/{}.png'.format(key))
+        plt.close()
+
+
+def draw_group_distribution(annotations):
     success = 0
     fail = 0
     times = []
@@ -126,3 +122,18 @@ if __name__ == '__main__':
     plt.grid(b=True, which='major', color='#999999', linestyle='-', alpha=0.2)
     plt.savefig('./time/student_annotation.png')
     plt.close()
+
+
+if __name__ == '__main__':
+    connect(**config.Config.MONGODB_SETTINGS)
+    annotations = get_annotations()
+
+    # draw_attribute_distribution(annotations)
+    # draw_group_distribution(annotations)
+
+    for annotation in annotations:
+        reason = annotation['basket']['Acceptance']['reason']
+
+        if 'effectively convince' in reason:
+            print('Found ors! :', reason)
+            print(annotation)
