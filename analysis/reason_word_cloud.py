@@ -23,8 +23,6 @@ def clean_reason(reason):
     reason = reason.replace("'d", ' had')
     reason = reason.replace("n't", ' not')
 
-    for word in ['could', 'would', 'the', "'s"]:
-        reason = reason.replace(word, '')
     for punct in "/-'":
         reason = reason.replace(punct, ' ')
     for punct in '&':
@@ -157,7 +155,7 @@ def draw_word_cloud():
         # plt.figure(figsize=(25, 25))
         # plt.imshow(wordcloud)
         # plt.axis('off')
-        # plt.savefig('./plt/{}-{}'.format(attribute_key, option))
+        # plt.savefig('./wordcloud/{}-{}'.format(attribute_key, option))
 
 
 def write_attribute_frequency(key, frequencies):

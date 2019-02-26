@@ -304,29 +304,31 @@ def clustering_with_glove(df, w2v, file_key):
 
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
+    print(stemmer.stem('others'))
+    print(lemmatizer.lemmatize('others', pos='v'))
 
-    attribute_reason = get_attribute_reason()
-
-    # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-    attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-
-    w2v = load_glove()
-    for attribute_key in attribute_keys:
-        for attribute_value in attribute_reason[attribute_key]:
-            options = attribute_reason[attribute_key][attribute_value]
-
-            file_key = '{}-{}'.format(attribute_key, attribute_value)
-            print(file_key)
-            print('options number :', len(options))
-
-            df = pd.DataFrame({
-                'reason': [option['reason'] for option in options],
-                'user': [option['user'] for option in options],
-                'user_name': [option['user_name'] for option in options],
-            })
-            # print(df['reason'])
-            try:
-                clustering_with_glove(df, w2v, file_key)
-                # clustering(df)
-            except Exception as e:
-                logging.exception(e)
+    # attribute_reason = get_attribute_reason()
+    #
+    # # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+    # attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+    #
+    # w2v = load_glove()
+    # for attribute_key in attribute_keys:
+    #     for attribute_value in attribute_reason[attribute_key]:
+    #         options = attribute_reason[attribute_key][attribute_value]
+    #
+    #         file_key = '{}-{}'.format(attribute_key, attribute_value)
+    #         print(file_key)
+    #         print('options number :', len(options))
+    #
+    #         df = pd.DataFrame({
+    #             'reason': [option['reason'] for option in options],
+    #             'user': [option['user'] for option in options],
+    #             'user_name': [option['user_name'] for option in options],
+    #         })
+    #         # print(df['reason'])
+    #         try:
+    #             clustering_with_glove(df, w2v, file_key)
+    #             # clustering(df)
+    #         except Exception as e:
+    #             logging.exception(e)
