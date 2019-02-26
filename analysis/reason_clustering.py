@@ -62,7 +62,7 @@ def get_attribute_reason():
     """
     attribute_reason = defaultdict(lambda: defaultdict(lambda: []))
     dumps = []
-    bin_path = './annotations_clustering.bin'
+    bin_path = './bin/annotations_clustering.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
