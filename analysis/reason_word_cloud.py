@@ -55,7 +55,7 @@ def draw_word_cloud():
     annotations = Annotation.objects(type='sentence')
 
     dumps = []
-    bin_path = './annotations.bin'
+    bin_path = './bin/annotations.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
