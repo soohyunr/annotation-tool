@@ -124,16 +124,31 @@ def draw_group_distribution(annotations):
     plt.close()
 
 
+def check_reason_ratio(annotations):
+    keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Acceptance']
+    for key in keys:
+        found = 0
+        not_found = 0
+        total = 0
+        for annotation in annotations:
+            if not annotation['is_turk']:
+                continue
+
+            total += 1
+            reason = annotation['basket'][key]['reason']
+
+            if reason:
+                found += 1
+            else:
+                not_found += 1
+
+        print('{} : {}/{}({:.2f}%)'.format(key, found, total, found / total * 100))
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
     annotations = get_annotations()
 
     # draw_attribute_distribution(annotations)
     # draw_group_distribution(annotations)
-
-    for annotation in annotations:
-        reason = annotation['basket']['Acceptance']['reason']
-
-        if 'effectively convince' in reason:
-            print('Found ors! :', reason)
-            print(annotation)
+    check_reason_ratio(annotations)

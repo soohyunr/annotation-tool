@@ -37,6 +37,15 @@ definitions = {
         'Weakly_Disputable': 'Whether or not it is reasonable to accept the information given by the sentence as true, it is Weakly Disputable.',
         'Not_Disputable': 'Whether or not it is reasonable to accept the information given by the sentence as true, it is Not Disputable.',
     },
+    'Perceived_Author_Credibility': {
+        'Strong_Credibility_for_the_upcoming_sentences': 'Strong Credibility for the upcoming sentences For the upcoming sentences, I anticipate to strongly accept them.',
+        'Credibility_for_the_upcoming_sentences': 'Credibility for the upcoming sentences For the upcoming sentences, I anticipate to accept them.',
+        'Weak_Credibility_for_the_upcoming_sentences': 'Weak Credibility for the upcoming sentences For the upcoming sentences, I anticipate to weakly accept them.',
+        'Hard_to_judge': 'Hard to Judge',
+        'Weak_Suspicion_for_the_upcoming_sentences':'Weak Suspicion for the upcoming sentences For the upcoming sentences, I anticipate to weakly reject them',
+        'Suspicion_for_the_upcoming_sentences':'Suspicion for the upcoming sentences For the upcoming sentences, I anticipate to reject them.',
+        'Strong_Suspicion_for_the_upcoming_sentences':'Strong Suspicion for the upcoming sentences For the upcoming sentences, I anticipate to strongly reject them.',
+    },
     'Acceptance': {
         'Strong_Accept': 'Strong Accept I accept the information given by the sentence to be true. I have sound and cogent arguments to justify my acceptance. I am sure that I can effectively convince others that my judgement is reasonable.',
         'Accept': 'Accept I accept the information given by the sentence to be true. I have some arguments to justify my acceptance. But I am not sure whether I can effectively convince others that my judgement is reasonable.',
@@ -47,6 +56,19 @@ definitions = {
         'Strong_Reject': 'Strong Reject I reject the information given by the sentence to be true. I have sound and cogent arguments for the rejection. I am sure that I can effectively convince others that my judgement is reasonable.',
     },
 }
+
+
+def filtering_from_definition(reason_tokens, key, value):
+    sent_filter = definitions[key][value]
+    sent_filter = clean_reason(sent_filter)
+    sent_filter = tokenize_and_lemmatize(sent_filter)
+
+    result = []
+    for token in reason_tokens:
+        if not (token in sent_filter):
+            result.append(token)
+
+    return result
 
 
 def clean_reason(reason):
@@ -77,17 +99,7 @@ def get_ngrams(tokens, n):
     return [' '.join(grams) for grams in ngrams_]
 
 
-def get_attribute_words(attribute_key, attribute_value):
-    tokens = word_tokenize(attribute_key.replace('_', ' '))
-    tokens += word_tokenize(attribute_value.replace('_', ' '))
-    result = []
-    for token in tokens:
-        token = lemmatizer.lemmatize(token, pos='v')
-        result.append(token.lower())
-    return result
-
-
-def draw_word_cloud():
+def draw_wordcloud():
     attribute_reason = defaultdict(lambda: defaultdict(lambda: []))
 
     annotations = Annotation.objects(type='sentence')
@@ -120,9 +132,9 @@ def draw_word_cloud():
             if not reason:
                 continue
 
-            attribute_words = get_attribute_words(attribute_key, value)
             reason = clean_reason(reason)
             tokens = tokenize_and_lemmatize(reason)
+            tokens = filtering_from_definition(tokens, attribute_key, value)
 
             reason_key = '{}-{}'.format(option['user'], ''.join(tokens))
             if reason_key in reason_set:
@@ -156,23 +168,23 @@ def draw_word_cloud():
         print('{}-{}'.format(attribute_key, option))
         print('target.keys() :', len(target.keys()))
 
-        # top_phrase = target.items()
-        # top_phrase = sorted(top_phrase, key=lambda x: -x[1])
-        # write_attribute_frequency('{}-{}'.format(attribute_key, option), top_phrase)
+        top_phrase = target.items()
+        top_phrase = sorted(top_phrase, key=lambda x: -x[1])
+        write_attribute_frequency('{}-{}'.format(attribute_key, option), top_phrase)
 
-        # wordcloud = WordCloud(
-        #     width=1200,
-        #     height=1200,
-        #     font_path='/Library/Fonts/NotoSans-Black.ttf',
-        #     background_color='white',
-        #     max_font_size=140,
-        #     max_words=max_words,
-        # ).generate_from_frequencies(target)
-        #
-        # plt.figure(figsize=(25, 25))
-        # plt.imshow(wordcloud)
-        # plt.axis('off')
-        # plt.savefig('./wordcloud/{}-{}'.format(attribute_key, option))
+        wordcloud = WordCloud(
+            width=1200,
+            height=1200,
+            font_path='/Library/Fonts/NotoSans-Black.ttf',
+            background_color='white',
+            max_font_size=140,
+            max_words=max_words,
+        ).generate_from_frequencies(target)
+
+        plt.figure(figsize=(25, 25))
+        plt.imshow(wordcloud)
+        plt.axis('off')
+        plt.savefig('./wordcloud/{}-{}'.format(attribute_key, option))
 
 
 def write_attribute_frequency(key, frequencies):
@@ -185,4 +197,4 @@ def write_attribute_frequency(key, frequencies):
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
-    draw_word_cloud()
+    draw_wordcloud()
