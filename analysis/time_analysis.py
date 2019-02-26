@@ -101,7 +101,7 @@ def draw_group_distribution(annotations):
             continue
 
         created_at = dateutil.parser.parse(annotation['created_at'])
-        updated_at = dateutil.parser.parse(annotation['updated_at'])
+        updated_at = dateutil.parser.pmarse(annotation['updated_at'])
 
         diff = (updated_at - created_at)
 
