@@ -41,8 +41,8 @@ definitions = {
         'Strong_Credibility_for_the_upcoming_sentences': 'Strong Credibility for the upcoming sentences For the upcoming sentences, I anticipate to strongly accept them.',
         'Credibility_for_the_upcoming_sentences': 'Credibility for the upcoming sentences For the upcoming sentences, I anticipate to accept them.',
         'Weak_Credibility_for_the_upcoming_sentences': 'Weak Credibility for the upcoming sentences For the upcoming sentences, I anticipate to weakly accept them.',
-        'Hard_to_judge': 'Hard to Judge',
-        'Weak_Suspicion_for_the_upcoming_sentences':'Weak Suspicion for the upcoming sentences For the upcoming sentences, I anticipate to weakly reject them',
+        'Hard_to_Judge': 'Hard to Judge',
+        'Weak_Suspicion_for_the_upcoming_sentencese':'Weak Suspicion for the upcoming sentences For the upcoming sentences, I anticipate to weakly reject them',
         'Suspicion_for_the_upcoming_sentences':'Suspicion for the upcoming sentences For the upcoming sentences, I anticipate to reject them.',
         'Strong_Suspicion_for_the_upcoming_sentences':'Strong Suspicion for the upcoming sentences For the upcoming sentences, I anticipate to strongly reject them.',
     },
@@ -57,9 +57,57 @@ definitions = {
     },
 }
 
+title_map = {
+    'Knowledge_Awareness': {
+        'I_did_not_know_the_information.': 'did not know',
+        'I_already_knew_the_information_before_I_read_this_document.': 'already knew',
+        'I_did_not_know_the_information_before,_but_came_to_know_it_by_reading_the_previous_sentences.': 'came to know',
+    },
+    'Verifiability': {
+        'I_can_verify_it_using_my_knowledge.': 'using my knowledge',
+        'I_can_verify_it_by_short-time_googling.': 'short-time googling',
+        'I_can_verify_it_by_long-time_googling.': 'long-time googling',
+        'I_might_find_an_off-line_way_to_verify_it,_but_it_will_be_very_hard.': 'off-line way',
+        'There_is_no_way_to_verify_it.': 'no way to verify',
+        'None_of_the_above': 'none of the above',
+    },
+    'Disputability': {
+        'Highly_Disputable': 'highly disputable',
+        'Disputable': 'disputable',
+        'Weakly_Disputable': 'weakly disputable',
+        'Not_Disputable': 'not disputable',
+    },
+    'Acceptance': {
+        'Strong_Accept': 'strong accept',
+        'Accept': 'accept',
+        'Weak_Accept': 'weak accept',
+        'Hard_to_judge': 'hard to judge',
+        'Weak_Reject': 'weak reject',
+        'Reject': 'reject',
+        'Strong_Reject': 'strong reject',
+    },
+}
+
+import spacy
+
+nlp = spacy.load('en_core_web_sm')
+
+def remove_name_entity(reason):
+    doc = nlp(reason)
+    result = reason
+    for e in doc.ents:
+        # result = result.replace(' {} '.format(e.text), ' ')
+        result = result.replace(e.text, ' ')
+    return result
+
 
 def filtering_from_definition(reason_tokens, key, value):
-    sent_filter = definitions[key][value]
+    try:
+        sent_filter = definitions[key][value]
+    except KeyError:
+        print('key :', key, ', value :', value)
+        exit(0)
+
     sent_filter = clean_reason(sent_filter)
     sent_filter = tokenize_and_lemmatize(sent_filter)
 
@@ -72,7 +120,6 @@ def filtering_from_definition(reason_tokens, key, value):
 
 
 def clean_reason(reason):
-    reason = reason.lower()
     reason = reason.replace("'d", ' had')
     reason = reason.replace("n't", ' not')
 
@@ -111,86 +158,108 @@ def draw_wordcloud():
         print('generate ' + bin_path)
         for annotation in tqdm(annotations):
             try:
+                if not ('Acceptance' in annotation['basket']):
+                    continue
                 dumps.append(annotation.dump())
             except Exception as e:
                 logging.exception(e)
         pickle.dump(dumps, open(bin_path, "wb"))
     random.shuffle(dumps)
 
-    reason_set = set()
-    for annotation in tqdm(dumps):
-        basket = annotation['basket']
+    def ddict2dict(d):
+        for k, v in d.items():
+            if isinstance(v, dict):
+                d[k] = ddict2dict(v)
+        return dict(d)
 
-        for attribute_key in basket:
-            option = basket[attribute_key]
-            if not ('reason' in option):
-                continue
-
-            value = option['value']
-            reason = option['reason']
-
-            if not reason:
-                continue
-
-            reason = clean_reason(reason)
-            tokens = tokenize_and_lemmatize(reason)
-            tokens = filtering_from_definition(tokens, attribute_key, value)
-
-            reason_key = '{}-{}'.format(option['user'], ''.join(tokens))
-            if reason_key in reason_set:
-                continue
-            reason_set.add(reason_key)
-
-            attribute_reason[attribute_key][value] += get_ngrams(tokens, 3)
-
+    bin_path = './bin/annotations_frequency_step2.bin'
     frequencies = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
-    for attribute_key in attribute_reason:
-        for option in attribute_reason[attribute_key]:
-            for reason in attribute_reason[attribute_key][option]:
-                frequencies[attribute_key][option][reason] += 1
+    if os.path.exists(bin_path):
+        frequencies = pickle.load(open(bin_path, "rb"))
+    else:
+        reason_set = set()
+        for annotation in tqdm(dumps):
+            basket = annotation['basket']
 
+            for attribute_key in basket:
+                option = basket[attribute_key]
+                if not ('reason' in option):
+                    continue
+
+                value = option['value']
+                reason = option['reason']
+
+                if not reason:
+                    continue
+
+                reason = clean_reason(reason)
+                reason = remove_name_entity(reason)
+                tokens = tokenize_and_lemmatize(reason)
+                tokens = filtering_from_definition(tokens, attribute_key, value)
+
+                reason_key = '{}-{}'.format(annotation['user'], ''.join(tokens))
+                if reason_key in reason_set:
+                    continue
+                reason_set.add(reason_key)
+
+                attribute_reason[attribute_key][value] += get_ngrams(tokens, 3)
+
+        for attribute_key in attribute_reason:
+            for option in attribute_reason[attribute_key]:
+                for reason in attribute_reason[attribute_key][option]:
+                    frequencies[attribute_key][option][reason] += 1
+
+        pickle.dump(ddict2dict(frequencies), open(bin_path, "wb"))
+
+    import matplotlib as mpl
     import matplotlib.pyplot as plt
     from wordcloud import WordCloud
 
     # attribute_key = 'Knowledge_Awareness'
     # attribute_key = 'Verifiability'
-    # attribute_key = 'Disputability'
+    attribute_key = 'Disputability'
     # attribute_key = 'Perceived_Author_Credibility'
-    attribute_key = 'Acceptance'
-    max_words = 150
+    # attribute_key = 'Acceptance'
+    max_words = 100
 
-    for option in attribute_reason[attribute_key]:
-        target = frequencies[attribute_key][option]
+    # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Acceptance']
+    keys = ['Knowledge_Awareness']
+    for attribute_key in keys:
+        for option in definitions[attribute_key]:
+            target = frequencies[attribute_key][option]
 
-        if len(target.keys()) < max_words:
-            continue
+            if len(target.keys()) < max_words:
+                continue
 
-        print('{}-{}'.format(attribute_key, option))
-        print('target.keys() :', len(target.keys()))
+            print('{}-{}'.format(attribute_key, option))
+            print('target.keys() :', len(target.keys()))
 
-        top_phrase = target.items()
-        top_phrase = sorted(top_phrase, key=lambda x: -x[1])
-        write_attribute_frequency('{}-{}'.format(attribute_key, option), top_phrase)
+            top_phrase = target.items()
+            top_phrase = sorted(top_phrase, key=lambda x: -x[1])
+            write_attribute_frequency('{}-{}'.format(attribute_key, option), top_phrase)
 
-        wordcloud = WordCloud(
-            width=1200,
-            height=1200,
-            font_path='/Library/Fonts/NotoSans-Black.ttf',
-            background_color='white',
-            max_font_size=140,
-            max_words=max_words,
-        ).generate_from_frequencies(target)
+            wordcloud = WordCloud(
+                width=1200,
+                height=1200,
+                font_path='/Library/Fonts/NotoSans-Black.ttf',
+                background_color='white',
+                max_font_size=170,
+                max_words=max_words,
+            ).generate_from_frequencies(target)
 
-        plt.figure(figsize=(25, 25))
-        plt.imshow(wordcloud)
-        plt.axis('off')
-        plt.savefig('./wordcloud/{}-{}'.format(attribute_key, option))
+            mpl.rc('font', serif='Helvetica', weight='bold')
+            plt.figure(figsize=(25, 25))
+            plt.imshow(wordcloud)
+            plt.title(title_map[attribute_key][option], fontsize=50, y=1.05)
+            # plt.tight_layout(pad=0)
+            plt.axis('off')
+            plt.savefig('./wordcloud_v2/{}-{}'.format(attribute_key, option), bbox_inches='tight')
 
 
 def write_attribute_frequency(key, frequencies):
-    with open('./frequency/{}.txt'.format(key), 'w+') as f:
+    with open('./frequency_v2/{}.txt'.format(key), 'w+') as f:
         count = len(frequencies)
-        for item in frequencies[:10]:
+        for item in frequencies[:20]:
             f.write('{} ({}, {:.2f}%)\n'.format(item[0], item[1], (item[1] / count) * 100))
 
 

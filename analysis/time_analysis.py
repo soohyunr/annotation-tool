@@ -1,4 +1,4 @@
-import os, json, random, pickle, datetime
+import os, json, random, pickle, datetime, pytz
 import logging
 from mongoengine import connect
 from mongoengine.queryset.visitor import Q
@@ -23,14 +23,13 @@ import config
 
 
 def get_annotations():
-    annotations = Annotation.objects(type='sentence')
-
     dumps = []
     bin_path = './bin/annotations_time.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
         print('generate ' + bin_path)
+        annotations = Annotation.objects(type='sentence')
         for annotation in tqdm(annotations):
             try:
                 if not ('Acceptance' in annotation['basket']):
@@ -131,8 +130,6 @@ def check_reason_ratio(annotations):
         not_found = 0
         total = 0
         for annotation in annotations:
-            if not annotation['is_turk']:
-                continue
 
             total += 1
             reason = annotation['basket'][key]['reason']
@@ -145,10 +142,48 @@ def check_reason_ratio(annotations):
         print('{} : {}/{}({:.2f}%)'.format(key, found, total, found / total * 100))
 
 
+def check_select_reason_diff(annotations):
+    # 'Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance'
+    keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Acceptance']
+
+    success = 0
+    fail = 0
+    select_time_sum = 0
+    annotation_time_sum = 0
+    for annotation in tqdm(annotations):
+        select_time = 0
+        annotation_time = dateutil.parser.parse(annotation['updated_at']) - dateutil.parser.parse(annotation['created_at'])
+        annotation_time = annotation_time.total_seconds()
+        if annotation_time > 1800:
+            fail += 1
+            continue
+        try:
+            for key in keys:
+                opened_at = dateutil.parser.parse(annotation['basket'][key]['opened_at'])
+                updated_at = dateutil.parser.parse(annotation['basket'][key]['updated_at'])
+                diff = (updated_at - opened_at)
+                if diff.total_seconds() < 0 or diff.total_seconds() > 600:
+                    fail += 1
+                    raise ValueError
+                select_time += diff.total_seconds()
+        except Exception as e:
+            fail += 1
+            # logging.exception(e)
+            continue
+
+        success += 1
+        annotation_time_sum += annotation_time
+        select_time_sum += select_time
+
+    print('success: {}, fail: {}\n'.format(success, fail))
+    print('total: {}, select: {}, reason: {}\n'.format(annotation_time_sum / success, select_time_sum / success, (annotation_time_sum - select_time_sum) / success))
+
+
 if __name__ == '__main__':
-    connect(**config.Config.MONGODB_SETTINGS)
+    # connect(**config.Config.MONGODB_SETTINGS)
     annotations = get_annotations()
 
     # draw_attribute_distribution(annotations)
     # draw_group_distribution(annotations)
-    check_reason_ratio(annotations)
+    # check_reason_ratio(annotations)
+    check_select_reason_diff(annotations)
