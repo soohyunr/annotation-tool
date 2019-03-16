@@ -12,7 +12,7 @@ def get_annotations():
     annotations = Annotation.objects(type='sentence')
 
     dumps = []
-    bin_path = './bin/annotations.bin'
+    bin_path = './data/bin/annotations.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
@@ -70,7 +70,7 @@ def draw_daily_amount_chart_with_turk(annotations):
     for i in range(len(x)):
         df.loc[i] = [x[i], sy[i], ty[i], sy[i]+ty[i]]
 
-    writer = pd.ExcelWriter('./chart/number_of_annotations.xlsx', engine='xlsxwriter')
+    writer = pd.ExcelWriter('./data/chart/number_of_annotations.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='Sheet1')
     writer.save()
 
@@ -98,7 +98,7 @@ def draw_daily_amount_chart_with_turk(annotations):
     plt.legend(loc='upper left')
 
     plt.show()
-    fig.savefig('./chart/number_of_annotations2.png')
+    fig.savefig('./data/chart/number_of_annotations2.png')
 
 
 

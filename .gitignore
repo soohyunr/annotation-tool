@@ -7,6 +7,8 @@
 *.mo
 /ENV/
 /data/
+/analysis/data/
 
 *.bin
+*.zip
 config.py

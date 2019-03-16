@@ -151,7 +151,7 @@ def draw_wordcloud():
 
     annotations = Annotation.objects(type='sentence')
     dumps = []
-    bin_path = './bin/annotations_frequency.bin'
+    bin_path = './data/bin/annotations_frequency.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
@@ -211,7 +211,7 @@ def draw_wordcloud():
 
         pickle.dump(ddict2dict(frequencies), open(bin_path, "wb"))
 
-    import matplotlib as mpl
+    import matplotlib
     import matplotlib.pyplot as plt
     from wordcloud import WordCloud
 
@@ -223,7 +223,7 @@ def draw_wordcloud():
     max_words = 100
 
     # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Acceptance']
-    keys = ['Knowledge_Awareness']
+    keys = ['Disputability']
     for attribute_key in keys:
         for option in definitions[attribute_key]:
             target = frequencies[attribute_key][option]
@@ -247,17 +247,20 @@ def draw_wordcloud():
                 max_words=max_words,
             ).generate_from_frequencies(target)
 
-            mpl.rc('font', serif='Helvetica', weight='bold')
+            import matplotlib.font_manager as fm
+            my_font = fm.FontProperties(fname='/Library/Fonts/Times New Roman Bold.ttf')
+
             plt.figure(figsize=(25, 25))
             plt.imshow(wordcloud)
-            plt.title(title_map[attribute_key][option], fontsize=50, y=1.05)
+            # plt.title(title_map[attribute_key][option], fontsize=70, y=-0.05, fontproperties=my_font)
             # plt.tight_layout(pad=0)
             plt.axis('off')
-            plt.savefig('./wordcloud_v2/{}-{}'.format(attribute_key, option), bbox_inches='tight')
+            plt.savefig('./data/wordcloud_v2/{}-{}'.format(attribute_key, option), bbox_inches='tight')
+            plt.close()
 
 
 def write_attribute_frequency(key, frequencies):
-    with open('./frequency_v2/{}.txt'.format(key), 'w+') as f:
+    with open('./data/frequency_v2/{}.txt'.format(key), 'w+') as f:
         count = len(frequencies)
         for item in frequencies[:20]:
             f.write('{} ({}, {:.2f}%)\n'.format(item[0], item[1], (item[1] / count) * 100))
