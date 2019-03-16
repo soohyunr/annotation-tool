@@ -24,7 +24,7 @@ import config
 
 def get_annotations():
     dumps = []
-    bin_path = './bin/annotations_time.bin'
+    bin_path = './data/bin/annotations_time.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
@@ -87,7 +87,7 @@ def draw_attribute_distribution(anntations):
         plt.title('{} (avg: {:.2f})'.format(key, times.mean()), y=1.05)
         # plt.show()
         plt.grid(b=True, which='major', color='#999999', linestyle='-', alpha=0.2)
-        plt.savefig('./time/{}.png'.format(key))
+        plt.savefig('./data/time/{}.png'.format(key))
         plt.close()
 
 
@@ -119,7 +119,7 @@ def draw_group_distribution(annotations):
     plt.title('Student Annotation (avg: {:.2f})'.format(times.mean()), y=1.05)
     # plt.show()
     plt.grid(b=True, which='major', color='#999999', linestyle='-', alpha=0.2)
-    plt.savefig('./time/student_annotation.png')
+    plt.savefig('./data/time/student_annotation.png')
     plt.close()
 
 

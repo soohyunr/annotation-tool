@@ -62,7 +62,7 @@ def get_attribute_reason():
     """
     attribute_reason = defaultdict(lambda: defaultdict(lambda: []))
     dumps = []
-    bin_path = './bin/annotations_clustering.bin'
+    bin_path = './data/bin/annotations_clustering.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
@@ -271,14 +271,14 @@ def clustering_with_glove(df, w2v, file_key):
 
     X = vectorizer.fit_transform(df)
 
-    true_k = 5
+    true_k = 6
     from sklearn.cluster import KMeans
     model = KMeans(n_clusters=true_k, init='k-means++', max_iter=300, n_init=1)
     model.fit(X)
 
     df['cluster'] = model.labels_
 
-    with open('./clustering/{}.txt'.format(file_key), 'w+') as f:
+    with open('./data/clustering/{}.txt'.format(file_key), 'w+') as f:
         f.write(file_key + '\n')
         for c in range(true_k):
             f.write('\ncluster {}\n'.format(c))
@@ -297,38 +297,43 @@ def clustering_with_glove(df, w2v, file_key):
             top_phrase = ['{}({})'.format(phrase[0], phrase[1]) for phrase in top_phrase]
             f.write('title: {}\n\n'.format(', '.join(top_phrase[:4])))
 
-            for item in dis[:5]:
+            for item in dis[:10]:
                 doc_id = item[0]
                 f.write('[{}] reason: {}\n'.format(df.iloc[doc_id]['user_name'], df.iloc[doc_id]['reason']))
 
 
+def write_all_reason(df, file_key):
+    with open('./data/reason/{}.txt'.format(file_key), 'w+') as f:
+        for index in range(len(df)):
+            f.write('[{}] reason: {}\n'.format(df.iloc[index]['user_name'], df.iloc[index]['reason']))
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
-    print(stemmer.stem('others'))
-    print(lemmatizer.lemmatize('others', pos='v'))
 
-    # attribute_reason = get_attribute_reason()
-    #
-    # # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-    # attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-    #
-    # w2v = load_glove()
-    # for attribute_key in attribute_keys:
-    #     for attribute_value in attribute_reason[attribute_key]:
-    #         options = attribute_reason[attribute_key][attribute_value]
-    #
-    #         file_key = '{}-{}'.format(attribute_key, attribute_value)
-    #         print(file_key)
-    #         print('options number :', len(options))
-    #
-    #         df = pd.DataFrame({
-    #             'reason': [option['reason'] for option in options],
-    #             'user': [option['user'] for option in options],
-    #             'user_name': [option['user_name'] for option in options],
-    #         })
-    #         # print(df['reason'])
-    #         try:
-    #             clustering_with_glove(df, w2v, file_key)
-    #             # clustering(df)
-    #         except Exception as e:
-    #             logging.exception(e)
+    attribute_reason = get_attribute_reason()
+
+    # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+    attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+
+    w2v = load_glove()
+    for attribute_key in attribute_keys:
+        for attribute_value in attribute_reason[attribute_key]:
+            options = attribute_reason[attribute_key][attribute_value]
+
+            file_key = '{}-{}'.format(attribute_key, attribute_value)
+            print(file_key)
+            print('options number :', len(options))
+
+            df = pd.DataFrame({
+                'reason': [option['reason'] for option in options],
+                'user': [option['user'] for option in options],
+                'user_name': [option['user_name'] for option in options],
+            })
+            # print(df['reason'])
+            write_all_reason(df, file_key)
+            try:
+                clustering_with_glove(df, w2v, file_key)
+                # clustering(df)
+            except Exception as e:
+                logging.exception(e)
