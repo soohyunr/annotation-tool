@@ -308,13 +308,13 @@ def write_all_reason(df, file_key):
             f.write('[{}] reason: {}\n'.format(df.iloc[index]['user_name'], df.iloc[index]['reason']))
 
 
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
     attribute_reason = get_attribute_reason()
 
-    # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
-    attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+    attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Acceptance']
 
     w2v = load_glove()
     for attribute_key in attribute_keys:
