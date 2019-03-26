@@ -1,15 +1,13 @@
-import os, json, random, pickle, datetime, pytz
+import os, random, pickle
 import logging
 from mongoengine import connect
-from mongoengine.queryset.visitor import Q
 from tqdm import tqdm
 from collections import defaultdict
 import pandas as pd
+import matplotlib as mpl
 from matplotlib import pyplot as plt
-import dateutil.parser
 import numpy as np
 
-from nltk import ngrams, word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
@@ -20,29 +18,6 @@ stemmer = SnowballStemmer("english", ignore_stopwords=True)
 
 from models import Doc, User, Sent, Annotation
 import config
-
-
-def clean_reason(reason):
-    reason = reason.lower()
-    reason = reason.replace("'d", ' had')
-    reason = reason.replace("n't", ' not')
-
-    for punct in "/-'":
-        reason = reason.replace(punct, ' ')
-    for punct in '&':
-        reason = reason.replace(punct, ' {} '.format(punct))
-    for punct in '?!.,"#$%\'()*+-/:;<=>@[\\]^_`{|}~' + '“”’':
-        reason = reason.replace(punct, '')
-    return reason
-
-
-def tokenize_and_lemmatize(text):
-    stems = []
-    text = text.lower()
-    words = [word for word in word_tokenize(text) if word.isalpha()]
-    # words = [word for word in words if word not in stop_words]
-    for word in words: stems.append(lemmatizer.lemmatize(word, pos='v'))
-    return stems
 
 
 def get_attribute_reason():
@@ -83,6 +58,7 @@ def get_attribute_reason():
             option['user'] = annotation['user']
             option['user_name'] = annotation['user_name']
 
+            from analysis.data_util import tokenize_and_lemmatize
             reason_key = '{}-{}'.format(option['user'], ''.join(tokenize_and_lemmatize(reason)))
             if reason_key in reason_set:
                 continue
@@ -92,23 +68,13 @@ def get_attribute_reason():
     return attribute_reason
 
 
-def load_glove():
-    with open("/Users/seungwon/Desktop/data/glove/glove.6B.300d.txt", "rb") as lines:
-        print('Load glove')
-        w2v = dict()
-        for line in tqdm(lines):
-            word = line.split()[0].decode('utf-8')
-            vector = list(map(float, line.split()[1:]))
-            w2v[word] = vector
-        return w2v
-
-
-def clustering(reasons, w2v):
-    from scipy.cluster.hierarchy import ward, dendrogram
+def clustering(reasons, w2v, file_key):
+    from scipy.cluster import hierarchy
+    from analysis.data_util import clean_text, tokenize_and_lemmatize
 
     X = []
     for reason in reasons:
-        line = clean_reason(reason)
+        line = clean_text(reason)
         words = tokenize_and_lemmatize(line)
         words = [w2v[w] for w in words if w in w2v]
         vector = np.mean(words or [np.zeros(300)], axis=0)
@@ -117,10 +83,15 @@ def clustering(reasons, w2v):
     from sklearn.metrics.pairwise import cosine_similarity
     dist = 1 - cosine_similarity(X)
 
-    linkage_matrix = ward(dist)  # define the linkage_matrix using ward clustering pre-computed distances
+    linkage_matrix = hierarchy.ward(dist)  # define the linkage_matrix using ward clustering pre-computed distances
 
-    fig, ax = plt.subplots(figsize=(15, 20))  # set size
-    ax = dendrogram(linkage_matrix, orientation="right", labels='');
+    from matplotlib.pyplot import cm
+    cmap = cm.rainbow(np.linspace(0, 1, 5))
+    hierarchy.set_link_color_palette([mpl.colors.rgb2hex(rgb[:3]) for rgb in cmap])
+
+    # hierarchy.set_link_color_palette(['m', 'c', 'y', 'k'])
+    fig, ax = plt.subplots(figsize=(20, 40))  # set size
+    ax = hierarchy.dendrogram(linkage_matrix, orientation="right", labels=reasons)
 
     plt.tick_params(
         axis='x',  # changes apply to the x-axis
@@ -131,21 +102,31 @@ def clustering(reasons, w2v):
     plt.tight_layout()  # show plot with tight layout
 
     # uncomment below to save figure
-    plt.savefig('./data/dendrogram/ward_clusters.png', dpi=200)
+    plt.savefig('./data/dendrogram/{}.png'.format(file_key), dpi=200)
+    plt.close()
 
 
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
     attribute_reason = get_attribute_reason()
 
-    attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+    # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Perceived_Author_Credibility', 'Acceptance']
+    attribute_keys = ['Acceptance']
+    from analysis.data_util import load_glove
 
     w2v = load_glove()
     for attribute_key in attribute_keys:
         for attribute_value in attribute_reason[attribute_key]:
             options = attribute_reason[attribute_key][attribute_value]
 
+            file_key = '{}-{}'.format(attribute_key, attribute_value)
             reasons = [option['reason'] for option in options]
-            clustering(reasons, w2v)
+            random.shuffle(reasons)
+
+            print('file_key :', file_key)
+            from summa import keywords
+
+            print(keywords.keywords('\n'.join(reasons)))
+            # clustering(reasons[:300], w2v, file_key)
 
             break
