@@ -2,24 +2,60 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 import numpy as np
 
-from scipy.cluster.hierarchy import dendrogram, linkage
+from scipy.cluster.hierarchy import to_tree, dendrogram, linkage
+
+from analysis.entailment import Predictor
+
+predictor = Predictor()
 
 
 def plot_dendrogram(linkage_matrix, **kwargs):
     ddata = dendrogram(linkage_matrix, **kwargs)
-    mpl.rcParams["font.size"] = 14
+
+    leaves = ddata['leaves']
+    rootnode, nodelist = to_tree(linkage_matrix, rd=True)
+
+    leave2text = dict()
+    for i in range(len(leaves)):
+        leave2text[leaves[i]] = ddata['ivl'][i]
+
+    children = dict()
+    main_text = dict()
+
+    def dfs(node):
+        if node.left is None:
+            children[node.id] = [node.id]
+            main_text[node.id] = leave2text[node.id]
+            return
+        dfs(node.left)
+        dfs(node.right)
+        children[node.id] = children[node.left.id] + children[node.right.id]
+
+        left_text = main_text[node.left.id]
+        right_text = main_text[node.right.id]
+
+        if predictor.predict(left_text, right_text)[0] >= predictor.predict(right_text, left_text)[0]:
+            main_text[node.id] = right_text
+        else:
+            main_text[node.id] = left_text
+
+    dfs(rootnode)
+
     idx = 0
     for i, d, c, txt in zip(ddata['icoord'], ddata['dcoord'], ddata['color_list'], ddata['ivl']):
         x = 0.5 * sum(i[1:3])
         y = d[1]
 
+        node_id = idx + len(leaves)
+
         plt.plot(y, x, 'o', c=c)
-        text = plt.annotate(txt, (y, x),
-                     xytext=(23, 15),
-                     textcoords='offset points',
-                     va='top',
-                     ha='center')
-        text.set_fontsize(10)
+        text = plt.annotate(main_text[node_id],
+                            (y, x),
+                            xytext=(23, 15),
+                            textcoords='offset points',
+                            va='top',
+                            ha='center')
+        text.set_fontsize(8)
         idx += 1
 
 
@@ -49,12 +85,12 @@ def clustering(reasons, w2v, file_key):
     cmap = cm.rainbow(np.linspace(0, 1, 5))
     hierarchy.set_link_color_palette([mpl.colors.rgb2hex(rgb[:3]) for rgb in cmap])
 
-
     fig, ax = plt.subplots(figsize=(20, len(reasons) * 0.7))
     plot_dendrogram(linkage_matrix,
                     labels=reasons,
-                    truncate_mode='level',
+                    # truncate_mode='level',
                     show_leaf_counts=False,
+                    color_threshold=2,
                     orientation='left')
 
     plt.tick_params(
@@ -64,11 +100,11 @@ def clustering(reasons, w2v, file_key):
         top='off',
         labelbottom='off')
 
-    # plt.tight_layout()
-    plt.title(file_key)
+    plt.tight_layout()
+    # plt.title(file_key)
 
     plt.savefig('./data/dendrogram/{}.png'.format(file_key), dpi=200)
-    # plt.close()
+    plt.close()
 
 
 if __name__ == '__main__':
@@ -78,4 +114,10 @@ if __name__ == '__main__':
     reasons = anno.get_reasons(anno.acceptance, anno.strong_accept)
 
     w2v = load_glove()
-    clustering(reasons[:50], w2v, '{} {}'.format(anno.acceptance, anno.strong_accept))
+
+    selected = list()
+    for reason in reasons:
+        if 20 <= len(reason) <= 50:
+            selected.append(reason)
+
+    clustering(selected[:50], w2v, '{} {}'.format(anno.acceptance, anno.strong_accept))

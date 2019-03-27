@@ -41,7 +41,7 @@ def load_glove():
         return w2v
     else:
         from tqdm import tqdm
-        with open("/Users/seungwon/Desktop/data/glove/glove.6B.300d.txt", "rb") as lines:
+        with open("./data/glove/glove.6B.300d.txt", "rb") as lines:
             w2v = dict()
             print('generate glove.pkl')
             for line in tqdm(lines):
@@ -166,11 +166,12 @@ class Annotation:
 
     def get_reasons(self, attr_k, attr_v=''):
         reasons = list()
-        if not attr_v: 
+        if not attr_v:
             for attr_v in self._map[attr_k]:
                 options = self._map[attr_k][attr_v]
                 reasons.extend([option['reason'] for option in options])
         else:
             reasons.extend([option['reason'] for option in self._map[attr_k][attr_v]])
+
         random.shuffle(reasons)
         return reasons
