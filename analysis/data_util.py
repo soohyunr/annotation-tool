@@ -166,7 +166,7 @@ class Annotation:
 
     def get_reasons(self, attr_k, attr_v=''):
         reasons = list()
-        if not attr_v:
+        if not attr_v: 
             for attr_v in self._map[attr_k]:
                 options = self._map[attr_k][attr_v]
                 reasons.extend([option['reason'] for option in options])
