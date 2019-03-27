@@ -124,9 +124,7 @@ if __name__ == '__main__':
             random.shuffle(reasons)
 
             print('file_key :', file_key)
-            from summa import keywords
 
-            print(keywords.keywords('\n'.join(reasons)))
             # clustering(reasons[:300], w2v, file_key)
 
             break
