@@ -80,7 +80,7 @@ class Annotation:
     verifiability = 'Verifiability'
     disputability = 'Disputability'
     acceptance = 'Acceptance'
-    reason_map = dict()
+    _map = dict()
     ATTR_KEYS = [knowledge_awareness, verifiability, disputability, acceptance]
 
     did_not_know = 'I_did_not_know_the_information.'
@@ -133,9 +133,9 @@ class Annotation:
 
         random.shuffle(dumps)
         self.annotations = dumps
-        self.load_reason_map()
+        self.build_map()
 
-    def load_reason_map(self):
+    def build_map(self):
         from collections import defaultdict
         self._map = defaultdict(lambda: defaultdict(lambda: []))
         for annotation in tqdm(self.annotations):
@@ -160,7 +160,6 @@ class Annotation:
         if not attr_v:
             for attr_v in self._map[attr_k]:
                 options = self._map[attr_k][attr_v]
-
                 reasons.extend([option['reason'] for option in options])
         else:
             reasons.extend([option['reason'] for option in self._map[attr_k][attr_v]])
