@@ -107,7 +107,7 @@ class Annotation:
     reject = 'Reject'
     strong_reject = 'Strong_Reject'
 
-    def __init__(self, pkl_path='./data/bin/annotations_clustering.pkl'):
+    def __init__(self, pkl_path='./data/pkl/annotations_clustering.pkl'):
         import os, random, pickle, logging
         from models import Annotation
         from mongoengine import connect
