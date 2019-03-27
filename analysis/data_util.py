@@ -1,4 +1,5 @@
 from tqdm import tqdm
+import random
 
 
 def clean_text(text):
@@ -31,16 +32,24 @@ def tokenize_and_lemmatize(text):
 
 
 def load_glove():
+    import os, pickle
     print('[load_glove]')
-    from tqdm import tqdm
-    with open("/Users/seungwon/Desktop/data/glove/glove.6B.300d.txt", "rb") as lines:
-        print('Load glove')
-        w2v = dict()
-        for line in tqdm(lines):
-            word = line.split()[0].decode('utf-8')
-            vector = list(map(float, line.split()[1:]))
-            w2v[word] = vector
+    pkl_path = './data/pkl/glove.pkl'
+    if os.path.exists(pkl_path):
+        print('loaded from glove.pkl')
+        w2v = pickle.load(open(pkl_path, "rb"))
         return w2v
+    else:
+        from tqdm import tqdm
+        with open("/Users/seungwon/Desktop/data/glove/glove.6B.300d.txt", "rb") as lines:
+            w2v = dict()
+            print('generate glove.pkl')
+            for line in tqdm(lines):
+                word = line.split()[0].decode('utf-8')
+                vector = list(map(float, line.split()[1:]))
+                w2v[word] = vector
+            pickle.dump(w2v, open(pkl_path, "wb"))
+            return w2v
 
 
 definitions = {
@@ -108,7 +117,7 @@ class Annotation:
     strong_reject = 'Strong_Reject'
 
     def __init__(self, pkl_path='./data/pkl/annotations_clustering.pkl'):
-        import os, random, pickle, logging
+        import os, pickle, logging
         from models import Annotation
         from mongoengine import connect
         import config
@@ -163,4 +172,5 @@ class Annotation:
                 reasons.extend([option['reason'] for option in options])
         else:
             reasons.extend([option['reason'] for option in self._map[attr_k][attr_v]])
+        random.shuffle(reasons)
         return reasons
