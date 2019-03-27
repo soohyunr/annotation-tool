@@ -116,13 +116,14 @@ class Annotation:
     reject = 'Reject'
     strong_reject = 'Strong_Reject'
 
-    def __init__(self, pkl_path='./data/pkl/annotations_clustering.pkl'):
+    def __init__(self, pkl_path='./data/pkl/annotations_clustering.pkl', redundant=True):
         import os, pickle, logging
         from models import Annotation
         from mongoengine import connect
         import config
 
         connect(**config.Config.MONGODB_SETTINGS)
+        self.redundant = redundant
 
         dumps = []
         if os.path.exists(pkl_path):
@@ -140,13 +141,15 @@ class Annotation:
                     logging.exception(e)
             pickle.dump(dumps, open(pkl_path, "wb"))
 
-        random.shuffle(dumps)
+        # random.shuffle(dumps)
         self.annotations = dumps
         self.build_map()
 
     def build_map(self):
         from collections import defaultdict
         self._map = defaultdict(lambda: defaultdict(lambda: []))
+
+        reason_set = set()
         for annotation in tqdm(self.annotations):
             basket = annotation['basket']
 
@@ -161,6 +164,13 @@ class Annotation:
                 if not reason:
                     continue
 
+                if not self.redundant:
+                    option['user_name'] = annotation['user_name']
+                    reason_key = '{}-{}'.format(option['user_name'], ''.join(tokenize_and_lemmatize(reason)))
+                    if reason_key in reason_set:
+                        continue
+                    reason_set.add(reason_key)
+
                 self._map[attr_k][attr_v].append(option)
         return self._map
 
@@ -173,5 +183,5 @@ class Annotation:
         else:
             reasons.extend([option['reason'] for option in self._map[attr_k][attr_v]])
 
-        random.shuffle(reasons)
+        # random.shuffle(reasons)
         return reasons

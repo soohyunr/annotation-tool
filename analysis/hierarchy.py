@@ -4,9 +4,12 @@ import numpy as np
 
 from scipy.cluster.hierarchy import to_tree, dendrogram, linkage
 
-from analysis.entailment import Predictor
 
-predictor = Predictor()
+# class Node:
+#     def __init__(self):
+#         self.children = list()
+#         self.text = ''
+#         self.coord = (-1, -1)
 
 
 def plot_dendrogram(linkage_matrix, **kwargs):
@@ -15,47 +18,85 @@ def plot_dendrogram(linkage_matrix, **kwargs):
     leaves = ddata['leaves']
     rootnode, nodelist = to_tree(linkage_matrix, rd=True)
 
-    leave2text = dict()
-    for i in range(len(leaves)):
-        leave2text[leaves[i]] = ddata['ivl'][i]
+    node_map = dict()
+    for node in nodelist:
+        node_map[node.id] = node
 
-    children = dict()
-    main_text = dict()
+    def flatten(l):
+        return [item for sublist in l for item in sublist]
+
+    Y = flatten(ddata['icoord'])
+    X = flatten(ddata['dcoord'])
+    leave_coords = [(x, y) for x, y in zip(X, Y) if x == 0]
+
+    sorted_coords = sorted(leave_coords, key=lambda item: item[1])
+    leave_coords = [sorted_coords[0]]
+    for coord in sorted_coords:
+        if leave_coords[-1][1] != coord[1]:
+            leave_coords.append(coord)
+
+    for i in range(len(leaves)):
+        node = node_map[leaves[i]]
+        node.text = ddata['ivl'][i]
+        node.coord = leave_coords[i]
+        node_map[node.id] = node
+
+    # from analysis.entailment import Predictor
+    # predictor = Predictor()
+
+    children_to_parent_coords = dict()
+    for i, d in zip(ddata['icoord'], ddata['dcoord']):
+        x = d[1]
+        y = (i[1] + i[2]) * 0.5
+        parent_coord = (x, y)
+        left_coord = (d[0], i[0])
+        right_coord = (d[-1], i[-1])
+
+        children_to_parent_coords[left_coord] = parent_coord
+        children_to_parent_coords[right_coord] = parent_coord
 
     def dfs(node):
         if node.left is None:
-            children[node.id] = [node.id]
-            main_text[node.id] = leave2text[node.id]
             return
+
         dfs(node.left)
         dfs(node.right)
-        children[node.id] = children[node.left.id] + children[node.right.id]
+        node_map[node.id].coord = children_to_parent_coords[node_map[node.left.id].coord]
 
-        left_text = main_text[node.left.id]
-        right_text = main_text[node.right.id]
+        left_text = node_map[node.left.id].text
+        right_text = node_map[node.right.id].text
 
-        if predictor.predict(left_text, right_text)[0] >= predictor.predict(right_text, left_text)[0]:
-            main_text[node.id] = right_text
-        else:
-            main_text[node.id] = left_text
+        # if predictor.predict(left_text, right_text)[0] >= predictor.predict(right_text, left_text)[0]:
+        #     main_text[node.id] = right_text
+        # else:
+        #     main_text[node.id] = left_text
+
+        node_map[node.id].text = left_text
 
     dfs(rootnode)
 
+    def coord2node(coord):
+        for node_id in node_map:
+            node = node_map[node_id]
+            if node.coord == coord:
+                return node
+        return None
+
     idx = 0
-    for i, d, c, txt in zip(ddata['icoord'], ddata['dcoord'], ddata['color_list'], ddata['ivl']):
-        x = 0.5 * sum(i[1:3])
-        y = d[1]
+    for i, d, c in zip(ddata['icoord'], ddata['dcoord'], ddata['color_list']):
+        x = d[1]
+        y = (i[1] + i[2]) * 0.5
 
-        node_id = idx + len(leaves)
-
-        plt.plot(y, x, 'o', c=c)
-        text = plt.annotate(main_text[node_id],
-                            (y, x),
-                            xytext=(23, 15),
-                            textcoords='offset points',
-                            va='top',
-                            ha='center')
-        text.set_fontsize(8)
+        node = coord2node((x, y))
+        if node is not None:
+            plt.plot(y, x, 'o', c=c)
+            text = plt.annotate('{}'.format(node.text),
+                                (x, y),
+                                xytext=(23, 15),
+                                textcoords='offset points',
+                                va='top',
+                                ha='center')
+            text.set_fontsize(8)
         idx += 1
 
 
@@ -88,8 +129,6 @@ def clustering(reasons, w2v, file_key):
     fig, ax = plt.subplots(figsize=(20, len(reasons) * 0.7))
     plot_dendrogram(linkage_matrix,
                     labels=reasons,
-                    # truncate_mode='level',
-                    show_leaf_counts=False,
                     color_threshold=2,
                     orientation='left')
 
@@ -110,7 +149,7 @@ def clustering(reasons, w2v, file_key):
 if __name__ == '__main__':
     from analysis.data_util import load_glove, Annotation
 
-    anno = Annotation()
+    anno = Annotation(redundant=False)
     reasons = anno.get_reasons(anno.acceptance, anno.strong_accept)
 
     w2v = load_glove()
