@@ -9,8 +9,9 @@ if __name__ == '__main__':
     predictor = Predictor()
 
     with open('./data/entailment/{}_{}.txt'.format(anno.acceptance, anno.strong_accept), 'w+') as f:
+        hypothesis = reasons[0]
         for reason in tqdm(reasons):
             f.write('Text : {}\n'.format(reason))
-            f.write('Hypothesis: {}\n'.format(reason[0]))
-            result = predictor.predict(premise=reason, hypothesis=reason[0])
+            f.write('Hypothesis: {}\n'.format(hypothesis))
+            result = predictor.predict(premise=reason, hypothesis=hypothesis)
             f.write('Prediction: {}/{}/{}\n\n'.format(result[0], result[1], result[2]))
