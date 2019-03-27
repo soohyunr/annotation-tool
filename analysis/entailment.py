@@ -2,7 +2,7 @@ import pickle, os
 
 
 class Predictor:
-    cache_path = './pkl/entailment_cache.pkl'
+    cache_path = './data/pkl/entailment_cache.pkl'
     _cache = dict()
 
     def __init__(self):
