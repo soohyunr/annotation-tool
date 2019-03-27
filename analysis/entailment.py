@@ -2,6 +2,7 @@ class Predictor:
     def __init__(self):
         from allennlp.predictors.predictor import Predictor
         self.predictor = Predictor.from_path("https://s3-us-west-2.amazonaws.com/allennlp/models/decomposable-attention-elmo-2018.02.19.tar.gz")
+        print('[Predictor] loaded')
 
     def predict(self, premise='', hypothesis='', ):
         result = self.predictor.predict(
