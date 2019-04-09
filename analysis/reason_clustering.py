@@ -62,7 +62,7 @@ def get_attribute_reason():
     """
     attribute_reason = defaultdict(lambda: defaultdict(lambda: []))
     dumps = []
-    bin_path = './data/bin/annotations_clustering.bin'
+    bin_path = './data/pkl/annotations_with_sent.pkl'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
@@ -71,6 +71,7 @@ def get_attribute_reason():
         for annotation in tqdm(annotations):
             try:
                 row = annotation.dump()
+                row['sentence'] = annotation.sent.text
                 row['user_name'] = annotation.user.first_name + ' ' + annotation.user.last_name
                 dumps.append(row)
             except Exception as e:
@@ -96,11 +97,12 @@ def get_attribute_reason():
 
             option['user'] = annotation['user']
             option['user_name'] = annotation['user_name']
+            option['sentence'] = annotation['sentence']
 
-            reason_key = '{}-{}'.format(option['user'], ''.join(tokenize_and_lemmatize(reason)))
-            if reason_key in reason_set:
-                continue
-            reason_set.add(reason_key)
+            # reason_key = '{}-{}'.format(option['user'], ''.join(tokenize_and_lemmatize(reason)))
+            # if reason_key in reason_set:
+            #     continue
+            # reason_set.add(reason_key)
 
             attribute_reason[attribute_key][attribute_value].append(option)
 
@@ -305,18 +307,19 @@ def clustering_with_glove(df, w2v, file_key):
 def write_all_reason(df, file_key):
     with open('./data/reason/{}.txt'.format(file_key), 'w+') as f:
         for index in range(len(df)):
+            # f.write(df.iloc[index]['sentence'] + '\n')
             f.write('[{}] reason: {}\n'.format(df.iloc[index]['user_name'], df.iloc[index]['reason']))
 
 
 
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
-
     attribute_reason = get_attribute_reason()
 
     attribute_keys = ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Acceptance']
 
     w2v = load_glove()
+    total = 0
     for attribute_key in attribute_keys:
         for attribute_value in attribute_reason[attribute_key]:
             options = attribute_reason[attribute_key][attribute_value]
@@ -324,16 +327,20 @@ if __name__ == '__main__':
             file_key = '{}-{}'.format(attribute_key, attribute_value)
             print(file_key)
             print('options number :', len(options))
+            total += len(options)
 
             df = pd.DataFrame({
                 'reason': [option['reason'] for option in options],
                 'user': [option['user'] for option in options],
                 'user_name': [option['user_name'] for option in options],
+                'sentence': [option['sentence'] for option in options],
             })
             # print(df['reason'])
             write_all_reason(df, file_key)
-            try:
-                clustering_with_glove(df, w2v, file_key)
-                # clustering(df)
-            except Exception as e:
-                logging.exception(e)
+            # try:
+            #     clustering_with_glove(df, w2v, file_key)
+            #     # clustering(df)
+            # except Exception as e:
+            #     logging.exception(e)
+
+    print('total : ', total)
