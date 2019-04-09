@@ -9,7 +9,6 @@ pip3 install -r requirements.txt
 
 # Modify the settings in config.sample.py
 vi config.sample.py
-
 mv config.smaple.py config.py
 ```
 
@@ -17,15 +16,11 @@ mv config.smaple.py config.py
 ```bash
 sudo python3 app.py
 ```
-To run background
-```bash
-sudo nohup python3 app.py >> log.txt 2>&1 &
-echo $! > pid.txt
-```
 
-## Stop Service
+## Deploy
 ```bash
-sudo kill -9 `cat pid.txt`
+pip install fabric3
+fab deploy
 ```
 
 ## Contributor
