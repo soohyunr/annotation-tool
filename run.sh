@@ -6,7 +6,7 @@ then
     source ENV/bin/activate
     export PYTHONPATH=.
     sudo pip install -r requirements.txt
-	nohup python web/app.py > app.log 2>&1 &
+	nohup python app.py > app.log 2>&1 &
     echo $! > save_pid.txt
 else
     echo "<-------- stop flask -------->"
