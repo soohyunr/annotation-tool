@@ -141,7 +141,7 @@ class Annotation:
                     logging.exception(e)
             pickle.dump(dumps, open(pkl_path, "wb"))
 
-        # random.shuffle(dumps)
+        random.shuffle(dumps)
         self.annotations = dumps
         self.build_map()
 
@@ -165,8 +165,9 @@ class Annotation:
                     continue
 
                 if not self.redundant:
-                    option['user_name'] = annotation['user_name']
-                    reason_key = '{}-{}'.format(option['user_name'], ''.join(tokenize_and_lemmatize(reason)))
+                    reason_key = reason.strip()
+                    reason_key = clean_text(reason_key)
+                    reason_key = ' '.join(tokenize_and_lemmatize(reason_key))
                     if reason_key in reason_set:
                         continue
                     reason_set.add(reason_key)
@@ -183,5 +184,5 @@ class Annotation:
         else:
             reasons.extend([option['reason'] for option in self._map[attr_k][attr_v]])
 
-        # random.shuffle(reasons)
+        random.shuffle(reasons)
         return reasons

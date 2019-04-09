@@ -41,6 +41,7 @@ app.add_url_rule('/404', view_func=views.page_404, methods=['GET'])
 app.add_url_rule('/users', view_func=views.users_page, methods=['GET'])
 app.add_url_rule('/login', view_func=views.login_page, methods=['GET'])
 app.add_url_rule('/signup', view_func=views.signup_page, methods=['GET'])
+app.add_url_rule('/auto_signup', view_func=views.auto_signup_page, methods=['GET'])
 app.add_url_rule('/logout', view_func=views.logout_page, methods=['GET'])
 app.add_url_rule('/doc/<doc_id>', view_func=views.doc_page, methods=['GET'])
 
@@ -71,5 +72,5 @@ app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.put_r
 app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.delete_review_annotation, methods=['DELETE'])
 
 if __name__ == '__main__':
-    FLASK_DEBUG = os.getenv('FLASK_DEBUG', False)
+    FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
     app.run(host='0.0.0.0', debug=FLASK_DEBUG, port=8081)

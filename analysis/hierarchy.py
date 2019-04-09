@@ -4,12 +4,9 @@ import numpy as np
 
 from scipy.cluster.hierarchy import to_tree, dendrogram, linkage
 
+from analysis.entailment import Predictor
 
-# class Node:
-#     def __init__(self):
-#         self.children = list()
-#         self.text = ''
-#         self.coord = (-1, -1)
+predictor = Predictor()
 
 
 def plot_dendrogram(linkage_matrix, **kwargs):
@@ -41,9 +38,6 @@ def plot_dendrogram(linkage_matrix, **kwargs):
         node.coord = leave_coords[i]
         node_map[node.id] = node
 
-    # from analysis.entailment import Predictor
-    # predictor = Predictor()
-
     children_to_parent_coords = dict()
     for i, d in zip(ddata['icoord'], ddata['dcoord']):
         x = d[1]
@@ -55,23 +49,22 @@ def plot_dendrogram(linkage_matrix, **kwargs):
         children_to_parent_coords[left_coord] = parent_coord
         children_to_parent_coords[right_coord] = parent_coord
 
-    def dfs(node):
+    def dfs(node, depth=0):
+        node_map[node.id].depth = depth
         if node.left is None:
             return
 
-        dfs(node.left)
-        dfs(node.right)
+        dfs(node.left, depth + 1)
+        dfs(node.right, depth + 1)
         node_map[node.id].coord = children_to_parent_coords[node_map[node.left.id].coord]
 
         left_text = node_map[node.left.id].text
         right_text = node_map[node.right.id].text
 
-        # if predictor.predict(left_text, right_text)[0] >= predictor.predict(right_text, left_text)[0]:
-        #     main_text[node.id] = right_text
-        # else:
-        #     main_text[node.id] = left_text
-
-        node_map[node.id].text = left_text
+        if predictor.predict(left_text, right_text)[0] >= predictor.predict(right_text, left_text)[0]:
+            node_map[node.id].text = right_text
+        else:
+            node_map[node.id].text = left_text
 
     dfs(rootnode)
 
@@ -81,6 +74,11 @@ def plot_dendrogram(linkage_matrix, **kwargs):
             if node.coord == coord:
                 return node
         return None
+
+    for node_id in node_map:
+        node = node_map[node_id]
+        if node.depth == 4:
+            print(node.text)
 
     idx = 0
     for i, d, c in zip(ddata['icoord'], ddata['dcoord'], ddata['color_list']):
@@ -126,7 +124,7 @@ def clustering(reasons, w2v, file_key):
     cmap = cm.rainbow(np.linspace(0, 1, 5))
     hierarchy.set_link_color_palette([mpl.colors.rgb2hex(rgb[:3]) for rgb in cmap])
 
-    fig, ax = plt.subplots(figsize=(20, len(reasons) * 0.7))
+    fig, ax = plt.subplots(figsize=(20, len(reasons) * 0.5))
     plot_dendrogram(linkage_matrix,
                     labels=reasons,
                     color_threshold=2,
@@ -159,4 +157,4 @@ if __name__ == '__main__':
         if 20 <= len(reason) <= 50:
             selected.append(reason)
 
-    clustering(selected[:50], w2v, '{} {}'.format(anno.acceptance, anno.strong_accept))
+    clustering(selected, w2v, '{} {}'.format(anno.acceptance, anno.strong_accept))

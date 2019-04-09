@@ -65,7 +65,7 @@ def index_v2_page():
         'right': min(page + 5, total_page),
     }
 
-    return render_template('index.html', type='v2',docs=docs_data, g=g, pagination=pagination)
+    return render_template('index.html', type='v2', docs=docs_data, g=g, pagination=pagination)
 
 
 @is_admin
@@ -92,6 +92,23 @@ def page_404():
 def signup_page():
     callback = request.args.get('callback', '/')
     return render_template('signup.html', callback=callback, g=g)
+
+
+def auto_signup_page():
+    callback = request.args.get('callback', '/')
+
+    import random, string
+    def random_char():
+        return ''.join(random.choice(string.digits + string.ascii_lowercase) for _ in range(10))
+
+    username = random_char()
+    password = random_char()
+
+    user = User(username=username, first_name='Random ID', last_name='')
+    user.set_password(password)
+    user.save()
+
+    return render_template('auto_signup.html', callback=callback, g=g, username=username, password=password)
 
 
 def logout_page():
@@ -242,10 +259,12 @@ def download_dataset():
 
     return send_file(dataset_path, as_attachment=True)
 
+
 @is_admin
 def download_encrypted():
     dataset_path = os.path.abspath(os.path.dirname(__file__) + '/encrypted.zip')
     return send_file(dataset_path, as_attachment=True)
+
 
 @is_admin
 def put_user_active(user_id):
