@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+{% include 'base/head.html' %}
+<style>
+    .modal-export .modal .modal-dialog {
+        width: 700px;
+        max-width: 700px;
+    }
+
+    .modal-export .modal .modal-content {
+        width: 700px;
+        min-width: 700px;
+    }
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/doc.css') }}?v={{g.random}}">
+<body>
+{% include 'base/mturk_navbar.html' %}
+<div class="container">
+    <div class="header">
+        <h4>
+            <a href="/mturk/rapid-annotation/v2">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            Amazon Mechanical Turk (v2)
+        </h4>
+    </div>
+
+    <table class="table table-striped" style="border-bottom: 1px solid #EEE;">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Sentence</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </table>
+
+    <div style="float: right; margin: 10px 0 25px 0;">
+        <i class="fas fa-chevron-left" id="before-sentence-arrow"></i>
+        <span id="sentence-index" style="padding: 5px; border: 1px solid #CCC; border-radius: 5px;"></span>
+        / <span id="sentence-index-max"></span>
+        <i class="fas fa-chevron-right" id="next-sentence-arrow"></i>
+    </div>
+
+    <button type="button" class="btn btn-light btn-block" id="export-btn" style="margin-top: 40px;">Export
+    </button>
+
+    <div class="progress" style="position: fixed; bottom: 0; left: 0; height: 10px; width: 100%; display: none">
+        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
+             aria-valuemax="100">
+        </div>
+    </div>
+</div>
+<input type="hidden" id="doc_id" value="{{doc.id}}"/>
+<input type="hidden" id="ENCRYPTION_KEY" value="{{ENCRYPTION_KEY}}"/>
+{% include 'base/script.html' %}
+{% include 'base/doc_template.html' %}
+
+<script src="{{ url_for('static', filename='js/annotation_mturk_v2.js')}}?v={{g.random}}"></script>
+
+<!-- Modal -->
+<div class="modal-export">
+    <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document" style="margin-top: 58px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel">Export</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <code>Copy and paste</code> the code below into the Amazon Mechanical Turk.
+                    <textarea id="exportModalBody"
+                              rows="15"
+                              readonly
+                              style="background-color: #f8f9fa;
+                     /*word-break:break-all;*/
+                     outline: none;
+                     padding: 15px;
+                     border-radius: 10px;
+                     border: none;
+                     height: 400px;
+                     width: 100%;
+                     overflow: auto;
+                     margin-top: 10px;">
+                    </textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onClick="copyToClipboard()">Copy to clipboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  function copyToClipboard() {
+    var copyText = document.getElementById("exportModalBody");
+    copyText.select();
+    document.execCommand("copy");
+    toastr.success("Copied");
+  }
+
+  $(document).ready(function () {
+    Event.selection_listen();
+    Event.listen_key();
+
+    Event.state.view_mode = 'sentence';
+    $('#view-mode-btn span').html('paragraph mode');
+    $('table').removeClass('table-striped');
+    $('.progress').show();
+
+    API.get_doc_by_local('mturk_v2_', function (data) {
+      if (data) {
+        $('#doc-upload-form').hide();
+        const sents = data['sents'];
+        Renderer.state.sents = sents;
+
+        Event.state.target_sent.min = sents[0]['index'];
+        Event.state.target_sent.index = sents[0]['index'];
+        Event.state.target_sent.max = sents[sents.length - 1]['index'];
+
+        $('#sentence-index-max').html(Event.state.target_sent.max);
+        $('#sentence-index').html(Event.state.target_sent.index);
+
+        Renderer.load_annotation_and_render_table();
+      }
+    });
+    Modal.init();
+
+
+    $('#next-sentence-arrow').click(function () {
+      if (Event.state.target_sent.index < Event.state.target_sent.max) {
+        Event.state.target_sent.index++;
+      }
+      $('#sentence-index').html(Event.state.target_sent.index);
+      Renderer.render_table();
+    });
+
+    $('#before-sentence-arrow').click(function () {
+      if (Event.state.target_sent.index > Event.state.target_sent.min) {
+        Event.state.target_sent.index--;
+      }
+      $('#sentence-index').html(Event.state.target_sent.index);
+      Renderer.render_table();
+    });
+
+    $('#export-btn').click(function () {
+      var annotations = Annotation.data;
+      var completed = 0;
+      for (var i = 0; i < annotations.length; i++) {
+        var annotation_item = annotations[i];
+        if (annotation_item.type !== 'sentence') continue;
+        if (Annotation.is_empty_basket(annotation_item.basket)) continue;
+        completed++;
+      }
+      if (completed < Renderer.state.sents.length) {
+        swal({
+          title: '',
+          text: 'Please annotate on all sentences. (Current status: ' + completed + '/' + Renderer.state.sents.length + ')',
+          type: 'error',
+        });
+        return;
+      }
+      var data = {
+        doc_id: $('#doc_id').val(),
+        username: '{{g.user.username}}',
+        turker_id: '{{g.user.turker_id}}',
+        data: Annotation.data,
+      };
+      $('#exportModalBody').html(JSON.stringify(data));
+      $('#exportModal').modal('show');
+    });
+  })
+</script>
+</body>
+</html>

@@ -13,11 +13,12 @@ class Doc(db.Document):
     source = db.StringField(default='')
     seq = db.IntField(default=0)
     created_at = db.DateTimeField(default=datetime.datetime.now)
-    type = db.StringField(default='v1') # v1, mturk, v2
+    type = db.StringField(default='v1')  # v1, mturk, v2
 
     meta = {
         'indexes': [
             'seq',
+
         ]
     }
 
@@ -61,6 +62,9 @@ class User(db.Document):
     last_ip = db.StringField()
     created_at = db.DateTimeField(default=datetime.datetime.now)
     accessed_at = db.DateTimeField(default=datetime.datetime.now)
+
+    turker_id = db.StringField(default='')
+    political_category = db.StringField(default='')
 
     def set_password(self, password):
         self.salt = uuid.uuid4().hex
@@ -146,8 +150,6 @@ class Annotation(db.Document):
             'updated_at': str(self.updated_at),
             'memo': self.memo,
         }
-
-
 
 
 class AnnotationReview(db.Document):
