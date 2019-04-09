@@ -319,14 +319,29 @@ def mturk_upload_page():
     return render_template('mturk/upload.html', g=g)
 
 
+@is_user
+def mturk_upload_page_v2():
+    return render_template('mturk/v2/upload.html', g=g)
+
+
+@is_user
 def post_mturk_upload():
     data = request.get_json()
     text = data['text']
+    doc_type = data['doc_type']
+
+    if 'turker_id' in data and 'political_category' in data:
+        turker_id = data['turker_id']
+        political_category = data['political_category']
+
+        g.user.turker_id = turker_id
+        g.user.political_category = political_category
+        g.user.save()
 
     from nltk.tokenize import sent_tokenize
     sents = sent_tokenize(text)
 
-    doc = Doc(title='', text=text, source='mturk', type='mturk')
+    doc = Doc(title='', text=text, source='mturk', type=doc_type)
     doc.save()
 
     res = {
@@ -354,6 +369,19 @@ def mturk_doc_page(doc_id):
     doc_log.save()
 
     return render_template('mturk/doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+
+
+@is_user
+def mturk_doc_page_v2(doc_id):
+    try:
+        doc = Doc.objects.get(id=doc_id)
+    except Exception as e:
+        return redirect('/404')
+
+    doc_log = DocLog(doc=doc, ip=request.remote_addr)
+    doc_log.save()
+
+    return render_template('mturk/v2/doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
 
 
 @is_admin
