@@ -35,7 +35,7 @@ def before_request():
 
 
 app.add_url_rule('/', view_func=views.index_page, methods=['GET'])
-app.add_url_rule('/v2', view_func=views.index_v2_page, methods=['GET'])
+app.add_url_rule('/<doc_type>', view_func=views.index_v2_page, methods=['GET'])
 app.add_url_rule('/403', view_func=views.page_403, methods=['GET'])
 app.add_url_rule('/404', view_func=views.page_404, methods=['GET'])
 app.add_url_rule('/users', view_func=views.users_page, methods=['GET'])

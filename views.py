@@ -40,14 +40,14 @@ def index_page():
 
 
 @is_active_user
-def index_v2_page():
+def index_v2_page(doc_type):
     item_per_page = 50
     page = request.args.get('p', 1)
     page = int(page)
 
-    total = Doc.objects.filter(type='v2').count()
+    total = Doc.objects.filter(type=doc_type).count()
     total_page = math.ceil(total / item_per_page)
-    paginator = Pagination(Doc.objects(type='v2').order_by('seq'), page, 50)
+    paginator = Pagination(Doc.objects(type=doc_type).order_by('seq'), page, 50)
     docs = paginator.items
 
     docs_data = []
@@ -65,7 +65,7 @@ def index_v2_page():
         'right': min(page + 5, total_page),
     }
 
-    return render_template('index.html', type='v2', docs=docs_data, g=g, pagination=pagination)
+    return render_template('index.html', type=doc_type, docs=docs_data, g=g, pagination=pagination)
 
 
 @is_admin
@@ -337,7 +337,6 @@ def post_mturk_upload():
         g.user.turker_id = turker_id
         g.user.political_category = political_category
         g.user.save()
-
 
     from nltk.tokenize import sent_tokenize
     sents = sent_tokenize(text)

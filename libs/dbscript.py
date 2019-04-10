@@ -148,6 +148,8 @@ def generate_encrypted_file(seq_id):
 def generate_encrypted_files():
     docs = Doc.objects().all()
     for doc in tqdm(docs):
+        if not (doc.type == 'v1' or doc.type == 'v2' or doc.type == 'v3'):
+            continue
         generate_encrypted_file(seq_id=doc.seq)
 
 
@@ -232,8 +234,29 @@ def remove_invalid_annotation():
         annotation.delete()
 
 
+def duplicate_doc(from_type='v2', to_type='v3'):
+    docs = Doc.objects(type=from_type).all()
+    for doc in tqdm(docs):
+        title = doc.title.replace('TARGET_ONLY', to_type)
+        new_doc = Doc(title=title, text=doc.text, source=doc.source, type=to_type)
+        new_doc.seq = Doc.objects.count() + 1
+        new_doc.save()
+
+        sents = Sent.objects(doc=doc).all()
+        for sent in sents:
+            Sent(index=sent.index, text=sent.text, doc=new_doc).save()
+
+
+def delete_doc_type(doc_type='v3'):
+    docs = Doc.objects(type=doc_type).all()
+    for doc in tqdm(docs):
+        delete_doc(doc.id)
+
+
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
-    db_backup('')
+    # db_backup('')
+    # duplicate_doc(from_type='v2', to_type='v3')
+    # generate_encrypted_files()
     # remove_invalid_annotation()
