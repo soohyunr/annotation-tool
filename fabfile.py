@@ -10,5 +10,4 @@ def deploy(mode=''):
         with cd('/home/webmaster/annotation-tool'):
             sudo("sudo git pull origin master")
             with prefix('source /home/webmaster/annotation-tool/ENV/bin/activate'):
-                sudo("forever stopall")
-                sudo("forever start -c python app.py")
+                sudo("uwsgi --reload uwsgi.pid")

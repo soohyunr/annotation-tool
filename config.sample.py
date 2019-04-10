@@ -9,3 +9,6 @@ class Config:
         'password': 'YOUR_DB_PASSWORD',
     }
     SENTRY_DSN = 'YOUR_SENTRY_DSN'
+
+    DEPLOY_HOSTS = ['admin@example.com:22']
+    DEPLOY_PASSWORDS = {'admin@example.com:22': 'password'}
