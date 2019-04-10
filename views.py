@@ -338,10 +338,13 @@ def post_mturk_upload():
         g.user.political_category = political_category
         g.user.save()
 
+
     from nltk.tokenize import sent_tokenize
     sents = sent_tokenize(text)
 
     doc = Doc(title='', text=text, source='mturk', type=doc_type)
+    if 'source_url' in data:
+        doc.source = data['source_url']
     doc.save()
 
     res = {
