@@ -48,12 +48,11 @@
 <body>
 <div class="container text-center">
     <img class="mb-4" src="{{ url_for('static', filename='img/logo.jpg') }}" alt="" height="72">
-    <h4>Unable to access.</h4>
-    <h4>Administrator approval is required for access.</h4>
+    <h4>Permission denied</h4>
     <div style="padding: 15px 0;">
         <h5> → <a href="/login">Login Retry</a></h5>
     </div>
-    <h5> → <a href="/mturk/rapid-annotation">Amazon Mechanical Turk</a></h5>
+    <h5> → <a href="/mturk/rapid-annotation/v2">Amazon Mechanical Turk</a></h5>
 </div>
 
 {% include 'base/script.html' %}

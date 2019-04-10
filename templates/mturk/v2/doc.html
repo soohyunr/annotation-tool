@@ -171,6 +171,7 @@
         username: '{{g.user.username}}',
         turker_id: '{{g.user.turker_id}}',
         political_category: '{{g.user.political_category}}',
+        source: '{{doc.source}}',
         data: Annotation.data,
       };
       $('#exportModalBody').html(JSON.stringify(data));
