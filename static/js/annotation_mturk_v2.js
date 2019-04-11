@@ -111,6 +111,16 @@ const Annotation = {
   },
   random: function (range, type) {
     return Math.floor(Math.random() * range);
+  },
+  shuffle_array: function (a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+    }
+    return a;
   }
 };
 
@@ -620,6 +630,7 @@ const Modal = {
         $('#col2').append(input_group_template);
       }
 
+      options = Annotation.shuffle_array(options);
       for (let i = 0; i < options.length; i++) {
         let option = options[i];
         let button_template = $('#attribute-button-template').html();
