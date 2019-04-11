@@ -61,9 +61,9 @@ app.add_url_rule('/download/encrypted', view_func=views.download_encrypted, meth
 
 # for mturk
 app.add_url_rule('/mturk/rapid-annotation', view_func=views.mturk_upload_page, methods=['GET'])
-app.add_url_rule('/mturk/rapid-annotation/v2', view_func=views.mturk_upload_page_v2, methods=['GET'])
+app.add_url_rule('/mturk/rapid-annotation/<doc_type>', view_func=views.mturk_upload_page_v2, methods=['GET'])
 app.add_url_rule('/mturk/doc/<doc_id>', view_func=views.mturk_doc_page, methods=['GET'])
-app.add_url_rule('/mturk/doc/<doc_id>/v2', view_func=views.mturk_doc_page_v2, methods=['GET'])
+app.add_url_rule('/mturk/doc/<doc_id>/<doc_type>', view_func=views.mturk_doc_page_v2, methods=['GET'])
 app.add_url_rule('/api/mturk/upload', view_func=views.post_mturk_upload, methods=['POST'])
 
 # for review
