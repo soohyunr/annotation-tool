@@ -323,8 +323,8 @@ def mturk_upload_page():
 
 
 @is_user
-def mturk_upload_page_v2():
-    return render_template('mturk/v2/upload.html', g=g)
+def mturk_upload_page_v2(doc_type):
+    return render_template('mturk/{}/upload.html'.format(doc_type), g=g)
 
 
 @is_user
@@ -377,7 +377,7 @@ def mturk_doc_page(doc_id):
 
 
 @is_user
-def mturk_doc_page_v2(doc_id):
+def mturk_doc_page_v2(doc_id, doc_type):
     try:
         doc = Doc.objects.get(id=doc_id)
     except Exception as e:
@@ -386,7 +386,7 @@ def mturk_doc_page_v2(doc_id):
     doc_log = DocLog(doc=doc, ip=request.remote_addr)
     doc_log.save()
 
-    return render_template('mturk/v2/doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+    return render_template('mturk/{}/doc.html'.format(doc_type), doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
 
 
 @is_admin
