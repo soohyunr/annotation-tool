@@ -627,6 +627,16 @@ const Annotation = {
   },
   random: function (range, type) {
     return Math.floor(Math.random() * range);
+  },
+  shuffle_array: function (a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+    }
+    return a;
   }
 };
 
@@ -1011,12 +1021,13 @@ const Modal = {
       let value = basket[attribute_key].value;
       let reason1 = basket[attribute_key].reason1;
       let reason2 = basket[attribute_key].reason2;
-      if (!value) value = basket[attribute_key].initial_value;
+
+      if (!value) value = $('#'+attribute_id +' .dropdown-item:first-child').attr('data-value');
 
       // $('#' + attribute_id + '-memo').val(basket[attribute_key].memo);
       // $('#' + attribute_id + '-reason').val(basket[attribute_key].reason);
 
-      $('#' + attribute_id + '-val').html(value.split('_').join(' '));
+      if (value) $('#' + attribute_id + '-val').html(value.split('_').join(' '));
 
       if (reason1) $('#' + attribute_id + '-reason1-val').html(reason1.split('_').join(' '));
       if (reason2) $('#' + attribute_id + '-reason2-val').html(reason2.split('_').join(' '));
@@ -1055,10 +1066,12 @@ const Modal = {
         $('#col2').append(input_group_template);
       }
 
-      for (let i = 0; i < Object.keys(options).length; i++) {
-        let option = Object.keys(options)[i];
+      options = Annotation.shuffle_array(Object.keys(options));
+      for (let i = 0; i < options.length; i++) {
+        let option = options[i];
         let button_template = $('#attribute-button-template').html();
-        button_template = button_template.replace('<%value%>', option.split(' ').join('_'));
+        let value = option.split(' ').join('_');
+        button_template = button_template.replace('<%value%>', value);
         button_template = button_template.replace('<%value_space%>', option);
 
         $('#' + key + ' .dropdown-menu').append(button_template);
@@ -1153,8 +1166,10 @@ const Modal = {
         let options = attributes[attribute_id].options[value.split('_').join(' ')];
         const reason1_dropdown = $('#' + attribute_id + '-reason1 .dropdown-menu');
         reason1_dropdown.html('');
-        for (let i = 0; i < Object.keys(options).length; i++) {
-          let option = Object.keys(options)[i];
+
+        options = Annotation.shuffle_array(Object.keys(options));
+        for (let i = 0; i < options.length; i++) {
+          let option = options[i];
           let button_template = $('#attribute-button-template').html();
 
           let value = option.split(' ').join('_');
@@ -1164,7 +1179,7 @@ const Modal = {
           reason1_dropdown.append(button_template);
 
           if (i === 0) {
-            $('#' + attribute_id + '-reason1-val').html(option);
+            // $('#' + attribute_id + '-reason1-val').html(option);
             $('#' + attribute_id + '-reason1 .dropdown-item').removeClass('active');
             $('#' + attribute_id + '-reason1 .dropdown-item[data-value="' + value + '"]').addClass('active');
           }
@@ -1195,6 +1210,7 @@ const Modal = {
         let options = attributes[attribute_id].options[option_value][value.split('_').join(' ')];
         const reason2_dropdown = $('#' + attribute_id + '-reason2 .dropdown-menu');
         reason2_dropdown.html('');
+        options = Annotation.shuffle_array(options);
         for (let i = 0; i < options.length; i++) {
           let option = options[i];
           let button_template = $('#attribute-button-template').html();
@@ -1206,7 +1222,7 @@ const Modal = {
           reason2_dropdown.append(button_template);
 
           if (i === 0) {
-            $('#' + attribute_id + '-reason2-val').html(option);
+            // $('#' + attribute_id + '-reason2-val').html(option);
             $('#' + attribute_id + '-reason2 .dropdown-item').removeClass('active');
             $('#' + attribute_id + '-reason2 .dropdown-item[data-value="' + value + '"]').addClass('active');
           }
