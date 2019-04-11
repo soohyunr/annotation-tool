@@ -485,6 +485,7 @@ const Modal = {
     if (this.state.step === this.state.max_attribute) {
       Modal.save();
       Modal.hide();
+      return;
     }
     const step = this.state.step + 1;
 
