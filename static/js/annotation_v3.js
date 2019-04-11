@@ -74,7 +74,30 @@ const Annotation = {
               "The same information was stated in one of the previous sentences",
               "It is widely known (or taught) around the world"
             ]
-          }
+          },
+          "N/A": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is vague (or not clear) statement",
+              "It is a subjective statement",
+              "I am not familiar with the topic",
+              "The information is (almost) common-sense knowledge"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "I am expert on the subject",
+              "The information is (almost) common-sense knowledge"
+            ],
+            "This sentence gives no information": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "I am not familiar with the topic"
+            ]
+          },
         },
       },
       attribute2: {
@@ -174,24 +197,24 @@ const Annotation = {
               "It is a speculative or hypothetical statement",
               "It is vague (or not clear) statement",
               "It is a subjective statement",
-              "I can find the records to verify it, from short search using a few keywords",
-              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+              "I am not familiar with the topic",
+              "The information is (almost) common-sense knowledge"
             ],
             "It is a subjective statement": [
               "It is a personal experience",
               "It is a subjective opinion / judgment / interpretation",
               "It is not a factual information",
-              "I can find the records to verify it, from short search using a few keywords",
-              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+              "I am expert on the subject",
+              "The information is (almost) common-sense knowledge"
             ],
-            "This sentence gives no information to verify": [
+            "This sentence gives no information": [
               "It is a question",
               "It is not a complete sentence",
               "It is a transition sentence that is meaningless",
               "It is merely a word play or an analogy",
-              "I can find the records to verify it, from short search using a few keywords"
+              "I am not familiar with the topic"
             ]
-          }
+          },
         },
       },
       attribute3: {
@@ -311,7 +334,30 @@ const Annotation = {
               "It is merely a word play or an analogy",
               "It is personal statement"
             ]
-          }
+          },
+          "N/A": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is vague (or not clear) statement",
+              "It is a subjective statement",
+              "I am not familiar with the topic",
+              "The information is (almost) common-sense knowledge"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "I am expert on the subject",
+              "The information is (almost) common-sense knowledge"
+            ],
+            "This sentence gives no information": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "I am not familiar with the topic"
+            ]
+          },
         },
       },
       attribute4: {
@@ -528,7 +574,30 @@ const Annotation = {
               "It is an oversimplification",
               "The author is utilizing rhetoric devices to elicit emotional reaction"
             ]
-          }
+          },
+          "N/A": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is vague (or not clear) statement",
+              "It is a subjective statement",
+              "I am not familiar with the topic",
+              "The information is (almost) common-sense knowledge"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "I am expert on the subject",
+              "The information is (almost) common-sense knowledge"
+            ],
+            "This sentence gives no information": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "I am not familiar with the topic"
+            ]
+          },
         },
       },
     },

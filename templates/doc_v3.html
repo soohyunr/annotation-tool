@@ -55,44 +55,6 @@
 {% include 'base/script.html' %}
 {% include 'base/doc_template.html' %}
 
-<script type='text/template' id='attribute-reason-input-group-template'>
-    <div class="input-group attribute-input-group row pb-2" style="border-bottom: none;">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><%title%>:</span>
-        </div>
-        <div class="dropdown attribute" id="<%attribute%>">
-            <button class="btn btn-sm dropdown-toggle" type="button" id="<%attribute%>-val"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            </button>
-            <div class="dropdown-menu" aria-labelledby="<%attribute%>-val">
-            </div>
-        </div>
-    </div>
-    <div class="input-group attribute-input-group row pb-2" style="border-bottom: none;">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Reason (1):</span>
-        </div>
-        <div class="dropdown attribute" id="<%attribute%>-reason1">
-            <button class="btn btn-sm dropdown-toggle" type="button" id="<%attribute%>-reason1-val"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            </button>
-            <div class="dropdown-menu" aria-labelledby="<%attribute%>-reason1-val">
-            </div>
-        </div>
-    </div>
-    <div class="input-group attribute-input-group row pb-2" style="border-top: none;">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Reason (2):</span>
-        </div>
-        <div class="dropdown attribute" id="<%attribute%>-reason2">
-            <button class="btn btn-sm dropdown-toggle" type="button" id="<%attribute%>-reason2-val"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            </button>
-            <div class="dropdown-menu" aria-labelledby="<%attribute%>-reason2-val">
-            </div>
-        </div>
-    </div>
-</script>
 
 <script src="{{url_for('static', filename='js/annotation_v3.js')}}?v={{g.random}}"></script>
 
