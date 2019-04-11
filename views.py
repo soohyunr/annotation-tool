@@ -126,6 +126,9 @@ def doc_page(doc_id):
     doc_log = DocLog(user=g.user, doc=doc, ip=request.remote_addr)
     doc_log.save()
 
+    if doc.type == 'v3':
+        return render_template('doc_v3.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+
     return render_template('doc.html', doc=doc, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
 
 
