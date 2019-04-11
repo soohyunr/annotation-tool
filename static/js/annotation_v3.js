@@ -34,7 +34,10 @@ const Annotation = {
               "It is a transition sentence that is meaningless",
               "It is merely a word play or an analogy",
               "The information is (almost) common-sense knowledge"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "I already knew the information before I read this document": {
             "It is widely known (or taught) around the world": [
@@ -57,7 +60,10 @@ const Annotation = {
               "I have background knowledge on the topic",
               "I am not familiar with the topic",
               "It is a factual information"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "I did not know the information before, but came to know it by reading the previous sentences": {
             "The same information was stated in one of the previous sentences": [
@@ -73,7 +79,10 @@ const Annotation = {
               "Some of the other sentences in the document supports this statement",
               "The same information was stated in one of the previous sentences",
               "It is widely known (or taught) around the world"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "N/A": {
             "It is not a factual information": [
@@ -119,7 +128,10 @@ const Annotation = {
               "I know it from my personal experience",
               "I can logically verify the information",
               "I do not have background knowledge about the topic"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "I can verify it by short-time googling": {
             "It would be easy to find": [
@@ -135,7 +147,10 @@ const Annotation = {
               "It is not a complete sentence",
               "It is a transition sentence that is meaningless",
               "I can interview the people related to it"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "I can verify it by long-time googling": {
             "Detailed google search may lead to find related records": [
@@ -151,7 +166,10 @@ const Annotation = {
               "It is a transition sentence that is meaningless",
               "I can find the records to verify it, from short search using a few keywords",
               "I can directly copy and paste of the sentence, and I would find the records to verify it"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "I might find an off-line way to verify it, but it will be very hard": {
             "I can interview the people related to it": [
@@ -167,7 +185,10 @@ const Annotation = {
               "It is a transition sentence that is meaningless",
               "I can find the records to verify it, from short search using a few keywords",
               "I can directly copy and paste of the sentence, and I would find the records to verify it"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "There is no way to verify it": {
             "It is not a factual information": [
@@ -190,7 +211,10 @@ const Annotation = {
               "It is a transition sentence that is meaningless",
               "It is merely a word play or an analogy",
               "I can find the records to verify it, from short search using a few keywords"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "N/A": {
             "It is not a factual information": [
@@ -250,7 +274,10 @@ const Annotation = {
               "It is not a factual information",
               "It is a subjective statement",
               "It is a famous conflict"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Disputable": {
             "It is not a factual information": [
@@ -280,7 +307,10 @@ const Annotation = {
               "It is not a factual information",
               "It is a subjective statement",
               "It is a famous conflict"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Weakly Disputable": {
             "It is not a factual information": [
@@ -310,7 +340,10 @@ const Annotation = {
               "Different views on the subject is possible",
               "It is a factual information",
               "It is a famous conflict"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Not Disputable": {
             "It is a factual information": [
@@ -333,7 +366,10 @@ const Annotation = {
               "It is a transition sentence that is meaningless",
               "It is merely a word play or an analogy",
               "It is personal statement"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "N/A": {
             "It is not a factual information": [
@@ -393,7 +429,10 @@ const Annotation = {
               "It presents logical consistency",
               "It contains no questionable details",
               "It is not a factual information, but I agree with the statement"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Accept": {
             "It is a factual information": [
@@ -423,7 +462,10 @@ const Annotation = {
               "It presents logical consistency",
               "It contains no questionable details",
               "It is not a factual information, but I agree with the statement"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Weak Accept": {
             "It is a factual information": [
@@ -453,7 +495,10 @@ const Annotation = {
               "There is no counter evidence to reject it",
               "It is not a factual information, but I somewhat agree with the statement",
               "It is a fact"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Hard to Judge": {
             "It is not a factual information": [
@@ -483,7 +528,10 @@ const Annotation = {
               "It is a transition sentence that is meaningless",
               "It is merely a word play or an analogy",
               "I can find the records to verify it, from short search using a few keywords"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Weak Reject": {
             "It is not a factual information": [
@@ -513,7 +561,10 @@ const Annotation = {
               "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
               "It is an oversimplification",
               "The author is utilizing rhetoric devices to elicit emotional reaction"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Reject": {
             "It is not a factual information": [
@@ -543,7 +594,10 @@ const Annotation = {
               "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
               "It is an oversimplification",
               "The author is utilizing rhetoric devices to elicit emotional reaction"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "Strong Reject": {
             "It is not a factual information": [
@@ -573,7 +627,10 @@ const Annotation = {
               "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
               "It is an oversimplification",
               "The author is utilizing rhetoric devices to elicit emotional reaction"
-            ]
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
           "N/A": {
             "It is not a factual information": [
