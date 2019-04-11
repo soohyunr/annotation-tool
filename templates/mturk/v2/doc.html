@@ -168,13 +168,13 @@
       }
       var data = {
         doc_id: $('#doc_id').val(),
-        username: '{{g.user.username}}',
-        turker_id: '{{g.user.turker_id}}',
-        political_category: '{{g.user.political_category}}',
-        source: '{{doc.source}}',
-        data: Annotation.data,
+        // username: '{{g.user.username}}',
+        // turker_id: '{{g.user.turker_id}}',
+        // political_category: '{{g.user.political_category}}',
+        // source: '{{doc.source}}',
+        // data: Annotation.data,
       };
-      $('#exportModalBody').html(JSON.stringify(data));
+      $('#exportModalBody').html($('#doc_id').val());
       $('#exportModal').modal('show');
     });
   })
