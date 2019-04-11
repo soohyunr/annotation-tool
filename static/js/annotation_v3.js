@@ -996,6 +996,9 @@ const Modal = {
     const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
     this.state.annotation_item.basket[attribute_key].opened_at = new Date().toISOString();
 
+    $('#' + attribute_id + ' .dropdown-item').removeClass('active');
+    $('#' + attribute_id + ' .dropdown-item:first-child').addClass('active');
+
     setTimeout(function () {
       $('#attribute' + step + '-val').click();
       setTimeout(function () {
@@ -1022,7 +1025,7 @@ const Modal = {
       let reason1 = basket[attribute_key].reason1;
       let reason2 = basket[attribute_key].reason2;
 
-      if (!value) value = $('#'+attribute_id +' .dropdown-item:first-child').attr('data-value');
+      // if (!value) value = $('#' + attribute_id + ' .dropdown-item:first-child').attr('data-value');
 
       // $('#' + attribute_id + '-memo').val(basket[attribute_key].memo);
       // $('#' + attribute_id + '-reason').val(basket[attribute_key].reason);
