@@ -80,6 +80,34 @@
 
   $('#next-btn').click(function () {
     var text = $('#text').val().trim();
+    var turker_id = $('#turker_id').val().trim();
+    var political_category = $('#political_category').val().trim();
+    var source_url = $('#source_url').val().trim();
+
+    if (!turker_id) {
+      swal({
+        title: '',
+        text: 'Please enter Turker ID.',
+        type: 'error',
+      });
+      return;
+    }
+    if (!political_category) {
+      swal({
+        title: '',
+        text: 'Please enter Political Category.',
+        type: 'error',
+      });
+      return;
+    }
+    if (!source_url) {
+      swal({
+        title: '',
+        text: 'Please enter Source URL.',
+        type: 'error',
+      });
+      return;
+    }
     if (!text) {
       swal({
         title: '',
@@ -89,6 +117,7 @@
       return;
     }
 
+
     $(this).hide();
     $.ajax({
       url: '/api/mturk/upload',
@@ -97,9 +126,9 @@
       data: JSON.stringify({
         text: text,
         doc_type: doc_type,
-        turker_id: $('#turker_id').val(),
-        political_category: $('#political_category').val(),
-        source_url: $('#source_url').val(),
+        turker_id: turker_id,
+        political_category: political_category,
+        source_url: source_url,
       }),
     }).done(function (data) {
       var doc = JSON.parse(data);
