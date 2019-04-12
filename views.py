@@ -243,6 +243,8 @@ def download_dataset():
             data.append({
                 'annotator': annotation.user.username,
                 'doc_id': doc.seq,
+                'turker_id': annotation.user.turker_id,
+                'political_category': annotation.user.political_category,
                 'sentence_index': annotation.index,
                 'sentence': annotation.entire_text,
                 'annotation_anchor_offset': annotation.anchor_offset,
@@ -256,6 +258,34 @@ def download_dataset():
             })
 
     dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset.json')
+    data_json = json.dumps(data, default=json_util.default)
+    with open(dataset_path, 'w', encoding='utf-8') as f:
+        f.write(data_json)
+
+    return send_file(dataset_path, as_attachment=True)
+
+
+@is_admin
+def download_dataset_amt_v2():
+    docs = Doc.objects.filter(type='mturk_v2')
+
+    data = []
+    for doc in tqdm(docs):
+        annotations = Annotation.objects(doc=doc)
+        for annotation in annotations:
+            data.append({
+                'annotator': annotation.user.username,
+                'turker_id': annotation.user.turker_id,
+                'political_category': annotation.user.political_category,
+                'doc_id': str(doc.id),
+                'sentence_index': annotation.index,
+                'sentence': annotation.entire_text,
+                'basket': annotation.basket,
+                'source': doc.source,
+                'created_at': annotation.created_at,
+            })
+
+    dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset_amt_v2.json')
     data_json = json.dumps(data, default=json_util.default)
     with open(dataset_path, 'w', encoding='utf-8') as f:
         f.write(data_json)
