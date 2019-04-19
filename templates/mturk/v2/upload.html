@@ -15,13 +15,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="political_category" class="col-sm-2 col-form-label">Political Category</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" id="political_category" value="{{g.user.political_category}}">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="political_category" class="col-sm-2 col-form-label">Source URL</label>
+            <label for="source_url" class="col-sm-2 col-form-label">Source URL</label>
             <div class="col-sm-5">
                 <input type="text" class="form-control" id="source_url" value="">
             </div>
@@ -81,21 +75,12 @@
   $('#next-btn').click(function () {
     var text = $('#text').val().trim();
     var turker_id = $('#turker_id').val().trim();
-    var political_category = $('#political_category').val().trim();
     var source_url = $('#source_url').val().trim();
 
     if (!turker_id) {
       swal({
         title: '',
         text: 'Please enter the Turker ID.',
-        type: 'error',
-      });
-      return;
-    }
-    if (!political_category) {
-      swal({
-        title: '',
-        text: 'Please enter the Political Category.',
         type: 'error',
       });
       return;
@@ -127,7 +112,6 @@
         text: text,
         doc_type: doc_type,
         turker_id: turker_id,
-        political_category: political_category,
         source_url: source_url,
       }),
     }).done(function (data) {
