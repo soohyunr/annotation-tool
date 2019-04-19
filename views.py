@@ -244,7 +244,6 @@ def download_dataset():
                 'annotator': annotation.user.username,
                 'doc_id': doc.seq,
                 'turker_id': annotation.user.turker_id,
-                'political_category': annotation.user.political_category,
                 'sentence_index': annotation.index,
                 'sentence': annotation.entire_text,
                 'annotation_anchor_offset': annotation.anchor_offset,
@@ -276,7 +275,6 @@ def download_dataset_amt_v2():
             data.append({
                 'annotator': annotation.user.username,
                 'turker_id': annotation.user.turker_id,
-                'political_category': annotation.user.political_category,
                 'doc_id': str(doc.id),
                 'sentence_index': annotation.index,
                 'sentence': annotation.entire_text,
@@ -363,12 +361,10 @@ def post_mturk_upload():
     text = data['text']
     doc_type = data['doc_type']
 
-    if 'turker_id' in data and 'political_category' in data:
+    if 'turker_id' in data:
         turker_id = data['turker_id']
-        political_category = data['political_category']
 
         g.user.turker_id = turker_id
-        g.user.political_category = political_category
         g.user.save()
 
     from nltk.tokenize import sent_tokenize
