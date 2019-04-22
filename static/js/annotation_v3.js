@@ -760,7 +760,8 @@ const Annotation = {
       }
       return a;
     }
-  };
+  }
+};
 
 
 const API = {
