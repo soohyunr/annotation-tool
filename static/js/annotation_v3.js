@@ -654,115 +654,114 @@ const Annotation = {
           },
         },
       },
-      event: {},
     },
-    data: [
-      /**
-       * {
-       *     type: String, // "event" or "sentence"
-       *     index: Integer,
-       *     sent: ObjectID,
-       *     doc: ObjectID,
-       *     user: ObjectID,
-       *     anchor_offset: Integer,
-       *     focus_offset: Integer,
-       *     entire_text: String,
-       *     target_text: String,
-       *     basket: {
-       *         KnowledgeAwareness: "2_I_did_not_know",
-       *         Tense: "1_past",
-       *     },
-       * }
-       */
-    ],
-    is_empty_basket: function (basket) {
-      for (let key in basket) {
-        if (!basket[key].value) {
-          return true;
-        }
+    event: {},
+  },
+  data: [
+    /**
+     * {
+     *     type: String, // "event" or "sentence"
+     *     index: Integer,
+     *     sent: ObjectID,
+     *     doc: ObjectID,
+     *     user: ObjectID,
+     *     anchor_offset: Integer,
+     *     focus_offset: Integer,
+     *     entire_text: String,
+     *     target_text: String,
+     *     basket: {
+     *         KnowledgeAwareness: "2_I_did_not_know",
+     *         Tense: "1_past",
+     *     },
+     * }
+     */
+  ],
+  is_empty_basket: function (basket) {
+    for (let key in basket) {
+      if (!basket[key].value) {
+        return true;
       }
-      return false;
-    },
-    find_by_id: function (annotation_id) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.id === annotation_id) {
-          return item;
-        }
-      }
-      return null;
-    },
-    find_event: function (index, anchor_offset, focus_offset) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.type === 'event') continue;
-        if (item.index !== index) continue;
-        if (item.anchor_offset !== anchor_offset) continue;
-        if (item.focus_offset !== focus_offset) continue;
-        return i;
-      }
-      return -1;
-    },
-    add: function (item) {
-      if (item.type === 'event' && this.find_event(item.index, item.anchor_offset, item.focus_offset) !== -1) return;
-      this.data.push(item);
-    },
-    update: function (annotation_id, new_item) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.id === annotation_id) {
-          this.data[i] = new_item;
-        }
-      }
-    },
-    remove: function (annotation_id) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.id === annotation_id) {
-          this.data.splice(i, 1);
-          break;
-        }
-      }
-    },
-    remove_review: function (annotation_id) {
-      for (let i = 0; i < this.data.length; i++) {
-        const item = this.data[i];
-        if (item.id === annotation_id) {
-          const new_basket = JSON.parse(JSON.stringify(item.basket));
-          for (let key in item.basket) {
-            if (key.indexOf('-review') >= 0) {
-              delete new_basket[key];
-            }
-          }
-          this.data[i].basket = new_basket;
-          break;
-        }
-      }
-    },
-    has_review: function (annotation) {
-      for (let key in annotation.basket) {
-        if (key.indexOf('-review') >= 0) {
-          return true;
-        }
-      }
-      return false;
-    },
-    random: function (range, type) {
-      return Math.floor(Math.random() * range);
-    },
-    shuffle_array: function (a) {
-      var j, x, i;
-      for (i = a.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = a[i];
-        a[i] = a[j];
-        a[j] = x;
-      }
-      return a;
     }
+    return false;
+  },
+  find_by_id: function (annotation_id) {
+    for (let i = 0; i < this.data.length; i++) {
+      const item = this.data[i];
+      if (item.id === annotation_id) {
+        return item;
+      }
+    }
+    return null;
+  },
+  find_event: function (index, anchor_offset, focus_offset) {
+    for (let i = 0; i < this.data.length; i++) {
+      const item = this.data[i];
+      if (item.type === 'event') continue;
+      if (item.index !== index) continue;
+      if (item.anchor_offset !== anchor_offset) continue;
+      if (item.focus_offset !== focus_offset) continue;
+      return i;
+    }
+    return -1;
+  },
+  add: function (item) {
+    if (item.type === 'event' && this.find_event(item.index, item.anchor_offset, item.focus_offset) !== -1) return;
+    this.data.push(item);
+  },
+  update: function (annotation_id, new_item) {
+    for (let i = 0; i < this.data.length; i++) {
+      const item = this.data[i];
+      if (item.id === annotation_id) {
+        this.data[i] = new_item;
+      }
+    }
+  },
+  remove: function (annotation_id) {
+    for (let i = 0; i < this.data.length; i++) {
+      const item = this.data[i];
+      if (item.id === annotation_id) {
+        this.data.splice(i, 1);
+        break;
+      }
+    }
+  },
+  remove_review: function (annotation_id) {
+    for (let i = 0; i < this.data.length; i++) {
+      const item = this.data[i];
+      if (item.id === annotation_id) {
+        const new_basket = JSON.parse(JSON.stringify(item.basket));
+        for (let key in item.basket) {
+          if (key.indexOf('-review') >= 0) {
+            delete new_basket[key];
+          }
+        }
+        this.data[i].basket = new_basket;
+        break;
+      }
+    }
+  },
+  has_review: function (annotation) {
+    for (let key in annotation.basket) {
+      if (key.indexOf('-review') >= 0) {
+        return true;
+      }
+    }
+    return false;
+  },
+  random: function (range, type) {
+    return Math.floor(Math.random() * range);
+  },
+  shuffle_array: function (a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+    }
+    return a;
   }
 };
-
 
 const API = {
   get_doc: function (callback) {
