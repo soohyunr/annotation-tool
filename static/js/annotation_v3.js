@@ -108,555 +108,555 @@ const Annotation = {
             ]
           },
         },
-        attribute2: {
-          order: 2,
-          title: '2. Verifiability',
-          attribute_key: 'Verifiability',
-          options: {
-            "I can verify it using my knowledge": {
-              "I can logically verify the information": [
-                "The information makes logical sense with my personal experience",
-                "The information makes logical sense with my background knowledge",
-                "I am familiar with the information",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless"
-              ],
-              "I am familiar with the information": [
-                "It is widely known (or taught) around the world",
-                "I have background knowledge on the topic",
-                "I know it from my personal experience",
-                "I can logically verify the information",
-                "I do not have background knowledge about the topic"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "I can verify it by short-time googling": {
-              "It would be easy to find": [
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste the sentence, and I would find the records to verify it",
-                "I would find a direct reference to verify it",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless"
-              ],
-              "I would find a direct reference to verify it": [
-                "I would find multiple sources to verify it",
-                "It would be easy to find",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless",
-                "I can interview the people related to it"
-              ]
-            },
-            "I can verify it by long-time googling": {
-              "Detailed google search may lead to related records": [
-                "I would eventually find direct reference / evidence to verify it",
-                "I can find related statistics and infer the veracity of the sentence from the statistics",
-                "The information may require deeper understanding of the situation",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless"
-              ],
-              "The information may require deeper understanding of the situation": [
-                "Detailed google search may lead to related records",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "I might find an off-line way to verify it, but it will be very hard": {
-              "I can interview the people related to it": [
-                "I can interview work-related people / insiders",
-                "I can interview friends / family",
-                "I can interview local residents",
-                "I could visit related places to obtain the information",
-                "I can find the records to verify it, from short search using a few keywords"
-              ],
-              "I could visit related places to obtain the information": [
-                "I can find some related records (e.g., medical record, personal notes)",
-                "I can interview the people related to it",
-                "It is a transition sentence that is meaningless",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "There is no way to verify it": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "It is a subjective statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is not a factual information",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "This sentence gives no information to verify": [
-                "It is a question",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless",
-                "It is merely a word play or an analogy",
-                "I can find the records to verify it, from short search using a few keywords"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "N/A": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "It is a subjective statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is not a factual information",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "This sentence gives no information to verify": [
-                "It is a question",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless",
-                "It is merely a word play or an analogy",
-                "I can find the records to verify it, from short search using a few keywords"
-              ]
-            }
+      },
+      attribute2: {
+        order: 2,
+        title: '2. Verifiability',
+        attribute_key: 'Verifiability',
+        options: {
+          "I can verify it using my knowledge": {
+            "I can logically verify the information": [
+              "The information makes logical sense with my personal experience",
+              "The information makes logical sense with my background knowledge",
+              "I am familiar with the information",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless"
+            ],
+            "I am familiar with the information": [
+              "It is widely known (or taught) around the world",
+              "I have background knowledge on the topic",
+              "I know it from my personal experience",
+              "I can logically verify the information",
+              "I do not have background knowledge about the topic"
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
+          "I can verify it by short-time googling": {
+            "It would be easy to find": [
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste the sentence, and I would find the records to verify it",
+              "I would find a direct reference to verify it",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless"
+            ],
+            "I would find a direct reference to verify it": [
+              "I would find multiple sources to verify it",
+              "It would be easy to find",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "I can interview the people related to it"
+            ]
+          },
+          "I can verify it by long-time googling": {
+            "Detailed google search may lead to related records": [
+              "I would eventually find direct reference / evidence to verify it",
+              "I can find related statistics and infer the veracity of the sentence from the statistics",
+              "The information may require deeper understanding of the situation",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless"
+            ],
+            "The information may require deeper understanding of the situation": [
+              "Detailed google search may lead to related records",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "I might find an off-line way to verify it, but it will be very hard": {
+            "I can interview the people related to it": [
+              "I can interview work-related people / insiders",
+              "I can interview friends / family",
+              "I can interview local residents",
+              "I could visit related places to obtain the information",
+              "I can find the records to verify it, from short search using a few keywords"
+            ],
+            "I could visit related places to obtain the information": [
+              "I can find some related records (e.g., medical record, personal notes)",
+              "I can interview the people related to it",
+              "It is a transition sentence that is meaningless",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "There is no way to verify it": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "This sentence gives no information to verify": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "I can find the records to verify it, from short search using a few keywords"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "N/A": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "This sentence gives no information to verify": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "I can find the records to verify it, from short search using a few keywords"
+            ]
+          }
         },
-        attribute3: {
-          order: 3,
-          title: '3. Disputability',
-          attribute_key: 'Disputability',
-          options: {
-            "Highly Disputable": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement",
-                "It is a famous conflict",
-                "Some people will disagree on it"
-              ],
-              "It is a subjective statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is not a factual information",
-                "It is a famous conflict",
-                "Some people will disagree on it"
-              ],
-              "It is a famous conflict": [
-                "It is a subjective statement",
-                "It is not a factual information",
-                "It is a factual information",
-                "It is about author's experience",
-                "The information is a statement of personal belief"
-              ],
-              "Some people will disagree on it": [
-                "It is about controversial topics",
-                "There are some other opinions that oppose this view that are equally as convincing",
-                "It is not a factual information",
-                "It is a subjective statement",
-                "It is a famous conflict"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Disputable": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement",
-                "It is a famous conflict",
-                "Some people will disagree on it"
-              ],
-              "It is a subjective statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is not a factual information",
-                "It is a famous conflict",
-                "Some people will disagree on it"
-              ],
-              "It is a famous conflict": [
-                "It is a subjective statement",
-                "It is not a factual information",
-                "It is a factual information",
-                "It is about author's experience",
-                "The information is a statement of personal belief"
-              ],
-              "Some people will disagree on it": [
-                "It is about controversial topics",
-                "There are some other opinions that oppose this view that are equally as convincing",
-                "It is not a factual information",
-                "It is a subjective statement",
-                "It is a famous conflict"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Weakly Disputable": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement",
-                "Different views on the subject is possible",
-                "Some may think different on some details"
-              ],
-              "It is a subjective statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is not a factual information",
-                "Different views on the subject is possible",
-                "Some may think different on some details"
-              ],
-              "Different views on the subject is possible": [
-                "Many would agree with, but some would still argue against it",
-                "It is a subjective statement",
-                "It is not a factual information",
-                "Some may think different on some details",
-                "It is a factual information"
-              ],
-              "Some may think different on some details": [
-                "It is a subjective statement",
-                "It is not a factual information",
-                "Different views on the subject is possible",
-                "It is a factual information",
-                "It is a famous conflict"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Not Disputable": {
-              "It is a factual information": [
-                "It is (almost) a common sense",
-                "The information is about a historic or public event",
-                "It is a fact",
-                "It is close to a fact",
-                "It can easily be verified"
-              ],
-              "It is personal statement": [
-                "It is about author's experience",
-                "The information is a statement of personal belief",
-                "It is a fact",
-                "It is close to a fact",
-                "It can easily be verified"
-              ],
-              "This sentence does not contain any meaningful information": [
-                "It is a question",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless",
-                "It is merely a word play or an analogy",
-                "It is personal statement"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "N/A": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "It is a subjective statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is not a factual information",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "This sentence gives no information to verify": [
-                "It is a question",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless",
-                "It is merely a word play or an analogy",
-                "I can find the records to verify it, from short search using a few keywords"
-              ]
-            }
+      },
+      attribute3: {
+        order: 3,
+        title: '3. Disputability',
+        attribute_key: 'Disputability',
+        options: {
+          "Highly Disputable": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement",
+              "It is a famous conflict",
+              "Some people will disagree on it"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "It is a famous conflict",
+              "Some people will disagree on it"
+            ],
+            "It is a famous conflict": [
+              "It is a subjective statement",
+              "It is not a factual information",
+              "It is a factual information",
+              "It is about author's experience",
+              "The information is a statement of personal belief"
+            ],
+            "Some people will disagree on it": [
+              "It is about controversial topics",
+              "There are some other opinions that oppose this view that are equally as convincing",
+              "It is not a factual information",
+              "It is a subjective statement",
+              "It is a famous conflict"
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
+          "Disputable": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement",
+              "It is a famous conflict",
+              "Some people will disagree on it"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "It is a famous conflict",
+              "Some people will disagree on it"
+            ],
+            "It is a famous conflict": [
+              "It is a subjective statement",
+              "It is not a factual information",
+              "It is a factual information",
+              "It is about author's experience",
+              "The information is a statement of personal belief"
+            ],
+            "Some people will disagree on it": [
+              "It is about controversial topics",
+              "There are some other opinions that oppose this view that are equally as convincing",
+              "It is not a factual information",
+              "It is a subjective statement",
+              "It is a famous conflict"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "Weakly Disputable": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement",
+              "Different views on the subject is possible",
+              "Some may think different on some details"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "Different views on the subject is possible",
+              "Some may think different on some details"
+            ],
+            "Different views on the subject is possible": [
+              "Many would agree with, but some would still argue against it",
+              "It is a subjective statement",
+              "It is not a factual information",
+              "Some may think different on some details",
+              "It is a factual information"
+            ],
+            "Some may think different on some details": [
+              "It is a subjective statement",
+              "It is not a factual information",
+              "Different views on the subject is possible",
+              "It is a factual information",
+              "It is a famous conflict"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "Not Disputable": {
+            "It is a factual information": [
+              "It is (almost) a common sense",
+              "The information is about a historic or public event",
+              "It is a fact",
+              "It is close to a fact",
+              "It can easily be verified"
+            ],
+            "It is personal statement": [
+              "It is about author's experience",
+              "The information is a statement of personal belief",
+              "It is a fact",
+              "It is close to a fact",
+              "It can easily be verified"
+            ],
+            "This sentence does not contain any meaningful information": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "It is personal statement"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "N/A": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "This sentence gives no information to verify": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "I can find the records to verify it, from short search using a few keywords"
+            ]
+          }
         },
-        attribute4: {
-          order: 4,
-          title: '4. Acceptance',
-          attribute_key: 'Acceptance',
-          options: {
-            "Strong Accept": {
-              "It is a factual information": [
-                "It is (almost) a common sense",
-                "The information is about a historic or public event",
-                "It is a fact",
-                "It is close to a fact",
-                "It can easily be verified"
-              ],
-              "It is not a factual information, but I agree with the statement": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement, but I agree with the statement",
-                "It is a reasonable argument",
-                "It is a fact"
-              ],
-              "It is a subjective statement, but I agree with the statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is a reasonable argument",
-                "It is a fact",
-                "It can easily be verified"
-              ],
-              "It is a reasonable argument": [
-                "The author / source has sufficient credibility",
-                "It is supported by solid arguments or evidence",
-                "It presents logical consistency",
-                "It contains no questionable details",
-                "It is not a factual information, but I agree with the statement"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Accept": {
-              "It is a factual information": [
-                "It is (almost) a common sense",
-                "The information is about a historic or public event",
-                "It is a fact",
-                "It is close to a fact",
-                "It can easily be verified"
-              ],
-              "It is not a factual information, but I agree with the statement": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement, but I agree with the statement",
-                "It is a reasonable argument",
-                "It is a fact"
-              ],
-              "It is a subjective statement, but I agree with the statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is a reasonable argument",
-                "It is a fact",
-                "It can easily be verified"
-              ],
-              "It is a reasonable argument": [
-                "The author / source has sufficient credibility",
-                "It is supported by solid arguments or evidence",
-                "It presents logical consistency",
-                "It contains no questionable details",
-                "It is not a factual information, but I agree with the statement"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Weak Accept": {
-              "It is a factual information": [
-                "The information is about a historic or public event",
-                "It is a fact",
-                "It is close to a fact",
-                "It is (almost) a common sense",
-                "It can easily be verified"
-              ],
-              "It is not a factual information, but I somewhat agree with the statement": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement, but I somewhat agree with the statement",
-                "I do not strongly support this, but I have no reason to reject it",
-                "It is a fact"
-              ],
-              "It is a subjective statement, but I somewhat agree with the statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "I do not strongly support this, but I have no reason to reject it",
-                "It is a fact",
-                "It can easily be verified"
-              ],
-              "I do not strongly support this, but I have no reason to reject it": [
-                "The author / source has sufficient credibility",
-                "It presents logical consistency",
-                "There is no counter evidence to reject it",
-                "It is not a factual information, but I somewhat agree with the statement",
-                "It is a fact"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Hard to Judge": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It's a subjective statement, therefore I'd neither accept nor reject it",
-                "I don’t have enough information to judge",
-                "It is a fact"
-              ],
-              "It's a subjective statement, therefore I'd neither accept nor reject it": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "I don’t have enough information to judge",
-                "It is a fact",
-                "It can easily be verified"
-              ],
-              "I don’t have enough information to judge": [
-                "I cannot reliably judge it in any meaningful way due to the lack of context",
-                "I don’t have enough background knowledge to judge",
-                "It is not a factual information",
-                "It's a subjective statement, therefore I'd neither accept nor reject it",
-                "The information is (almost) common-sense knowledge"
-              ],
-              "This sentence gives no information to judge": [
-                "It is a question",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless",
-                "It is merely a word play or an analogy",
-                "I can find the records to verify it, from short search using a few keywords"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Weak Reject": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement, and  I do not agree with the statement",
-                "It is not a reasonable argument, and I do not agree with the statement",
-                "I do not like the way the author describes the information"
-              ],
-              "It is a subjective statement, and  I do not agree with the statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is a biased statement",
-                "It is controversial and some would not agree with it",
-                "I do not like the way the author describes the information"
-              ],
-              "It is not a reasonable argument, and I do not agree with the statement": [
-                "The author / source has insufficient credibility",
-                "It is not supported by solid arguments or evidence",
-                "It lacks logical consistency",
-                "It contains questionable details",
-                "I do not like the way the author describes the information"
-              ],
-              "I do not like the way the author describes the information": [
-                "It sounds like the author is exaggerating",
-                "It is stated like a fact but it is not a fact",
-                "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
-                "It is an oversimplification",
-                "The author is utilizing rhetoric devices to elicit emotional reaction"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Reject": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement, and  I do not agree with the statement",
-                "It is not a reasonable argument, and I do not agree with the statement",
-                "I do not like the way the author describes the information"
-              ],
-              "It is a subjective statement, and  I do not agree with the statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is a biased statement",
-                "It is controversial and some would not agree with it",
-                "I do not like the way the author describes the information"
-              ],
-              "It is not a reasonable argument, and I do not agree with the statement": [
-                "The author / source has insufficient credibility",
-                "It is not supported by solid arguments or evidence",
-                "It lacks logical consistency",
-                "It contains questionable details",
-                "I do not like the way the author describes the information"
-              ],
-              "I do not like the way the author describes the information": [
-                "It sounds like the author is exaggerating",
-                "It is stated like a fact but it is not a fact",
-                "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
-                "It is an oversimplification",
-                "The author is utilizing rhetoric devices to elicit emotional reaction"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "Strong Reject": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement, and  I do not agree with the statement",
-                "It is not a reasonable argument, and I do not agree with the statement",
-                "I do not like the way the author describes the information"
-              ],
-              "It is a subjective statement, and  I do not agree with the statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is a biased statement",
-                "It is controversial and some would not agree with it",
-                "I do not like the way the author describes the information"
-              ],
-              "It is not a reasonable argument, and I do not agree with the statement": [
-                "The author / source has insufficient credibility",
-                "It is not supported by solid arguments or evidence",
-                "It lacks logical consistency",
-                "It contains questionable details",
-                "I do not like the way the author describes the information"
-              ],
-              "I do not like the way the author describes the information": [
-                "It sounds like the author is exaggerating",
-                "It is stated like a fact but it is not a fact",
-                "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
-                "It is an oversimplification",
-                "The author is utilizing rhetoric devices to elicit emotional reaction"
-              ],
-              "N/A": [
-                "N/A",
-              ],
-            },
-            "N/A": {
-              "It is not a factual information": [
-                "It is a speculative or hypothetical statement",
-                "It is a vague (or not clear) statement",
-                "It is a subjective statement",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "It is a subjective statement": [
-                "It is a personal experience",
-                "It is a subjective opinion / judgment / interpretation",
-                "It is not a factual information",
-                "I can find the records to verify it, from short search using a few keywords",
-                "I can directly copy and paste of the sentence, and I would find the records to verify it"
-              ],
-              "This sentence gives no information to verify": [
-                "It is a question",
-                "It is not a complete sentence",
-                "It is a transition sentence that is meaningless",
-                "It is merely a word play or an analogy",
-                "I can find the records to verify it, from short search using a few keywords"
-              ]
-            }
+      },
+      attribute4: {
+        order: 4,
+        title: '4. Acceptance',
+        attribute_key: 'Acceptance',
+        options: {
+          "Strong Accept": {
+            "It is a factual information": [
+              "It is (almost) a common sense",
+              "The information is about a historic or public event",
+              "It is a fact",
+              "It is close to a fact",
+              "It can easily be verified"
+            ],
+            "It is not a factual information, but I agree with the statement": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement, but I agree with the statement",
+              "It is a reasonable argument",
+              "It is a fact"
+            ],
+            "It is a subjective statement, but I agree with the statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is a reasonable argument",
+              "It is a fact",
+              "It can easily be verified"
+            ],
+            "It is a reasonable argument": [
+              "The author / source has sufficient credibility",
+              "It is supported by solid arguments or evidence",
+              "It presents logical consistency",
+              "It contains no questionable details",
+              "It is not a factual information, but I agree with the statement"
+            ],
+            "N/A": [
+              "N/A",
+            ],
           },
+          "Accept": {
+            "It is a factual information": [
+              "It is (almost) a common sense",
+              "The information is about a historic or public event",
+              "It is a fact",
+              "It is close to a fact",
+              "It can easily be verified"
+            ],
+            "It is not a factual information, but I agree with the statement": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement, but I agree with the statement",
+              "It is a reasonable argument",
+              "It is a fact"
+            ],
+            "It is a subjective statement, but I agree with the statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is a reasonable argument",
+              "It is a fact",
+              "It can easily be verified"
+            ],
+            "It is a reasonable argument": [
+              "The author / source has sufficient credibility",
+              "It is supported by solid arguments or evidence",
+              "It presents logical consistency",
+              "It contains no questionable details",
+              "It is not a factual information, but I agree with the statement"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "Weak Accept": {
+            "It is a factual information": [
+              "The information is about a historic or public event",
+              "It is a fact",
+              "It is close to a fact",
+              "It is (almost) a common sense",
+              "It can easily be verified"
+            ],
+            "It is not a factual information, but I somewhat agree with the statement": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement, but I somewhat agree with the statement",
+              "I do not strongly support this, but I have no reason to reject it",
+              "It is a fact"
+            ],
+            "It is a subjective statement, but I somewhat agree with the statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "I do not strongly support this, but I have no reason to reject it",
+              "It is a fact",
+              "It can easily be verified"
+            ],
+            "I do not strongly support this, but I have no reason to reject it": [
+              "The author / source has sufficient credibility",
+              "It presents logical consistency",
+              "There is no counter evidence to reject it",
+              "It is not a factual information, but I somewhat agree with the statement",
+              "It is a fact"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "Hard to Judge": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It's a subjective statement, therefore I'd neither accept nor reject it",
+              "I don’t have enough information to judge",
+              "It is a fact"
+            ],
+            "It's a subjective statement, therefore I'd neither accept nor reject it": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "I don’t have enough information to judge",
+              "It is a fact",
+              "It can easily be verified"
+            ],
+            "I don’t have enough information to judge": [
+              "I cannot reliably judge it in any meaningful way due to the lack of context",
+              "I don’t have enough background knowledge to judge",
+              "It is not a factual information",
+              "It's a subjective statement, therefore I'd neither accept nor reject it",
+              "The information is (almost) common-sense knowledge"
+            ],
+            "This sentence gives no information to judge": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "I can find the records to verify it, from short search using a few keywords"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "Weak Reject": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement, and  I do not agree with the statement",
+              "It is not a reasonable argument, and I do not agree with the statement",
+              "I do not like the way the author describes the information"
+            ],
+            "It is a subjective statement, and  I do not agree with the statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is a biased statement",
+              "It is controversial and some would not agree with it",
+              "I do not like the way the author describes the information"
+            ],
+            "It is not a reasonable argument, and I do not agree with the statement": [
+              "The author / source has insufficient credibility",
+              "It is not supported by solid arguments or evidence",
+              "It lacks logical consistency",
+              "It contains questionable details",
+              "I do not like the way the author describes the information"
+            ],
+            "I do not like the way the author describes the information": [
+              "It sounds like the author is exaggerating",
+              "It is stated like a fact but it is not a fact",
+              "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
+              "It is an oversimplification",
+              "The author is utilizing rhetoric devices to elicit emotional reaction"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "Reject": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement, and  I do not agree with the statement",
+              "It is not a reasonable argument, and I do not agree with the statement",
+              "I do not like the way the author describes the information"
+            ],
+            "It is a subjective statement, and  I do not agree with the statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is a biased statement",
+              "It is controversial and some would not agree with it",
+              "I do not like the way the author describes the information"
+            ],
+            "It is not a reasonable argument, and I do not agree with the statement": [
+              "The author / source has insufficient credibility",
+              "It is not supported by solid arguments or evidence",
+              "It lacks logical consistency",
+              "It contains questionable details",
+              "I do not like the way the author describes the information"
+            ],
+            "I do not like the way the author describes the information": [
+              "It sounds like the author is exaggerating",
+              "It is stated like a fact but it is not a fact",
+              "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
+              "It is an oversimplification",
+              "The author is utilizing rhetoric devices to elicit emotional reaction"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "Strong Reject": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement, and  I do not agree with the statement",
+              "It is not a reasonable argument, and I do not agree with the statement",
+              "I do not like the way the author describes the information"
+            ],
+            "It is a subjective statement, and  I do not agree with the statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is a biased statement",
+              "It is controversial and some would not agree with it",
+              "I do not like the way the author describes the information"
+            ],
+            "It is not a reasonable argument, and I do not agree with the statement": [
+              "The author / source has insufficient credibility",
+              "It is not supported by solid arguments or evidence",
+              "It lacks logical consistency",
+              "It contains questionable details",
+              "I do not like the way the author describes the information"
+            ],
+            "I do not like the way the author describes the information": [
+              "It sounds like the author is exaggerating",
+              "It is stated like a fact but it is not a fact",
+              "It is a mixture of opinion and facts designed for a disguise or a dramatic effect",
+              "It is an oversimplification",
+              "The author is utilizing rhetoric devices to elicit emotional reaction"
+            ],
+            "N/A": [
+              "N/A",
+            ],
+          },
+          "N/A": {
+            "It is not a factual information": [
+              "It is a speculative or hypothetical statement",
+              "It is a vague (or not clear) statement",
+              "It is a subjective statement",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "It is a subjective statement": [
+              "It is a personal experience",
+              "It is a subjective opinion / judgment / interpretation",
+              "It is not a factual information",
+              "I can find the records to verify it, from short search using a few keywords",
+              "I can directly copy and paste of the sentence, and I would find the records to verify it"
+            ],
+            "This sentence gives no information to verify": [
+              "It is a question",
+              "It is not a complete sentence",
+              "It is a transition sentence that is meaningless",
+              "It is merely a word play or an analogy",
+              "I can find the records to verify it, from short search using a few keywords"
+            ]
+          }
         },
       },
     },
-    event: {},
   },
+  event: {},
   data: [
     /**
      * {
@@ -703,11 +703,13 @@ const Annotation = {
       return i;
     }
     return -1;
-  },
+  }
+  ,
   add: function (item) {
     if (item.type === 'event' && this.find_event(item.index, item.anchor_offset, item.focus_offset) !== -1) return;
     this.data.push(item);
-  },
+  }
+  ,
   update: function (annotation_id, new_item) {
     for (let i = 0; i < this.data.length; i++) {
       const item = this.data[i];
@@ -715,7 +717,8 @@ const Annotation = {
         this.data[i] = new_item;
       }
     }
-  },
+  }
+  ,
   remove: function (annotation_id) {
     for (let i = 0; i < this.data.length; i++) {
       const item = this.data[i];
@@ -724,7 +727,8 @@ const Annotation = {
         break;
       }
     }
-  },
+  }
+  ,
   remove_review: function (annotation_id) {
     for (let i = 0; i < this.data.length; i++) {
       const item = this.data[i];
@@ -739,7 +743,8 @@ const Annotation = {
         break;
       }
     }
-  },
+  }
+  ,
   has_review: function (annotation) {
     for (let key in annotation.basket) {
       if (key.indexOf('-review') >= 0) {
@@ -747,10 +752,12 @@ const Annotation = {
       }
     }
     return false;
-  },
+  }
+  ,
   random: function (range, type) {
     return Math.floor(Math.random() * range);
-  },
+  }
+  ,
   shuffle_array: function (a) {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
