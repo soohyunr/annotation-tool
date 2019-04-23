@@ -120,9 +120,9 @@
         const sents = data['sents'];
         Renderer.state.sents = sents;
 
-        Event.state.target_sent.min = sents[0]['index'];
-        Event.state.target_sent.index = sents[0]['index'];
-        Event.state.target_sent.max = sents[sents.length - 1]['index'];
+        Event.state.target_sent.min = sents[0]['index'] + 1;
+        Event.state.target_sent.index = sents[0]['index'] + 1;
+        Event.state.target_sent.max = sents[sents.length - 1]['index'] + 1;
 
         $('#sentence-index-max').html(Event.state.target_sent.max);
         $('#sentence-index').html(Event.state.target_sent.index);
@@ -131,7 +131,6 @@
       }
     });
     Modal.init();
-
 
     $('#next-sentence-arrow').click(function () {
       if (Event.state.target_sent.index < Event.state.target_sent.max) {
@@ -152,16 +151,22 @@
     $('#export-btn').click(function () {
       var annotations = Annotation.data;
       var completed = 0;
+      var miss = 0;
       for (var i = 0; i < annotations.length; i++) {
         var annotation_item = annotations[i];
         if (annotation_item.type !== 'sentence') continue;
-        if (Annotation.is_empty_basket(annotation_item.basket)) continue;
+        if (Annotation.is_empty_basket(annotation_item.basket)) {
+          miss = i;
+          continue;
+        }
         completed++;
       }
       if (completed < Renderer.state.sents.length) {
+        var text = 'Please annotate on all sentences. (Current status: ' + completed + '/' + Renderer.state.sents.length + ') \n';
+        text += 'Notes: Check the ' + (miss + 1) + 'th sentences again.';
         swal({
           title: '',
-          text: 'Please annotate on all sentences. (Current status: ' + completed + '/' + Renderer.state.sents.length + ')',
+          text: text,
           type: 'error',
         });
         return;
