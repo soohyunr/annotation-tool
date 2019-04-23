@@ -256,7 +256,27 @@ def delete_doc_type(doc_type='v3'):
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
-    db_backup('')
+    # db_backup('')
     # duplicate_doc(from_type='v2', to_type='v3')
     # generate_encrypted_files()
     # remove_invalid_annotation()
+
+    user = User.objects.get(turker_id='A1V2H0UF94ATWY')
+    annotations = Annotation.objects.filter(user=user)
+    doc_dict = {}
+    for annotation in annotations:
+        doc_dict[annotation.doc.id] = 1
+    for doc_id in doc_dict:
+        print('-'*30)
+        print('doc_id :', doc_id)
+        doc = Doc.objects.get(id=doc_id)
+        print('source :', doc.source)
+        print('sent count :', Sent.objects.filter(doc=doc).count())
+
+    doc = Doc.objects.get(id='5cbe3c6573979863ec4ef7b6')
+    annotations = Annotation.objects.filter(doc=doc)
+    for annotation in annotations:
+        print(annotation.index)
+        print(annotation.basket['value'])
+
+
