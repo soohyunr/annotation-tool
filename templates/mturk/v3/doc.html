@@ -191,15 +191,23 @@
     $('#export-btn').click(function () {
       var annotations = Annotation.data;
       var completed = 0;
-      var miss = 0;
+      var mark = [];
+      for (var i = 0; i < Renderer.state.sents.length; i++) {
+        mark.push(0);
+      }
       for (var i = 0; i < annotations.length; i++) {
         var annotation_item = annotations[i];
         if (annotation_item.type !== 'sentence') continue;
-        if (Annotation.is_empty_basket(annotation_item.basket)) {
-          miss = i;
-          continue;
-        }
+        if (Annotation.is_empty_basket(annotation_item.basket)) continue;
+        mark[annotation_item.index] = 1;
         completed++;
+      }
+      var miss = 0;
+      for (var i = 0; i < Renderer.state.sents.length; i++) {
+        if (mark[i] === 0) {
+          miss = i;
+          break;
+        }
       }
       if (completed < Renderer.state.sents.length) {
         var text = 'Please annotate on all sentences. (Current status: ' + completed + '/' + Renderer.state.sents.length + ') \n';
