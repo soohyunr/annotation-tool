@@ -266,7 +266,7 @@ def download_dataset():
 
 
 @is_admin
-def download_dataset_amt_v2():
+def download_dataset_AMT_v2():
     docs = Doc.objects.filter(type='mturk_v2')
 
     data = []
@@ -284,7 +284,7 @@ def download_dataset_amt_v2():
                 'created_at': annotation.created_at,
             })
 
-    dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset_amt_v2.json')
+    dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset_AMT_v2.json')
     data_json = json.dumps(data, default=json_util.default)
     with open(dataset_path, 'w', encoding='utf-8') as f:
         f.write(data_json)
@@ -293,7 +293,7 @@ def download_dataset_amt_v2():
 
 
 @is_admin
-def download_dataset_amt_v3():
+def download_dataset_AMT_v3():
     docs = Doc.objects.filter(type='mturk_v3')
 
     data = []
@@ -312,7 +312,7 @@ def download_dataset_amt_v3():
                 'created_at': annotation.created_at,
             })
 
-    dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset_amt_v2.json')
+    dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset_AMT_v3.json')
     data_json = json.dumps(data, default=json_util.default)
     with open(dataset_path, 'w', encoding='utf-8') as f:
         f.write(data_json)
