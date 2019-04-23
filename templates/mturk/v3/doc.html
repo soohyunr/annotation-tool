@@ -159,12 +159,12 @@
         const sents = data['sents'];
         Renderer.state.sents = sents;
 
-        Event.state.target_sent.min = sents[0]['index'] + 1;
-        Event.state.target_sent.index = sents[0]['index'] + 1;
-        Event.state.target_sent.max = sents[sents.length - 1]['index'] + 1;
+        Event.state.target_sent.min = sents[0]['index'];
+        Event.state.target_sent.index = sents[0]['index'];
+        Event.state.target_sent.max = sents[sents.length - 1]['index'];
 
-        $('#sentence-index-max').html(Event.state.target_sent.max);
-        $('#sentence-index').html(Event.state.target_sent.index);
+        $('#sentence-index-max').html(Event.state.target_sent.max + 1);
+        $('#sentence-index').html(Event.state.target_sent.index + 1);
 
         Renderer.load_annotation_and_render_table();
       }
@@ -176,7 +176,7 @@
       if (Event.state.target_sent.index < Event.state.target_sent.max) {
         Event.state.target_sent.index++;
       }
-      $('#sentence-index').html(Event.state.target_sent.index);
+      $('#sentence-index').html(Event.state.target_sent.index + 1);
       Renderer.render_table();
     });
 
@@ -184,7 +184,7 @@
       if (Event.state.target_sent.index > Event.state.target_sent.min) {
         Event.state.target_sent.index--;
       }
-      $('#sentence-index').html(Event.state.target_sent.index);
+      $('#sentence-index').html(Event.state.target_sent.index + 1);
       Renderer.render_table();
     });
 
