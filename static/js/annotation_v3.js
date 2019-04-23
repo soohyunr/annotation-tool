@@ -1036,7 +1036,7 @@ const Event = {
           if (Event.state.target_sent.index > Event.state.target_sent.min) {
             Event.state.target_sent.index--;
           }
-          $('#sentence-index').html(Event.state.target_sent.index);
+          $('#sentence-index').html(Event.state.target_sent.index + 1);
           Renderer.render_table();
           e.preventDefault();
           break;
@@ -1045,7 +1045,7 @@ const Event = {
           if (Event.state.target_sent.index < Event.state.target_sent.max) {
             Event.state.target_sent.index++;
           }
-          $('#sentence-index').html(Event.state.target_sent.index);
+          $('#sentence-index').html(Event.state.target_sent.index + 1);
           Renderer.render_table();
           e.preventDefault();
           break;
