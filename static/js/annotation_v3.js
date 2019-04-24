@@ -1311,7 +1311,8 @@ const Modal = {
           reason1_dropdown.append(button_template);
 
           if (i === 0) {
-            // $('#' + attribute_id + '-reason1-val').html(option);
+            $('#' + attribute_id + '-reason1-val').html(option);
+            $('#' + attribute_id + '-reason2-val').html('');
             $('#' + attribute_id + '-reason1 .dropdown-item').removeClass('active');
             $('#' + attribute_id + '-reason1 .dropdown-item[data-value="' + value + '"]').addClass('active');
           }
@@ -1354,7 +1355,7 @@ const Modal = {
           reason2_dropdown.append(button_template);
 
           if (i === 0) {
-            // $('#' + attribute_id + '-reason2-val').html(option);
+            $('#' + attribute_id + '-reason2-val').html(option);
             $('#' + attribute_id + '-reason2 .dropdown-item').removeClass('active');
             $('#' + attribute_id + '-reason2 .dropdown-item[data-value="' + value + '"]').addClass('active');
           }
