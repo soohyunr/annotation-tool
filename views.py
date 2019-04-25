@@ -164,7 +164,12 @@ def post_annotation():
 
     target_sent = Sent.objects().get(doc=doc, index=index)
 
-    annotations = Annotation.objects.filter(doc=doc, sent=sent, index=index, user=g.user, type=type, anchor_offset=anchor_offset)
+    # In sentence, filter logic have to be changed
+    if type == 'sentence':
+        annotations = Annotation.objects.filter(doc=doc, sent=sent, index=index, user=g.user, type=type)
+    else:
+        annotations = Annotation.objects.filter(doc=doc, sent=sent, index=index, user=g.user, type=type, anchor_offset=anchor_offset)
+
     if annotations.count() > 0:
         annotation = annotations[0]
     else:

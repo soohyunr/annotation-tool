@@ -254,23 +254,21 @@ def delete_doc_type(doc_type='v3'):
 
 
 def analysis_user():
-    user = User.objects.get(turker_id='A1V2H0UF94ATWY')
-    annotations = Annotation.objects.filter(user=user)
-    doc_dict = {}
-    for annotation in annotations:
-        doc_dict[annotation.doc.id] = 1
-    for doc_id in doc_dict:
-        print('-' * 30)
-        print('doc_id :', doc_id)
-        doc = Doc.objects.get(id=doc_id)
-        print('source :', doc.source)
-        print('sent count :', Sent.objects.filter(doc=doc).count())
+    users = User.objects.filter(turker_id='A3FIO5T8LH65DM')
+    total = 0
+    fail = 0
+    for user in users:
+        annotations = Annotation.objects.filter(user=user)
+        for annotation in annotations:
+            total += 1
+            if len(annotation.basket['Acceptance']['value']) == 0:
+                fail += 1
+                print(annotation.sent.index)
+                print(annotation.basket['Acceptance'])
+                print(annotation.doc.id)
+                print(annotation.created_at)
 
-    doc = Doc.objects.get(id='5cbe3c6573979863ec4ef7b6')
-    annotations = Annotation.objects.filter(doc=doc)
-    for annotation in annotations:
-        print(annotation.index)
-        print(annotation.basket['value'])
+    print('total :', total, ', fail :', fail)
 
 
 if __name__ == '__main__':
@@ -281,10 +279,4 @@ if __name__ == '__main__':
     # generate_encrypted_files()
     # remove_invalid_annotation()
 
-    annotation = Annotation.objects.get(id='5cbd826273979863ec4ec8da')
-    print(annotation.entire_text.encode())
-
-
-    # text = 'We suspect that the change in workplace homicide circumstance, moving from robbery to non-robbery motivated crimes, may be in part due to an increase in firearm exposure.'
-    # from nltk import sent_tokenize
-    # print(sent)
+    analysis_user()
