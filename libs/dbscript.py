@@ -283,3 +283,8 @@ if __name__ == '__main__':
 
     annotation = Annotation.objects.get(id='5cbd826273979863ec4ec8da')
     print(annotation.entire_text.encode())
+
+
+    # text = 'We suspect that the change in workplace homicide circumstance, moving from robbery to non-robbery motivated crimes, may be in part due to an increase in firearm exposure.'
+    # from nltk import sent_tokenize
+    # print(sent)

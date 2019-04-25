@@ -1508,6 +1508,7 @@ const Renderer = {
         markup += '</span>';
       }
     }
+     markup = markup.split('\n').join('<br/>');
     return markup;
   },
   render_tooltip_markup: function (annotation_item) {

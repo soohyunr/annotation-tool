@@ -278,7 +278,7 @@ def download_dataset_AMT_v2():
                 'turker_id': annotation.user.turker_id,
                 'doc_id': str(doc.id),
                 'sentence_index': annotation.index,
-                'sentence': annotation.entire_text.replace('\n', ''),
+                'sentence': annotation.entire_text,
                 'basket': annotation.basket,
                 'source': doc.source,
                 'created_at': annotation.created_at,
