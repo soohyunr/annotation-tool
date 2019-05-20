@@ -274,9 +274,9 @@ def analysis_user():
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
-    # db_backup('')
+    db_backup('')
     # duplicate_doc(from_type='v2', to_type='v3')
     # generate_encrypted_files()
     # remove_invalid_annotation()
 
-    analysis_user()
+    # analysis_user()
