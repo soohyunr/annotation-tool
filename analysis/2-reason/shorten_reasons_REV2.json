@@ -11,7 +11,7 @@
         "I am not familiar with the topic",
         0,
         "It is widely known (or taught) around the world",
-        0.5
+        -0.5
       ],
       "It is a subjective statement": [
         "It is a personal experience",
@@ -47,6 +47,32 @@
         "It is merely a word play or an analogy",
         0,
         "The information is (almost) common-sense knowledge",
+        -1
+      ]
+    },
+    "I did not know the information before, but came to know it by reading the previous sentences": {
+      "The same information was stated in one of the previous sentences": [
+        "I learned the information from the previous sentences",
+        0,
+        "I am an expert on the subject",
+        -1,
+        "The information is (almost) common-sense knowledge",
+        -1,
+        "It is widely known (or taught) around the world",
+        -1,
+        "I am not an expert, but have some background knowledge",
+        -0.5
+      ],
+      "It is not directly stated so far, but I can infer it from the previous sentences": [
+        "I could infer it by combining my background knowledge and the previous sentences",
+        0,
+        "I could infer it, although I do not have background knowledge on the topic",
+        0,
+        "Some of the other sentences in the document supports this statement",
+        0,
+        "The same information was stated in one of the previous sentences",
+        -1,
+        "It is widely known (or taught) around the world",
         -1
       ]
     },
@@ -86,32 +112,6 @@
         -0.5,
         "It is a factual information",
         -0.25
-      ]
-    },
-    "I did not know the information before, but came to know it by reading the previous sentences": {
-      "The same information was stated in one of the previous sentences": [
-        "I learned the information from the previous sentences",
-        0,
-        "I am an expert on the subject",
-        -1,
-        "The information is (almost) common-sense knowledge",
-        -1,
-        "It is widely known (or taught) around the world",
-        -1,
-        "I am not an expert, but have some background knowledge",
-        -0.5
-      ],
-      "It is not directly stated so far, but I can infer it from the previous sentences": [
-        "I could infer it by combining my background knowledge and the previous sentences",
-        0,
-        "I could infer it, although I do not have background knowledge on the topic",
-        0,
-        "Some of the other sentences in the document supports this statement",
-        0,
-        "The same information was stated in one of the previous sentences",
-        -1,
-        "It is widely known (or taught) around the world",
-        -1
       ]
     }
   },
