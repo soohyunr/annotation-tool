@@ -12,6 +12,7 @@ def is_user(f):
 
     return decorated_function
 
+
 def is_active_user(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

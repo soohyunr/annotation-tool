@@ -263,7 +263,7 @@ def download_dataset():
             })
 
     dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset.json')
-    data_json = json.dumps(data, default=json_util.default)
+    data_json = json.dumps(data, default=json_util.default, indent=2)
     with open(dataset_path, 'w', encoding='utf-8') as f:
         f.write(data_json)
 
@@ -290,7 +290,7 @@ def download_dataset_AMT_v2():
             })
 
     dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset_AMT_v2.json')
-    data_json = json.dumps(data, default=json_util.default)
+    data_json = json.dumps(data, default=json_util.default,indent=2)
     with open(dataset_path, 'w', encoding='utf-8') as f:
         f.write(data_json)
 
@@ -318,7 +318,7 @@ def download_dataset_AMT_v3():
             })
 
     dataset_path = os.path.abspath(os.path.dirname(__file__) + '/dataset_AMT_v3.json')
-    data_json = json.dumps(data, default=json_util.default)
+    data_json = json.dumps(data, default=json_util.default, indent=2)
     with open(dataset_path, 'w', encoding='utf-8') as f:
         f.write(data_json)
 
