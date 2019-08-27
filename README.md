@@ -9,12 +9,15 @@ The program distributes texts that may show a copyright issue when distributing 
 - flask-mongoengine
 - pymongo
 - Werkzeug
+
+## Dependencies for machine learning & data analysis
+
 - numpy
 - scipy
 - pandas
 - Pillow
-- scikit-learn(?)
-- allennlp(?)
+- scikit-learn
+- allennlp
 
 ## Prerequisites
 
@@ -36,6 +39,10 @@ sudo python3 app.py
 
 1. Make new attributes file in `static/js/` folder.
 2. Include the file at `templates/doc.html` file.
+
+## Annotation documentation
+
+`Still working`
 
 ## Deploy
 
