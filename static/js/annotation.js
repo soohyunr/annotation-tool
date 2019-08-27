@@ -1,13 +1,13 @@
 const API = {
-  get_doc: function (callback) {
+  get_doc: function(callback) {
     const doc_id = $('#doc_id').val();
     $.get({
-      url: '/api/doc/' + doc_id,
-    }).done(function (data) {
+      url: '/api/doc/' + doc_id
+    }).done(function(data) {
       callback(JSON.parse(data));
-    })
+    });
   },
-  get_doc_by_local: function (prefix, callback) {
+  get_doc_by_local: function(prefix, callback) {
     let doc_id = $('#doc_id').val();
     let doc = localStorage.getItem(prefix + doc_id);
     if (doc) {
@@ -16,109 +16,119 @@ const API = {
       callback(null);
     }
   },
-  get_annotation: function (callback) {
+  get_annotation: function(callback) {
     const doc_id = $('#doc_id').val();
     $.get({
-      url: '/api/doc/' + doc_id + '/annotation',
-    }).done(function (data) {
+      url: '/api/doc/' + doc_id + '/annotation'
+    }).done(function(data) {
       callback(JSON.parse(data));
-    })
+    });
   },
-  get_review_annotation: function (callback) {
+  get_review_annotation: function(callback) {
     const doc_id = $('#doc_id').val();
     const annotator_id = $('#annotator_id').val();
     $.get({
-      url: '/api/review/' + annotator_id + '/doc/' + doc_id + '/annotation',
-    }).done(function (data) {
+      url: '/api/review/' + annotator_id + '/doc/' + doc_id + '/annotation'
+    }).done(function(data) {
       callback(JSON.parse(data));
-    })
+    });
   },
-  post_annotation: function (item, callback) {
+  post_annotation: function(item, callback) {
     item.doc = $('#doc_id').val();
     $.ajax({
       url: '/api/annotation',
       contentType: 'application/json',
       type: 'POST',
-      data: JSON.stringify(item),
-    }).done(function (data) {
-      callback(JSON.parse(data));
-    }).fail(function (data) {
-      console.error(data);
-      swal({
-        title: '',
-        text: 'Failed to save annotation, please check network.',
-        type: 'error',
-      });
+      data: JSON.stringify(item)
     })
+      .done(function(data) {
+        callback(JSON.parse(data));
+      })
+      .fail(function(data) {
+        console.error(data);
+        swal({
+          title: '',
+          text: 'Failed to save annotation, please check network.',
+          type: 'error'
+        });
+      });
   },
-  delete_annotation: function (annotation_id, callback) {
+  delete_annotation: function(annotation_id, callback) {
     $.ajax({
       url: '/api/annotation/' + annotation_id,
-      type: 'DELETE',
-    }).done(function () {
-      toastr.success("Deleted");
-      callback();
-    }).fail(function (data) {
-      console.error(data);
-      swal({
-        title: '',
-        text: 'Failed to delete annotation, please check network.',
-        type: 'error',
-      });
+      type: 'DELETE'
     })
+      .done(function() {
+        toastr.success('Deleted');
+        callback();
+      })
+      .fail(function(data) {
+        console.error(data);
+        swal({
+          title: '',
+          text: 'Failed to delete annotation, please check network.',
+          type: 'error'
+        });
+      });
   },
-  delete_review_annotation: function (annotation_id, callback) {
+  delete_review_annotation: function(annotation_id, callback) {
     $.ajax({
       url: '/api/review/annotation/' + annotation_id,
-      type: 'DELETE',
-    }).done(function () {
-      toastr.success("Review was deleted");
-      callback();
-    }).fail(function (data) {
-      console.error(data);
-      swal({
-        title: '',
-        text: 'Failed to delete annotation, please check network.',
-        type: 'error',
-      });
+      type: 'DELETE'
     })
+      .done(function() {
+        toastr.success('Review was deleted');
+        callback();
+      })
+      .fail(function(data) {
+        console.error(data);
+        swal({
+          title: '',
+          text: 'Failed to delete annotation, please check network.',
+          type: 'error'
+        });
+      });
   },
-  put_annotation: function (item, callback) {
+  put_annotation: function(item, callback) {
     $.ajax({
       url: '/api/annotation/' + item.id,
       contentType: 'application/json',
       type: 'PUT',
-      data: JSON.stringify(item),
-    }).done(function (data) {
-      toastr.success("Saved");
-      callback(JSON.parse(data));
-    }).fail(function (data) {
-      console.error(data);
-      swal({
-        title: '',
-        text: 'Failed to update annotation, please check network.',
-        type: 'error',
-      });
+      data: JSON.stringify(item)
     })
+      .done(function(data) {
+        toastr.success('Saved');
+        callback(JSON.parse(data));
+      })
+      .fail(function(data) {
+        console.error(data);
+        swal({
+          title: '',
+          text: 'Failed to update annotation, please check network.',
+          type: 'error'
+        });
+      });
   },
-  put_review_annotation: function (item, callback) {
+  put_review_annotation: function(item, callback) {
     $.ajax({
       url: '/api/review/annotation/' + item.id,
       contentType: 'application/json',
       type: 'PUT',
-      data: JSON.stringify(item),
-    }).done(function (data) {
-      toastr.success("Review was saved");
-      callback(JSON.parse(data));
-    }).fail(function (data) {
-      console.error(data);
-      swal({
-        title: '',
-        text: 'Failed to update review, please check network.',
-        type: 'error',
-      });
+      data: JSON.stringify(item)
     })
-  },
+      .done(function(data) {
+        toastr.success('Review was saved');
+        callback(JSON.parse(data));
+      })
+      .fail(function(data) {
+        console.error(data);
+        swal({
+          title: '',
+          text: 'Failed to update review, please check network.',
+          type: 'error'
+        });
+      });
+  }
 };
 
 const Event = {
@@ -127,20 +137,28 @@ const Event = {
     target_sent: {
       index: 0,
       min: 0,
-      max: 0,
-    },
+      max: 0
+    }
   },
-  selection_listen: function () {
-    document.onmouseup = document.onkeyup = function () {
+  selection_listen: function() {
+    document.onmouseup = document.onkeyup = function() {
       const selection = window.getSelection();
       if (selection.type !== 'Range') return;
 
       const anchorNodeParent = selection.anchorNode.parentElement;
       const focusNodeParent = selection.focusNode.parentElement;
 
-      if (anchorNodeParent.className !== 'type-event' && anchorNodeParent.className !== 'type-sentence') return;
+      if (
+        anchorNodeParent.className !== 'type-event' &&
+        anchorNodeParent.className !== 'type-sentence'
+      )
+        return;
       if (anchorNodeParent.className !== focusNodeParent.className) return;
-      if (anchorNodeParent.getAttribute('data-index') !== focusNodeParent.getAttribute('data-index')) return;
+      if (
+        anchorNodeParent.getAttribute('data-index') !==
+        focusNodeParent.getAttribute('data-index')
+      )
+        return;
 
       const index = Number(anchorNodeParent.getAttribute('data-index'));
       const entire_text = anchorNodeParent.innerText;
@@ -152,11 +170,13 @@ const Event = {
 
       for (let i = 0; i < selection_text.length; i++) {
         // To detect &nbsp;(&nbsp;'s chartCode is 160 and space chartCode is 32).
-        if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ') anchor_offset++;
+        if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ')
+          anchor_offset++;
         else break;
       }
       for (let i = selection_text.length - 1; i >= 0; i--) {
-        if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ') focus_offset--;
+        if (selection_text.charCodeAt(i) === 160 || selection_text[i] === ' ')
+          focus_offset--;
         else break;
       }
       if (anchor_offset >= focus_offset) return;
@@ -166,17 +186,21 @@ const Event = {
       let type = 'event';
       if (anchorNodeParent.className === 'type-sentence') type = 'sentence';
       const item = {
-        target_text: entire_text.substr(anchor_offset, focus_offset - anchor_offset),
+        target_text: entire_text.substr(
+          anchor_offset,
+          focus_offset - anchor_offset
+        ),
         index: index,
         anchor_offset: anchor_offset,
         focus_offset: focus_offset,
         type: type,
-        basket: {},
+        basket: {}
       };
 
       const range = selection.getRangeAt(0);
       const bound = range.getBoundingClientRect();
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
       Modal.set_position(bound.left, bound.top + scrollTop);
 
       let attributes = Annotation.attributes[type];
@@ -189,11 +213,11 @@ const Event = {
           initial_value: initial_value,
           value: '',
           memo: '',
-          reason: '',
-        }
+          reason: ''
+        };
       }
 
-      API.post_annotation(item, function (data) {
+      API.post_annotation(item, function(data) {
         const annotation_item = data['annotation'];
         Annotation.add(annotation_item);
         Renderer.render_table();
@@ -206,11 +230,10 @@ const Event = {
           Modal.next_step();
         }
       });
-
     }.bind(this);
   },
-  listen_view_mode: function () {
-    $('#view-mode-btn').click(function () {
+  listen_view_mode: function() {
+    $('#view-mode-btn').click(function() {
       if (Event.state.view_mode === 'paragraph') {
         Event.state.view_mode = 'sentence';
         $('#view-mode-btn span').html('paragraph mode');
@@ -225,8 +248,8 @@ const Event = {
       Renderer.render_table();
     });
   },
-  listen_annotation_badge: function () {
-    $('.annotation-badge').click(function (e) {
+  listen_annotation_badge: function() {
+    $('.annotation-badge').click(function(e) {
       const annotation_id = $(this).attr('data-id');
       const annotation_item = Annotation.find_by_id(annotation_id);
 
@@ -237,8 +260,8 @@ const Event = {
       Modal.next_step();
     });
   },
-  listen_annotation_review_badge: function () {
-    $('.annotation-badge').click(function (e) {
+  listen_annotation_review_badge: function() {
+    $('.annotation-badge').click(function(e) {
       const annotation_id = $(this).attr('data-id');
       const annotation_item = Annotation.find_by_id(annotation_id);
 
@@ -249,12 +272,12 @@ const Event = {
       Modal.next_review_step();
     });
   },
-  listen_tooltip: function () {
+  listen_tooltip: function() {
     $('[data-toggle="tooltip"]').tooltip();
     // $('[data-toggle="tooltip"]').tooltip('show');
   },
-  listen_key: function () {
-    $(document).keydown(function (e) {
+  listen_key: function() {
+    $(document).keydown(function(e) {
       switch (e.which) {
         case 13: // enter
           break;
@@ -304,37 +327,40 @@ const Modal = {
     step: 1,
     open: false,
     annotation_item: {},
-    max_attribute: 11,
+    max_attribute: 11
   },
-  init: function (mode) {
+  init: function(mode) {
     this.el = $('#modal');
     if (mode) {
       this.state.mode = mode;
     }
     this.el.modal({
-      show: false,
+      show: false
     });
     this.el.draggable({
-      handle: '.modal-header',
+      handle: '.modal-header'
     });
 
-    this.el.on('hidden.bs.modal', function (e) {
+    this.el.on('hidden.bs.modal', function(e) {
       Modal.state.open = false;
     });
-    this.el.on('shown.bs.modal', function (e) {
+    this.el.on('shown.bs.modal', function(e) {
       Modal.state.open = true;
     });
 
-    $('#modal-delete-btn').click(function () {
+    $('#modal-delete-btn').click(function() {
       const annotation_id = Modal.state.annotation_item.id;
       if (mode === 'review') {
-        API.delete_review_annotation(Modal.state.annotation_item.id, function () {
-          Annotation.remove_review(annotation_id);
-          Renderer.render_table();
-          Modal.el.modal('hide');
-        });
+        API.delete_review_annotation(
+          Modal.state.annotation_item.id,
+          function() {
+            Annotation.remove_review(annotation_id);
+            Renderer.render_table();
+            Modal.el.modal('hide');
+          }
+        );
       } else {
-        API.delete_annotation(Modal.state.annotation_item.id, function () {
+        API.delete_annotation(Modal.state.annotation_item.id, function() {
           Annotation.remove(annotation_id);
           Renderer.render_table();
           Modal.el.modal('hide');
@@ -343,7 +369,7 @@ const Modal = {
     });
     // delete_review_annotation
 
-    $('#modal-save-btn').click(function () {
+    $('#modal-save-btn').click(function() {
       if (mode === 'review') {
         Modal.save_review();
       } else {
@@ -360,18 +386,24 @@ const Modal = {
 
     const annotation_type = this.state.annotation_item.type;
     const attribute_id = 'attribute' + step;
-    const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
-    this.state.annotation_item.basket[attribute_key].opened_at = new Date().toISOString();
+    const attribute_key =
+      Annotation.attributes[annotation_type][attribute_id].attribute_key;
+    this.state.annotation_item.basket[
+      attribute_key
+    ].opened_at = new Date().toISOString();
 
-    setTimeout(function () {
+    setTimeout(function() {
       $('#attribute' + step + '-val').click();
-      setTimeout(function () {
+      setTimeout(function() {
         $('#attribute' + step + ' .active').focus();
       }, 100);
     }, 200);
 
     $('.input-group-text').removeClass('text-primary');
-    $('#attribute' + step).parents('.input-group').find('.input-group-text').addClass('text-primary');
+    $('#attribute' + step)
+      .parents('.input-group')
+      .find('.input-group-text')
+      .addClass('text-primary');
     $('.dropdown-toggle').removeClass('text-primary');
     $('#attribute' + step + '-val').addClass('text-primary');
   },
@@ -383,31 +415,38 @@ const Modal = {
 
     const annotation_type = this.state.annotation_item.type;
     const attribute_id = 'attribute' + step;
-    const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
-    this.state.annotation_item.basket[attribute_key].opened_at = new Date().toISOString();
+    const attribute_key =
+      Annotation.attributes[annotation_type][attribute_id].attribute_key;
+    this.state.annotation_item.basket[
+      attribute_key
+    ].opened_at = new Date().toISOString();
 
-    setTimeout(function () {
+    setTimeout(function() {
       $('#attribute' + step + '-review-val').click();
-      setTimeout(function () {
+      setTimeout(function() {
         $('#attribute' + step + '-review .active').focus();
       }, 100);
     }, 200);
 
     $('.input-group-text').removeClass('text-primary');
-    $('#attribute' + step + '-review').parents('.input-group').find('.input-group-text').addClass('text-primary');
+    $('#attribute' + step + '-review')
+      .parents('.input-group')
+      .find('.input-group-text')
+      .addClass('text-primary');
     $('.dropdown-toggle').removeClass('text-primary');
     $('#attribute' + step + '-review-val').addClass('text-primary');
   },
-  set_annotation_item: function (annotation_item) {
+  set_annotation_item: function(annotation_item) {
     this.state.annotation_item = annotation_item;
   },
-  load_attributes: function () {
+  load_attributes: function() {
     const annotation_type = this.state.annotation_item.type;
     const basket = this.state.annotation_item.basket;
     for (let i = 1; i <= this.state.max_attribute; i++) {
       const attribute_id = 'attribute' + i;
 
-      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
+      const attribute_key =
+        Annotation.attributes[annotation_type][attribute_id].attribute_key;
       let value = basket[attribute_key].value;
       if (!value) value = basket[attribute_key].initial_value;
 
@@ -417,19 +456,23 @@ const Modal = {
       $('#' + attribute_id + '-val').html(value.split('_').join(' '));
 
       $('#' + attribute_id + ' .dropdown-item').removeClass('active');
-      $('#' + attribute_id + ' .dropdown-item[data-value="' + value + '"]').addClass('active');
+      $(
+        '#' + attribute_id + ' .dropdown-item[data-value="' + value + '"]'
+      ).addClass('active');
     }
   },
-  load_review_attributes: function () {
+  load_review_attributes: function() {
     const annotation_type = this.state.annotation_item.type;
     const basket = this.state.annotation_item.basket;
     for (let i = 1; i <= this.state.max_attribute; i++) {
       const attribute_id = 'attribute' + i;
 
-      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
+      const attribute_key =
+        Annotation.attributes[annotation_type][attribute_id].attribute_key;
       const attribute_review_key = attribute_key + '-review';
 
-      let value = '', review_value = '';
+      let value = '',
+        review_value = '';
       if (attribute_review_key in basket) {
         value = basket[attribute_key].value;
         review_value = basket[attribute_review_key].value;
@@ -441,17 +484,28 @@ const Modal = {
       let memo_reason = 'Memo: ';
       if (basket[attribute_key].memo) memo_reason += basket[attribute_key].memo;
       memo_reason += ' Reason: ';
-      if (basket[attribute_key].reason) memo_reason += basket[attribute_key].reason;
+      if (basket[attribute_key].reason)
+        memo_reason += basket[attribute_key].reason;
 
-      $('#' + attribute_id).html(value.split('_').join(' ')).attr('title', memo_reason);
+      $('#' + attribute_id)
+        .html(value.split('_').join(' '))
+        .attr('title', memo_reason);
 
-      $('#' + attribute_id + '-review-val').html(review_value.split('_').join(' '));
+      $('#' + attribute_id + '-review-val').html(
+        review_value.split('_').join(' ')
+      );
       $('#' + attribute_id + '-review .dropdown-item').removeClass('active');
-      $('#' + attribute_id + '-review .dropdown-item[data-value="' + value + '"]').addClass('active');
+      $(
+        '#' +
+          attribute_id +
+          '-review .dropdown-item[data-value="' +
+          value +
+          '"]'
+      ).addClass('active');
     }
     $('.memo-reason-tooltip').tooltip('update');
   },
-  show: function () {
+  show: function() {
     this.set_header();
     this.el.modal('show');
 
@@ -460,7 +514,7 @@ const Modal = {
     this.render_input(annotation_type);
     this.load_attributes();
   },
-  show_review: function () {
+  show_review: function() {
     this.set_review_header();
     this.el.modal('show');
 
@@ -476,7 +530,7 @@ const Modal = {
       $('#modal-delete-btn').hide();
     }
   },
-  render_input: function (type) {
+  render_input: function(type) {
     $('#col1').html('');
     $('#col2').html('');
 
@@ -488,8 +542,12 @@ const Modal = {
 
       let input_group_template = $('#attribute-input-group-template').html();
 
-      input_group_template = input_group_template.split('<%attribute%>').join(key);
-      input_group_template = input_group_template.split('<%title%>').join(title);
+      input_group_template = input_group_template
+        .split('<%attribute%>')
+        .join(key);
+      input_group_template = input_group_template
+        .split('<%title%>')
+        .join(title);
 
       if (order <= 6) {
         $('#col1').append(input_group_template);
@@ -500,7 +558,10 @@ const Modal = {
       for (let i = 0; i < options.length; i++) {
         let option = options[i];
         let button_template = $('#attribute-button-template').html();
-        button_template = button_template.replace('<%value%>', option.split(' ').join('_'));
+        button_template = button_template.replace(
+          '<%value%>',
+          option.split(' ').join('_')
+        );
         button_template = button_template.replace('<%value_space%>', option);
 
         $('#' + key + ' .dropdown-menu').append(button_template);
@@ -508,7 +569,7 @@ const Modal = {
     }
     this.input_listen();
   },
-  render_review_input: function (type) {
+  render_review_input: function(type) {
     $('#col1').html('');
     $('#col2').html('');
 
@@ -518,10 +579,16 @@ const Modal = {
       let options = attributes[key].options;
       let order = attributes[key].order;
 
-      let input_group_template = $('#attribute-review-input-group-template').html();
+      let input_group_template = $(
+        '#attribute-review-input-group-template'
+      ).html();
 
-      input_group_template = input_group_template.split('<%attribute%>').join(key);
-      input_group_template = input_group_template.split('<%title%>').join(title);
+      input_group_template = input_group_template
+        .split('<%attribute%>')
+        .join(key);
+      input_group_template = input_group_template
+        .split('<%title%>')
+        .join(title);
 
       if (order <= 6) {
         $('#col1').append(input_group_template);
@@ -532,7 +599,10 @@ const Modal = {
       for (let i = 0; i < options.length; i++) {
         let option = options[i];
         let button_template = $('#attribute-button-template').html();
-        button_template = button_template.replace('<%value%>', option.split(' ').join('_'));
+        button_template = button_template.replace(
+          '<%value%>',
+          option.split(' ').join('_')
+        );
         button_template = button_template.replace('<%value_space%>', option);
 
         $('#' + key + '-review .dropdown-menu').append(button_template);
@@ -540,7 +610,7 @@ const Modal = {
     }
     this.input_review_listen();
   },
-  set_header: function () {
+  set_header: function() {
     const type = this.state.annotation_item.type;
     let title = 'Event: ' + this.state.annotation_item.target_text;
     if (type === 'sentence') {
@@ -548,7 +618,7 @@ const Modal = {
     }
     this.el.find('.modal-title').html(title);
   },
-  set_review_header: function () {
+  set_review_header: function() {
     const type = this.state.annotation_item.type;
     let title = 'Event: ' + this.state.annotation_item.target_text;
     if (type === 'sentence') {
@@ -556,7 +626,7 @@ const Modal = {
     }
     this.el.find('.modal-title').html(title + ' Review');
   },
-  set_position: function (left, top) {
+  set_position: function(left, top) {
     const window_width = document.body.clientWidth;
 
     const margin = 20;
@@ -565,12 +635,17 @@ const Modal = {
     this.el.css('left', calibrated_left);
     this.el.css('top', top + 50);
   },
-  save: function () {
+  save: function() {
     const annotation_type = this.state.annotation_item.type;
     for (let i = 1; i <= this.state.max_attribute; i++) {
       const attribute_id = 'attribute' + i;
-      const value = $('#' + attribute_id + '-val').html().trim().split(' ').join('_');
-      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
+      const value = $('#' + attribute_id + '-val')
+        .html()
+        .trim()
+        .split(' ')
+        .join('_');
+      const attribute_key =
+        Annotation.attributes[annotation_type][attribute_id].attribute_key;
       this.state.annotation_item.basket[attribute_key].value = value;
 
       const memo = $('#' + attribute_id + '-memo').val();
@@ -580,108 +655,155 @@ const Modal = {
       this.state.annotation_item.basket[attribute_key].reason = reason;
     }
 
-    API.put_annotation(this.state.annotation_item, function () {
-      Annotation.update(Modal.state.annotation_item.id, Modal.state.annotation_item);
+    API.put_annotation(this.state.annotation_item, function() {
+      Annotation.update(
+        Modal.state.annotation_item.id,
+        Modal.state.annotation_item
+      );
       Renderer.render_table();
     });
   },
-  save_review: function () {
+  save_review: function() {
     const annotation_type = this.state.annotation_item.type;
     for (let i = 1; i <= this.state.max_attribute; i++) {
       const attribute_id = 'attribute' + i;
-      const value = $('#' + attribute_id + '-review-val').html().trim().split(' ').join('_');
-      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
+      const value = $('#' + attribute_id + '-review-val')
+        .html()
+        .trim()
+        .split(' ')
+        .join('_');
+      const attribute_key =
+        Annotation.attributes[annotation_type][attribute_id].attribute_key;
       const attribute_review_key = attribute_key + '-review';
       this.state.annotation_item.basket[attribute_review_key] = {
         initial_value: this.state.annotation_item.basket[attribute_key].value,
         value: value,
         memo: '',
-        reason: '',
-      }
+        reason: ''
+      };
     }
-    API.put_review_annotation(this.state.annotation_item, function () {
-      Annotation.update(Modal.state.annotation_item.id, Modal.state.annotation_item);
+    API.put_review_annotation(this.state.annotation_item, function() {
+      Annotation.update(
+        Modal.state.annotation_item.id,
+        Modal.state.annotation_item
+      );
       Renderer.render_table();
     });
   },
-  change_type: function (type) {
+  change_type: function(type) {
     let width = '850px';
     this.state.max_attribute = Object.keys(Annotation.attributes[type]).length;
     if (type === 'event') {
-      $('#col1').removeClass('col-md-12').addClass('col-md-6');
+      $('#col1')
+        .removeClass('col-md-12')
+        .addClass('col-md-6');
       $('#col2').show();
 
       for (let i = 6; i <= 11; i++) {
-        $('#attribute' + i).parents('.input-group').show();
+        $('#attribute' + i)
+          .parents('.input-group')
+          .show();
       }
     } else {
-      $('#col1').removeClass('col-md-6').addClass('col-md-12');
+      $('#col1')
+        .removeClass('col-md-6')
+        .addClass('col-md-12');
       $('#col2').hide();
       for (let i = 6; i <= 11; i++) {
-        $('#attribute' + i).parents('.input-group').hide();
+        $('#attribute' + i)
+          .parents('.input-group')
+          .hide();
       }
       width = '950px';
     }
-    $('#modal').css('width', width).css('max-width', width);
-    $('#modal .modal-content').css('width', width).css('min-width', width);
+    $('#modal')
+      .css('width', width)
+      .css('max-width', width);
+    $('#modal .modal-content')
+      .css('width', width)
+      .css('min-width', width);
   },
-  input_listen: function () {
-    $('.dropdown-item').click(function () {
+  input_listen: function() {
+    $('.dropdown-item').click(function() {
       const annotation_type = Modal.state.annotation_item.type;
       const dropdown = $(this).parents('.dropdown');
       const attribute_id = dropdown.attr('id');
       const dropdown_toggle = dropdown.find('.dropdown-toggle');
       const value = $(this).attr('data-value');
 
-      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
-      Modal.state.annotation_item.basket[attribute_key].updated_at = new Date().toISOString();
+      const attribute_key =
+        Annotation.attributes[annotation_type][attribute_id].attribute_key;
+      Modal.state.annotation_item.basket[
+        attribute_key
+      ].updated_at = new Date().toISOString();
 
       dropdown.find('.dropdown-toggle').html(value.split('_').join(' '));
 
       $('#' + attribute_id + ' .dropdown-item').removeClass('active');
-      $('#' + attribute_id + ' .dropdown-item[data-value="' + value + '"]').addClass('active');
+      $(
+        '#' + attribute_id + ' .dropdown-item[data-value="' + value + '"]'
+      ).addClass('active');
 
-      Modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-val', ''));
+      Modal.state.step = Number(
+        dropdown_toggle
+          .attr('id')
+          .replace('attribute', '')
+          .replace('-val', '')
+      );
       Modal.next_step();
     });
   },
-  input_review_listen: function () {
-    $('.dropdown-item').click(function () {
+  input_review_listen: function() {
+    $('.dropdown-item').click(function() {
       const annotation_type = Modal.state.annotation_item.type;
       const dropdown = $(this).parents('.dropdown');
       const attribute_id = dropdown.attr('id');
       const dropdown_toggle = dropdown.find('.dropdown-toggle');
       const value = $(this).attr('data-value');
 
-      const attribute_key = Annotation.attributes[annotation_type][attribute_id].attribute_key;
-      Modal.state.annotation_item.basket[attribute_key].updated_at = new Date().toISOString();
+      const attribute_key =
+        Annotation.attributes[annotation_type][attribute_id].attribute_key;
+      Modal.state.annotation_item.basket[
+        attribute_key
+      ].updated_at = new Date().toISOString();
 
       dropdown.find('.dropdown-toggle').html(value.split('_').join(' '));
 
       $('#' + attribute_id + '-review .dropdown-item').removeClass('active');
-      $('#' + attribute_id + '-review .dropdown-item[data-value="' + value + '"]').addClass('active');
+      $(
+        '#' +
+          attribute_id +
+          '-review .dropdown-item[data-value="' +
+          value +
+          '"]'
+      ).addClass('active');
 
-      Modal.state.step = Number(dropdown_toggle.attr('id').replace('attribute', '').replace('-review-val', ''));
+      Modal.state.step = Number(
+        dropdown_toggle
+          .attr('id')
+          .replace('attribute', '')
+          .replace('-review-val', '')
+      );
       Modal.next_review_step();
     });
-  },
+  }
 };
 
 const Renderer = {
   state: {
     sents: [],
-    mode: 'annotation', // annotation, review,
+    mode: 'annotation' // annotation, review,
   },
-  set_mode: function (mode) {
+  set_mode: function(mode) {
     this.state.mode = mode;
   },
-  load_annotation_and_render_table: function () {
-    API.get_annotation(function (data) {
+  load_annotation_and_render_table: function() {
+    API.get_annotation(function(data) {
       Annotation.data = data['annotations'];
       Renderer.render_table();
     });
   },
-  render_table: function () {
+  render_table: function() {
     const sents = this.state.sents;
 
     const tbody = $('#tbody');
@@ -707,7 +829,10 @@ const Renderer = {
       const annotations = annotation_map[Number(index)];
 
       tr = tr.split('<%index%>').join(sent['index']);
-      tr = tr.replace('<%text%>', this.render_markup_sentence(Number(index), text, annotations));
+      tr = tr.replace(
+        '<%text%>',
+        this.render_markup_sentence(Number(index), text, annotations)
+      );
 
       let sent_col = 'Sent' + index;
       let sent_markup = '';
@@ -727,8 +852,16 @@ const Renderer = {
         if (Annotation.has_review(annotation_item)) {
           badge_type = 'dark';
         }
-        sent_markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation_item.id + '" ';
-        sent_markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation_item) + '">';
+        sent_markup +=
+          '<span class="badge badge-' +
+          badge_type +
+          ' annotation-badge" data-id="' +
+          annotation_item.id +
+          '" ';
+        sent_markup +=
+          'data-toggle="tooltip" data-placement="right" data-html="true" title="' +
+          this.render_tooltip_markup(annotation_item) +
+          '">';
         sent_markup += sent_col + '</span>';
         tr = tr.replace('<%sent%>', sent_markup);
       } else {
@@ -743,7 +876,10 @@ const Renderer = {
       $('#tr-' + Event.state.target_sent.index).show();
 
       const target_sent = Event.state.target_sent;
-      let ratio = (target_sent.index - target_sent.min + 1) / (target_sent.max - target_sent.min + 1) * 100;
+      let ratio =
+        ((target_sent.index - target_sent.min + 1) /
+          (target_sent.max - target_sent.min + 1)) *
+        100;
       $('.progress-bar').css('width', ratio + '%');
     }
 
@@ -755,11 +891,12 @@ const Renderer = {
 
     Event.listen_tooltip();
   },
-  render_markup_sentence: function (index, text, annotations) {
+  render_markup_sentence: function(index, text, annotations) {
     text = text.split('<').join('&lt;');
     text = text.split('>').join('&gt;');
 
-    const start = {}, end = {};
+    const start = {},
+      end = {};
     for (let i = 0; i < annotations.length; i++) {
       const item = annotations[i];
       if (item.type !== 'event') continue;
@@ -777,8 +914,16 @@ const Renderer = {
           badge_type = 'secondary';
         }
 
-        markup += '<span class="badge badge-' + badge_type + ' annotation-badge" data-id="' + annotation_item.id + '" ';
-        markup += 'data-toggle="tooltip" data-placement="right" data-html="true" title="' + this.render_tooltip_markup(annotation_item) + '">';
+        markup +=
+          '<span class="badge badge-' +
+          badge_type +
+          ' annotation-badge" data-id="' +
+          annotation_item.id +
+          '" ';
+        markup +=
+          'data-toggle="tooltip" data-placement="right" data-html="true" title="' +
+          this.render_tooltip_markup(annotation_item) +
+          '">';
       }
 
       if (text[i] !== ' ') {
@@ -793,43 +938,59 @@ const Renderer = {
     }
     return markup;
   },
-  render_tooltip_markup: function (annotation_item) {
+  render_tooltip_markup: function(annotation_item) {
     let markup = '';
     const annotation_type = annotation_item['type'];
     for (let key in Annotation.attributes[annotation_type]) {
-      const attribute_key = Annotation.attributes[annotation_type][key].attribute_key;
+      const attribute_key =
+        Annotation.attributes[annotation_type][key].attribute_key;
       const order = Annotation.attributes[annotation_type][key].order;
-      if (attribute_key in annotation_item.basket && annotation_item.basket[attribute_key].value) {
-        markup += order + '. ' + attribute_key + ': <em>' + annotation_item.basket[attribute_key].value + '</em><br/>'
+      if (
+        attribute_key in annotation_item.basket &&
+        annotation_item.basket[attribute_key].value
+      ) {
+        markup +=
+          order +
+          '. ' +
+          attribute_key +
+          ': <em>' +
+          annotation_item.basket[attribute_key].value +
+          '</em><br/>';
       }
     }
     return markup;
-  },
+  }
 };
 
 const TextReader = {
   data_text: '',
   data_json: {},
-  listen: function () {
-    let input = document.getElementById("doc-uploader");
-    input.addEventListener("change", function () {
+  listen: function() {
+    let input = document.getElementById('doc-uploader');
+    input.addEventListener('change', function() {
       if (this.files && this.files[0]) {
         let myFile = this.files[0];
         let reader = new FileReader();
-        reader.addEventListener('load', function (e) {
+        reader.addEventListener('load', function(e) {
           TextReader.data_text = e.target.result;
-          TextReader.data_text = TextReader.decode_string(TextReader.data_text, $('#ENCRYPTION_KEY').val());
+          TextReader.data_text = TextReader.decode_string(
+            TextReader.data_text,
+            $('#ENCRYPTION_KEY').val()
+          );
           TextReader.data_json = JSON.parse(TextReader.data_text);
           let doc_id = $('#doc_id').val();
 
           if (doc_id === TextReader.data_json['doc_id']) {
-            localStorage.setItem(TextReader.data_json['doc_id'], TextReader.data_text);
+            localStorage.setItem(
+              TextReader.data_json['doc_id'],
+              TextReader.data_text
+            );
             location.reload();
           } else {
             swal({
               title: '',
               text: 'The document number does not match.',
-              type: 'error',
+              type: 'error'
             });
           }
           console.log(TextReader.data_json);
@@ -838,7 +999,7 @@ const TextReader = {
       }
     });
   },
-  decode_string: function (input, key) {
+  decode_string: function(input, key) {
     input = input.split(',');
     let c = '';
     while (key.length < input.length) {
