@@ -1,6 +1,7 @@
 # annotation-tool
 
 This repository provides a web server, can be used as a text annotation tool.
+
 The program distributes texts that may show a copyright issue when distributing the original text type, to several annotators without copyright issues.
 
 ## Major Dependencies
