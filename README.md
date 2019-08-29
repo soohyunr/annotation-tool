@@ -4,7 +4,7 @@ This repository provides a web server, can be used as a text annotation tool.
 
 The program distributes texts that may show a copyright issue when distributing the original text type, to several annotators without copyright issues.
 
-## Major Dependencies
+## Major dependencies
 
 - Flask
 - flask-mongoengine
@@ -30,13 +30,13 @@ vi config.sample.py
 mv config.smaple.py config.py
 ```
 
-## Run Service
+## Run service
 
 ```bash
 sudo python3 app.py
 ```
 
-## Add New Annotation
+## Add new annotation
 
 1. Make new attributes file in `static/js/` folder.
 2. Include the file at `templates/doc.html` file.
