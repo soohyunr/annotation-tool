@@ -106,8 +106,3 @@ Each member in the `sentence` allows user to choose an annotation. For example, 
 pip install fabric3
 fab deploy
 ```
-
-## Contributors
-
-- [Seungwon](http://nlp.kaist.ac.kr/~swyoon)
-- [Junseop](https://github.com/gaonnr)
