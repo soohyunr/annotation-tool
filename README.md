@@ -23,7 +23,7 @@ Annotators can upload a document to the server, then the server automatically sp
         "annotation_focus_offset": 5, 
         "annotation_type": "sentence", 
         "attributes": {
-            "Local_Acceptability": {
+            "Acceptance": {
                 "reason": "the reason for the acceptance of the annotator can be written here.", 
                 "memo": "", 
                 "value": "Accept", 
@@ -103,8 +103,8 @@ const Annotation = {
     sentence: {
       attribute1: {
         order: 1,
-        title: '1. Local Acceptability',
-        attribute_key: 'Local_Acceptability',
+        title: '1. Acceptance',
+        attribute_key: 'Acceptance',
         options: [
           'Strong Accept',
           'Accept',
