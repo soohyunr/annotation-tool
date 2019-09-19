@@ -53,23 +53,29 @@ const Annotation = {
     sentence: {
       attribute1: {
         order: 1,
-        title: '1. Persuasiveness Score',
-        attribute_key: 'Persuasiveness_Score',
+        title: '1. Local Acceptability',
+        attribute_key: 'Local_Acceptability',
         options: [
-          'A very strong, clear argument.',
-          'A strong, pretty clear argument.',
-          'A decent, fairly clear argument.',
-          'A poor, understandable argument.',
-          'It is unclear what the author is trying to argue.',
-          'The author does not appear to make any argument.'
+          'Strong Accept',
+          'Accept',
+          'Weak Accept',
+          'Hard to judge',
+          'Weak Reject',
+          'Reject',
+          'Strong Reject',
         ]
       },
       attribute2: {
         order: 2,
-        title: '2. Evidence Score',
-        attribute_key: 'Evidence_Score',
+        title: '2. Verifiability',
+        attribute_key: 'Verifiability',
         options: [
-          '...'
+          'I can verify it using my knowledge.',
+          'I can verify it by short-time googling.',
+          'I can verify it by long-time googling.',
+          'I might find an off-line way to verify it, but it will be very hard.',
+          'There is no way to verify it.',
+          'None of the above',
         ]
       },
       '...'
@@ -79,15 +85,11 @@ const Annotation = {
         order: 1,
         title: '1. Knowledge Awareness',
         attribute_key: 'Knowledge_Awareness',
-        options: ['I already know.', 'I did not know.']
-      },
-      attribute2: {
-        order: 2,
-        title: '2. Credibility',
-        attribute_key: 'Credibility',
-        options: [
-          '...'
-        ]
+        options:  [
+          'I did not know the information.',
+          'I already knew the information before I read this document.',
+          'I did not know the information before, but came to know it by reading the previous sentences.',
+        ],
       },
       '...'
     }
@@ -98,11 +100,24 @@ const Annotation = {
 ```
 
 In the attribute `attributes`, there are two kinds of members: `sentence`, and `event`.
-Each member in the `sentence` allows user to choose an annotation. For example, in the script above takes an annotation for the category 'Persuasiveness Score', which has five options(scores).
+Each member in the `sentence` allows user to choose an annotation. For example, in the script above takes an annotation for the category 'Local Acceptability', which has 7 options.
 
 ## Deploy
 
 ```bash
 pip install fabric3
 fab deploy
+```
+
+## Citation
+
+Please cite our PACLIC 2019 paper:
+```bibtex
+@inproceedings{yang-2019-local-acceptability,
+    title = "A Corpus of Sentence-level Annotations of Local Acceptability with Reasons",
+    author = "Yang, Wonsuk and Kim, Jung-Ho and Yoon, Seungwon and Park, Chaehun Park, Jong C.",
+    booktitle = "Proceedings of the 33nd Pacific Asia Conference on Language, Information and Computation",
+    year = "2019",
+    publisher = "Association for Computational Linguistics"
+}
 ```
