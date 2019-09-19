@@ -2,7 +2,7 @@
 
 This repository provides a web server, can be used as a text annotation tool.
 
-The program distributes texts that may show a copyright issue when distributing the original text type, to several annotators without copyright issues.
+Annotators can upload a document to the server, then the server automatically split the document into sentences. The annotators can annotate the attributes in select-one-among-the-options kind a way, and can leave notes for each selection. The 
 
 <img src="https://github.com/nlpcl-lab/annotation-tool/blob/master/static/img/screenshot.jpg">
 
