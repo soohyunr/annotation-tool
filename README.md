@@ -18,34 +18,34 @@ Annotators can upload a document to the server, then the server automatically sp
             "$date": 1540481324137
         }, 
         "sentence": "This is an example sentence to annotate.", 
-        "annotator": "yang", 
-        "source": "PUBLISHER NAME OPTION", 
+        "annotator": "YANG", 
+        "source": "N/A", 
         "annotation_focus_offset": 5, 
         "annotation_type": "sentence", 
         "attributes": {
             "Local_Acceptability": {
-                "reason": "the reason for the acceptance of the annotator can be written here", 
+                "reason": "the reason for the acceptance of the annotator can be written here.", 
                 "memo": "", 
-                "value": "", 
-                "initial_value": "Accept"
+                "value": "Accept", 
+                "initial_value": "Strong_Accept"
             }, 
             "Knowledge_Awareness": {
-                "reason": "the reason for the unawareness of the annotator can be written here", 
+                "reason": "the reason for the unawareness of the annotator can be written here.", 
                 "memo": "", 
-                "value": "", 
-                "initial_value": "I_did_not_know_the_information"
+                "value": "I_did_not_know_the_information.", 
+                "initial_value": "I_did_not_know_the_information_before,_but_came_to_know_it_by_reading_the_previous_sentences."
             }, 
             "Verifiability": {
-                "reason": "the reason for the non-verifiability judged by the annotator can be written here", 
+                "reason": "the reason for the non-verifiability judged by the annotator can be written here.", 
                 "memo": "", 
-                "value": "", 
-                "initial_value": "There_is_no_way_to_verify_it"
+                "value": "There_is_no_way_to_verify_it.", 
+                "initial_value": "I_can_verify_it_by_long-time_googling."
             },
             "Disputability": {
-                "reason": "the reason for the disputability judged by the annotator can be written here", 
+                "reason": "the reason for the disputability judged by the annotator can be written here.", 
                 "memo": "", 
-                "value": "", 
-                "initial_value": "Disputable."
+                "value": "Disputable", 
+                "initial_value": "Weakly_Disputable"
             }
         }, 
         "annotation_target_text": "Sent0", 
