@@ -12,14 +12,14 @@ Annotators can upload a document to the server, then the server automatically sp
 ```javascript
 {
         "sentence_index": 0, 
-        "title": "EXAMPLE_DOCUMENT.txt", 
+        "title": "example_document.txt", 
         "annotation_anchor_offset": 0, 
         "created_at": {
             "$date": 1540481324137
         }, 
         "sentence": "This is an example sentence to annotate.", 
-        "annotator": "YANG", 
-        "source": "N/A", 
+        "annotator": "yang", 
+        "source": "n/a", 
         "annotation_focus_offset": 5, 
         "annotation_type": "sentence", 
         "attributes": {
