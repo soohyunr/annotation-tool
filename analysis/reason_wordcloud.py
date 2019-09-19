@@ -137,7 +137,8 @@ def tokenize_and_lemmatize(text):
     text = text.lower()
     words = [word for word in word_tokenize(text) if word.isalpha()]
     words = [word for word in words if word not in stop_words or word == 'not']
-    for word in words: stems.append(lemmatizer.lemmatize(word, pos='v'))
+    # for word in words: stems.append(lemmatizer.lemmatize(word, pos='v'))
+    for word in words: stems.append(word)
     return stems
 
 
@@ -149,20 +150,24 @@ def get_ngrams(tokens, n):
 def draw_wordcloud():
     attribute_reason = defaultdict(lambda: defaultdict(lambda: []))
 
-    annotations = Annotation.objects(type='sentence')
+
     dumps = []
-    bin_path = './data/bin/annotations_frequency.bin'
+    bin_path = './data/pkl/annotations_frequency.bin'
     if os.path.exists(bin_path):
         dumps = pickle.load(open(bin_path, "rb"))
     else:
         print('generate ' + bin_path)
-        for annotation in tqdm(annotations):
-            try:
-                if not ('Acceptance' in annotation['basket']):
-                    continue
-                dumps.append(annotation.dump())
-            except Exception as e:
-                logging.exception(e)
+
+        docs = Doc.objects.filter(type='v1')
+        for doc in tqdm(docs):
+            annotations = Annotation.objects(type='sentence', doc=doc)
+            for annotation in annotations:
+                try:
+                    if not ('Acceptance' in annotation['basket']):
+                        continue
+                    dumps.append(annotation.dump())
+                except Exception as e:
+                    logging.exception(e)
         pickle.dump(dumps, open(bin_path, "wb"))
     random.shuffle(dumps)
 
@@ -172,9 +177,9 @@ def draw_wordcloud():
                 d[k] = ddict2dict(v)
         return dict(d)
 
-    bin_path = './bin/annotations_frequency_step2.bin'
+    bin_path = './data/pkl/annotations_frequency_step2.bin'
     frequencies = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
-    if os.path.exists(bin_path):
+    if False and os.path.exists(bin_path):
         frequencies = pickle.load(open(bin_path, "rb"))
     else:
         reason_set = set()
@@ -189,13 +194,19 @@ def draw_wordcloud():
                 value = option['value']
                 reason = option['reason']
 
+
+
                 if not reason:
                     continue
 
                 reason = clean_reason(reason)
-                reason = remove_name_entity(reason)
+                # reason = remove_name_entity(reason)
                 tokens = tokenize_and_lemmatize(reason)
                 tokens = filtering_from_definition(tokens, attribute_key, value)
+
+                str_reason = ' '.join(tokens)
+                if 'ground author' in str_reason:
+                    print(reason)
 
                 reason_key = '{}-{}'.format(annotation['user'], ''.join(tokens))
                 if reason_key in reason_set:
@@ -217,13 +228,13 @@ def draw_wordcloud():
 
     # attribute_key = 'Knowledge_Awareness'
     # attribute_key = 'Verifiability'
-    attribute_key = 'Disputability'
+    # attribute_key = 'Disputability'
     # attribute_key = 'Perceived_Author_Credibility'
-    # attribute_key = 'Acceptance'
+    attribute_key = 'Acceptance'
     max_words = 100
 
     # ['Knowledge_Awareness', 'Verifiability', 'Disputability', 'Acceptance']
-    keys = ['Disputability']
+    keys = ['Acceptance']
     for attribute_key in keys:
         for option in definitions[attribute_key]:
             target = frequencies[attribute_key][option]
