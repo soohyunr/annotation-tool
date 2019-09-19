@@ -104,13 +104,6 @@ const Annotation = {
 In the attribute `attributes`, there are two kinds of members: `sentence`, and `event`.
 Each member in the `sentence` allows user to choose an annotation. For example, in the script above takes an annotation for the category 'Local Acceptability', which has 7 options.
 
-## Deploy
-
-```bash
-pip install fabric3
-fab deploy
-```
-
 ## Citation
 
 Please cite our PACLIC 2019 paper:
