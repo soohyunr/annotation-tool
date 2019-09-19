@@ -4,7 +4,7 @@ This repository provides a web server, can be used as a text annotation tool.
 
 Annotators can upload a document to the server, then the server automatically split the document into sentences. The annotators can annotate the attributes, and at the same time they can leave notes for each selection. The annotators can use keystrokes to navigate through different sentences. Users can export the annotation results as a JSON file.
 
-<img src="https://github.com/nlpcl-lab/annotation-tool/blob/master/static/img/screenshot.jpg">
+<img src="https://github.com/nlpcl-lab/annotation-tool/blob/master/static/img/screenshot.png">
 
 
 ## JSON Export Format
@@ -154,7 +154,8 @@ Each member in the `sentence` allows user to choose an annotation. For example, 
 
 ## Citation
 
-Please cite our PACLIC 2019 paper:
+We used the annotation tool for the annotation of local acceptability and other three related attributes. We used the annotation tool, with some extra modifications for the different annotation scheme and for the copyright issues of the news-editorials.
+When you use this tool for your own annotation project, Please cite our PACLIC 2019 paper:
 ```bibtex
 @inproceedings{yang-2019-local-acceptability,
     title = "A Corpus of Sentence-level Annotations of Local Acceptability with Reasons",
