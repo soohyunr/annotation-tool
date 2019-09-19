@@ -6,6 +6,54 @@ Annotators can upload a document to the server, then the server automatically sp
 
 <img src="https://github.com/nlpcl-lab/annotation-tool/blob/master/static/img/screenshot.jpg">
 
+
+## JSON Export Format
+
+```javascript
+{
+        "sentence_index": 0, 
+        "title": "006.txt", 
+        "annotation_anchor_offset": 0, 
+        "created_at": {
+            "$date": 1540481324137
+        }, 
+        "sentence": "This is an example sentence to annotate.", 
+        "annotator": "yang", 
+        "source": "PUBLISHER NAME OPTION", 
+        "annotation_focus_offset": 5, 
+        "annotation_type": "sentence", 
+        "attributes": {
+            "Local_Acceptability": {
+                "reason": "the reason for the acceptance of the annotator can be written here", 
+                "memo": "", 
+                "value": "", 
+                "initial_value": "Accept"
+            }, 
+            "Knowledge_Awareness": {
+                "reason": "the reason for the unawareness of the annotator can be written here", 
+                "memo": "", 
+                "value": "", 
+                "initial_value": "I_did_not_know_the_information"
+            }, 
+            "Verifiability": {
+                "reason": "the reason for the non-verifiability judged by the annotator can be written here", 
+                "memo": "", 
+                "value": "", 
+                "initial_value": "There_is_no_way_to_verify_it"
+            },
+            "Disputability": {
+                "reason": "the reason for the disputability judged by the annotator can be written here", 
+                "memo": "", 
+                "value": "", 
+                "initial_value": "Disputable."
+            }
+        }, 
+        "annotation_target_text": "Sent0", 
+        "doc_id": 1
+    },
+    ...
+```
+
 ## Major dependencies
 
 - Flask
