@@ -86,17 +86,13 @@ const Annotation = {
     sentence: {
       attribute1: {
         order: 1,
-        title: '1. Acceptance',
-        attribute_key: 'Acceptance',
-        options: [
-          'Strong Accept',
-          'Accept',
-          'Weak Accept',
-          'Hard to judge',
-          'Weak Reject',
-          'Reject',
-          'Strong Reject',
-        ]
+        title: '1. Knowledge Awareness',
+        attribute_key: 'Knowledge_Awareness',
+        options:  [
+          'I did not know the information.',
+          'I already knew the information before I read this document.',
+          'I did not know the information before, but came to know it by reading the previous sentences.',
+        ],
       },
       attribute2: {
         order: 2,
@@ -110,19 +106,6 @@ const Annotation = {
           'There is no way to verify it.',
           'None of the above',
         ]
-      },
-      '...'
-    },
-    event: {
-      attribute1: {
-        order: 1,
-        title: '1. Knowledge Awareness',
-        attribute_key: 'Knowledge_Awareness',
-        options:  [
-          'I did not know the information.',
-          'I already knew the information before I read this document.',
-          'I did not know the information before, but came to know it by reading the previous sentences.',
-        ],
       },
       '...'
     }
