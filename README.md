@@ -12,7 +12,7 @@ Annotators can upload a document to the server, then the server automatically sp
 ```javascript
 {
         "sentence_index": 0, 
-        "title": "006.txt", 
+        "title": "EXAMPLE_DOCUMENT.txt", 
         "annotation_anchor_offset": 0, 
         "created_at": {
             "$date": 1540481324137
