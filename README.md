@@ -137,7 +137,7 @@ Each member in the `sentence` allows user to choose an annotation. For example, 
 
 ## Citation
 
-We used the annotation tool for the annotation of local acceptability and other three related attributes. We used the annotation tool, with some extra modifications for the different annotation scheme and for the copyright issues of the news-editorials.
+We used the annotation tool for the annotation of local acceptability and other three related attributes. We used the annotation tool, with some extra modifications for the different annotation scheme that includes local acceptability.
 When you use this tool for your own annotation project, Please cite our PACLIC 2019 paper:
 ```bibtex
 @inproceedings{yang-2019-local-acceptability,
