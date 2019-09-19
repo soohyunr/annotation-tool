@@ -4,6 +4,8 @@ This repository provides a web server, can be used as a text annotation tool.
 
 The program distributes texts that may show a copyright issue when distributing the original text type, to several annotators without copyright issues.
 
+<img src="https://github.com/nlpcl-lab/annotation-tool/blob/master/static/img/screenshot.png">
+
 ## Major dependencies
 
 - Flask
@@ -101,13 +103,6 @@ const Annotation = {
 
 In the attribute `attributes`, there are two kinds of members: `sentence`, and `event`.
 Each member in the `sentence` allows user to choose an annotation. For example, in the script above takes an annotation for the category 'Local Acceptability', which has 7 options.
-
-## Deploy
-
-```bash
-pip install fabric3
-fab deploy
-```
 
 ## Citation
 
