@@ -18,7 +18,7 @@ Annotators can upload a document to the server, then the server automatically sp
             "$date": 1540481324137
         }, 
         "sentence": "This is an example sentence to annotate.", 
-        "annotator": "yang", 
+        "annotator": "koala", 
         "source": "n/a", 
         "annotation_focus_offset": 5, 
         "annotation_type": "sentence", 
