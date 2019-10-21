@@ -2,9 +2,40 @@
 
 This repository provides a web server, can be used as a text annotation tool.
 
-The program distributes texts that may show a copyright issue when distributing the original text type, to several annotators without copyright issues.
+Annotators can upload a document to the server, then the server automatically split the document into sentences. The annotators can annotate the attributes, and at the same time they can leave notes for each selection. The annotators can use keystrokes to navigate through different sentences. Users can export the annotation results as a JSON file.
 
 <img src="https://github.com/nlpcl-lab/annotation-tool/blob/master/static/img/screenshot.png">
+
+
+## JSON Export Format
+
+```javascript
+{
+        "sentence_index": 0, 
+        "title": "example_document.txt", 
+        "annotation_anchor_offset": 0, 
+        "created_at": {
+            "$date": 1540481324137
+        }, 
+        "sentence": "This is an example sentence to annotate.", 
+        "annotator": "koala", 
+        "source": "n/a", 
+        "annotation_focus_offset": 5, 
+        "annotation_type": "sentence", 
+        "attributes": {
+            "Knowledge_Awareness": {
+                "reason": "the reason for the unawareness of the annotator can be written here.", 
+                "memo": "", 
+                "value": "I_did_not_know_the_information.", 
+                "initial_value": "I_did_not_know_the_information_before,_but_came_to_know_it_by_reading_the_previous_sentences."
+            }, 
+            '...'
+        }, 
+        "annotation_target_text": "Sent0", 
+        "doc_id": 1
+    },
+    ...
+```
 
 ## Major dependencies
 
@@ -55,17 +86,13 @@ const Annotation = {
     sentence: {
       attribute1: {
         order: 1,
-        title: '1. Local Acceptability',
-        attribute_key: 'Local_Acceptability',
-        options: [
-          'Strong Accept',
-          'Accept',
-          'Weak Accept',
-          'Hard to judge',
-          'Weak Reject',
-          'Reject',
-          'Strong Reject',
-        ]
+        title: '1. Knowledge Awareness',
+        attribute_key: 'Knowledge_Awareness',
+        options:  [
+          'I did not know the information.',
+          'I already knew the information before I read this document.',
+          'I did not know the information before, but came to know it by reading the previous sentences.',
+        ],
       },
       attribute2: {
         order: 2,
@@ -81,19 +108,6 @@ const Annotation = {
         ]
       },
       '...'
-    },
-    event: {
-      attribute1: {
-        order: 1,
-        title: '1. Knowledge Awareness',
-        attribute_key: 'Knowledge_Awareness',
-        options:  [
-          'I did not know the information.',
-          'I already knew the information before I read this document.',
-          'I did not know the information before, but came to know it by reading the previous sentences.',
-        ],
-      },
-      '...'
     }
   },
   data: [],
@@ -105,8 +119,8 @@ In the attribute `attributes`, there are two kinds of members: `sentence`, and `
 Each member in the `sentence` allows user to choose an annotation. For example, in the script above takes an annotation for the category 'Local Acceptability', which has 7 options.
 
 ## Citation
+This tool is a toy version annotation tool that we built before the development of the professional annotation tool that was used for the "CredOn" annotation project, which has some extra functionalities for the annotation monitoring. Except for the extra functionalities such as the monitoring and the different annotation scheme for local acceptability, the basic functionalities are the same :) The annotation project is introduced in the following paper. When you use this tool, please cite the paper:
 
-Please cite our PACLIC 2019 paper:
 ```bibtex
 @inproceedings{yang-2019-local-acceptability,
     title = "A Corpus of Sentence-level Annotations of Local Acceptability with Reasons",
