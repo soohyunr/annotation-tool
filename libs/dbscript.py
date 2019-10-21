@@ -114,6 +114,35 @@ def db_backup(memo):
         #                  ])
 
 
+def db_restore(file_path):
+    import datetime
+    collections = ['doc', 'sent', 'annotation', 'user', 'doc_log', 'annotation_review']
+
+    backup_dir = os.path.abspath(os.path.dirname(__file__) + '/../data/backup/' + file_path)
+
+    import subprocess
+
+    MONGODB_SETTINGS = config.Config.MONGODB_SETTINGS
+    for collection in collections:
+        print('now backup collection {}'.format(collection))
+        backup_path = os.path.abspath(backup_dir + '/{}'.format(collection))
+
+        subprocess.call(['mongoimport',
+                         '-h',
+                         '{}:{}'.format(MONGODB_SETTINGS['host'], MONGODB_SETTINGS['port']),
+                         '-u',
+                         MONGODB_SETTINGS['username'],
+                         '-p',
+                         MONGODB_SETTINGS['password'],
+                         '-d',
+                         MONGODB_SETTINGS['db'],
+                         '-c',
+                         collection,
+                         '--file',
+                         backup_path,
+                         ])
+
+
 def generate_encrypted_file(seq_id):
     from itertools import cycle
     def str_xor(s1, s2):
@@ -274,7 +303,8 @@ def analysis_user():
 if __name__ == '__main__':
     connect(**config.Config.MONGODB_SETTINGS)
 
-    db_backup('')
+    db_restore('2019-05-08T14:56:40')
+    # db_backup('')
     # duplicate_doc(from_type='v2', to_type='v3')
     # generate_encrypted_files()
     # remove_invalid_annotation()
