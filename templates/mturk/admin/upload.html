@@ -9,9 +9,12 @@
     <h3>Admin</h3>
     <form style="margin-top: 25px; margin-bottom: 30px;">
         <div class="form-group row">
-            <label for="turker_id" class="col-sm-2 col-form-label">Turker ID</label>
+            <label for="turker_id" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" id="turker_id" value="{{g.user.turker_id}}">
+                <select class="form-control" id="turker_id" value="{{g.user.turker_id}}">
+                    <option>Wonsuk</option>
+                    <option>Ada</option>
+                </select>
             </div>
         </div>
         <div class="form-group row">
@@ -39,7 +42,7 @@
 </script>
 
 <script>
-  var doc_type = 'mturk_v3';
+  var doc_type = 'mturk_admin';
 
   function delete_key(key) {
     localStorage.removeItem(key);
@@ -116,7 +119,7 @@
     }).done(function (data) {
       var doc = JSON.parse(data);
       localStorage.setItem(doc_type + '_' + doc.doc_id, data);
-      location.assign('/mturk/doc/' + doc.doc_id + '/v3');
+      location.assign('/mturk/doc/' + doc.doc_id + '/admin');
     }).fail(function () {
       $(this).show();
       swal({
