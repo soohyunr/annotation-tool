@@ -118,6 +118,9 @@ const Annotation = {
 In the attribute `attributes`, there are two kinds of members: `sentence`, and `event`.
 Each member in the `sentence` allows user to choose an annotation. For example, in the script above takes an annotation for the category 'Local Acceptability', which has 7 options.
 
+## Contact
+If you have an issue using the tool, please contact Wonsuk Yang (derrick0511@nlp.kaist.ac.kr) or Seungwon Yoon (swyoon@nlp.kaist.ac.kr).
+
 ## Citation
 When you use this tool, please cite the paper:
 
