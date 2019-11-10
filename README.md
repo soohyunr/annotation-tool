@@ -119,7 +119,7 @@ In the attribute `attributes`, there are two kinds of members: `sentence`, and `
 Each member in the `sentence` allows user to choose an annotation. For example, in the script above takes an annotation for the category 'Local Acceptability', which has 7 options.
 
 ## Citation
-This tool is an annotation tool that we use for the "CredOn" annotation project. When you use this tool, please cite the paper:
+When you use this tool, please cite the paper:
 
 ```bibtex
 @inproceedings{yang-2019-local-acceptability,
