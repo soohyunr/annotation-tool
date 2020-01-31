@@ -1,0 +1,630 @@
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & I am not familiar with the topic & natural \\ \cline{2-3} 
+ & It is widely known (or taught) around the world & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & I am not familiar with the topic & natural \\ \cline{2-3} 
+ & It is a factual information & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{I am not familiar with the \\ topic}} & I do not have background knowledge about the topic & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & I am an expert on the subject & nonsensical \\ \cline{2-3} 
+ & The information is (almost) common-sense knowledge & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{This sentence does not \\ contain any meaningful \\ information}} & It is a question & natural \\ \cline{2-3} 
+ & It is not a complete sentence & natural \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & natural \\ \cline{2-3} 
+ & It is merely a word play or an analogy & natural \\ \cline{2-3} 
+ & The information is (almost) common-sense knowledge & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Knowledge Awareness, attribute value: \textit{I did not know the information}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{The same information was \\ stated in one of the \\ previous sentences}} & I learned the information from the previous sentences & natural \\ \cline{2-3} 
+ & I am an expert on the subject & nonsensical \\ \cline{2-3} 
+ & The information is (almost) common-sense knowledge & nonsensical \\ \cline{2-3} 
+ & It is widely known (or taught) around the world & nonsensical \\ \cline{2-3} 
+ & I am not an expert, but have some background knowledge & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{It is not directly stated \\ so far, but I can infer it \\ from the previous sentences}} & I could infer it by combining my background knowledge and the previous sentences & natural \\ \cline{2-3} 
+ & I could infer it, although I do not have background knowledge on the topic & natural \\ \cline{2-3} 
+ & Some of the other sentences in the document supports this statement & natural \\ \cline{2-3} 
+ & The same information was stated in one of the previous sentences & nonsensical \\ \cline{2-3} 
+ & It is widely known (or taught) around the world & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Knowledge Awareness, attribute value: \textit{I did not know the information before, but came to know it by reading the previous sentences}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is widely known (or \\ taught) around the world}} & The information is (almost) common-sense knowledge & natural \\ \cline{2-3} 
+ & It is highly publicized information & natural \\ \cline{2-3} 
+ & I have background knowledge on the topic & natural \\ \cline{2-3} 
+ & I know it from my personal experience & natural \\ \cline{2-3} 
+ & I am not familiar with the topic & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{I have background knowledge \\ on the topic}} & I am an expert on the subject & natural \\ \cline{2-3} 
+ & I am not an expert, but have some background knowledge & natural \\ \cline{2-3} 
+ & It is widely known (or taught) around the world & natural \\ \cline{2-3} 
+ & I know it from my personal experience & natural \\ \cline{2-3} 
+ & I am not familiar with the topic & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{I know it from my personal \\ experience}} & I have a similar experience with the stated experience of the author & natural \\ \cline{2-3} 
+ & It is widely known (or taught) around the world & natural \\ \cline{2-3} 
+ & I have background knowledge on the topic & natural \\ \cline{2-3} 
+ & I am not familiar with the topic & unnatural \\ \cline{2-3} 
+ & It is a factual information & unnatural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Knowledge Awareness, attribute value: \textit{I already knew the information before I read this document}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{I can logically verify the \\ information}} & The information makes logical sense with my personal experience & natural \\ \cline{2-3} 
+ & The information makes logical sense with my background knowledge & natural \\ \cline{2-3} 
+ & I am familiar with the information & natural \\ \cline{2-3} 
+ & It is not a complete sentence & nonsensical \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{I am familiar with the \\ information}} & It is widely known (or taught) around the world & natural \\ \cline{2-3} 
+ & I have background knowledge on the topic & natural \\ \cline{2-3} 
+ & I know it from my personal experience & natural \\ \cline{2-3} 
+ & I can logically verify the information & natural \\ \cline{2-3} 
+ & I do not have background knowledge about the topic & unnatural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Verifiability, attribute value: \textit{I can verify it using my knowledge}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It would be easy to find}} & I can find the records to verify it, from short search using a few keywords & natural \\ \cline{2-3} 
+ & I can directly copy and paste the sentence, and I would find the records to verify it & natural \\ \cline{2-3} 
+ & I would find a direct reference to verify it & natural \\ \cline{2-3} 
+ & It is not a complete sentence & nonsensical \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{I would find a direct \\ reference to verify it}} & I would find multiple sources to verify it & natural \\ \cline{2-3} 
+ & It would be easy to find & natural \\ \cline{2-3} 
+ & It is not a complete sentence & nonsensical \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & nonsensical \\ \cline{2-3} 
+ & I can interview the people related to it & unnatural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Verifiability, attribute value: \textit{I can verify it by short-time googling}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{Detailed google search may \\ lead to related records}} & I would eventually find direct reference / evidence to verify it & natural \\ \cline{2-3} 
+ & I can find related statistics and infer the veracity of the sentence from the statistics & natural \\ \cline{2-3} 
+ & The information may require deeper understanding of the situation & natural \\ \cline{2-3} 
+ & It is not a complete sentence & nonsensical \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{The information may require \\ deeper understanding of the \\ situation}} & Detailed google search may lead to related records & natural \\ \cline{2-3} 
+ & It is not a complete sentence & nonsensical \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & nonsensical \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \cline{2-3} 
+ & I can directly copy and paste of the sentence, and I would find the records to verify it & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Verifiability, attribute value: \textit{I can verify it by long-time googling}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{I can interview the people \\ related to it}} & I can interview work-related people / insiders & natural \\ \cline{2-3} 
+ & I can interview friends / family & natural \\ \cline{2-3} 
+ & I can interview local residents & natural \\ \cline{2-3} 
+ & I could visit related places to obtain the information & natural \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{I could visit related \\ places to obtain the \\ information}} & I can find some related records (e.g., medical record, personal notes) & natural \\ \cline{2-3} 
+ & I can interview the people related to it & natural \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & nonsensical \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \cline{2-3} 
+ & I can directly copy and paste of the sentence, and I would find the records to verify it & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Verifiability, attribute value: \textit{I might find an off-line way to verify it, but it will be very hard}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \cline{2-3} 
+ & I can directly copy and paste of the sentence, and I would find the records to verify it & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \cline{2-3} 
+ & I can directly copy and paste of the sentence, and I would find the records to verify it & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{This sentence gives no \\ information to verify}} & It is a question & natural \\ \cline{2-3} 
+ & It is not a complete sentence & natural \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & natural \\ \cline{2-3} 
+ & It is merely a word play or an analogy & natural \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Verifiability, attribute value: \textit{There is no way to verify it}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \cline{2-3} 
+ & I can directly copy and paste of the sentence, and I would find the records to verify it & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \cline{2-3} 
+ & I can directly copy and paste of the sentence, and I would find the records to verify it & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{This sentence gives no \\ information to verify}} & It is a question & natural \\ \cline{2-3} 
+ & It is not a complete sentence & natural \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & natural \\ \cline{2-3} 
+ & It is merely a word play or an analogy & natural \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Verifiability, attribute value: \textit{N/A}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & It is a famous conflict & natural \\ \cline{2-3} 
+ & Some people will disagree on it & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & It is a famous conflict & natural \\ \cline{2-3} 
+ & Some people will disagree on it & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is a famous conflict}} & It is a subjective statement & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & It is a factual information & unnatural \\ \cline{2-3} 
+ & It is about author's experience & unnatural \\ \cline{2-3} 
+ & The information is a statement of personal belief & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{Some people will disagree \\ on it}} & It is about controversial topics & natural \\ \cline{2-3} 
+ & There are some other opinions that oppose this view that are equally as convincing & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & It is a famous conflict & natural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Disputability, attribute value: \textit{Highly Disputable}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & It is a famous conflict & natural \\ \cline{2-3} 
+ & Some people will disagree on it & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & It is a famous conflict & natural \\ \cline{2-3} 
+ & Some people will disagree on it & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is a famous conflict}} & It is a subjective statement & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & It is a factual information & unnatural \\ \cline{2-3} 
+ & It is about author's experience & unnatural \\ \cline{2-3} 
+ & The information is a statement of personal belief & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{Some people will disagree \\ on it}} & It is about controversial topics & natural \\ \cline{2-3} 
+ & There are some other opinions that oppose this view that are equally as convincing & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & It is a famous conflict & natural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Disputability, attribute value: \textit{Disputable}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & Different views on the subject is possible & natural \\ \cline{2-3} 
+ & Some may think different on some details & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & Different views on the subject is possible & natural \\ \cline{2-3} 
+ & Some may think different on some details & natural \\ \hline 
+\multirow{5}{*}{\longcell{Different views on the \\ subject is possible}} & Many would agree with, but some would still argue against it & natural \\ \cline{2-3} 
+ & It is a subjective statement & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & Some may think different on some details & natural \\ \cline{2-3} 
+ & It is a factual information & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{Some may think different on \\ some details}} & It is a subjective statement & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & Different views on the subject is possible & natural \\ \cline{2-3} 
+ & It is a factual information & unnatural \\ \cline{2-3} 
+ & It is a famous conflict & unnatural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Disputability, attribute value: \textit{Weakly Disputable}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is a factual information}} & It is (almost) a common sense & natural \\ \cline{2-3} 
+ & The information is about a historic or public event & natural \\ \cline{2-3} 
+ & It is a fact & natural \\ \cline{2-3} 
+ & It is close to a fact & natural \\ \cline{2-3} 
+ & It can easily be verified & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is personal statement}} & It is about author's experience & natural \\ \cline{2-3} 
+ & The information is a statement of personal belief & natural \\ \cline{2-3} 
+ & It is a fact & unnatural \\ \cline{2-3} 
+ & It is close to a fact & unnatural \\ \cline{2-3} 
+ & It can easily be verified & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{This sentence does not \\ contain any meaningful \\ information}} & It is a question & natural \\ \cline{2-3} 
+ & It is not a complete sentence & natural \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & natural \\ \cline{2-3} 
+ & It is merely a word play or an analogy & natural \\ \cline{2-3} 
+ & It is personal statement & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Disputability, attribute value: \textit{Not Disputable}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is a factual information}} & It is (almost) a common sense & natural \\ \cline{2-3} 
+ & The information is about a historic or public event & natural \\ \cline{2-3} 
+ & It is a fact & natural \\ \cline{2-3} 
+ & It is close to a fact & natural \\ \cline{2-3} 
+ & It can easily be verified & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is not a factual \\ information, but I agree \\ with the statement}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement, but I agree with the statement & natural \\ \cline{2-3} 
+ & It is a reasonable argument & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement, but I agree with \\ the statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is a reasonable argument & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \cline{2-3} 
+ & It can easily be verified & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{It is a reasonable argument}} & The author / source has sufficient credibility & natural \\ \cline{2-3} 
+ & It is supported by solid arguments or evidence & natural \\ \cline{2-3} 
+ & It presents logical consistency & natural \\ \cline{2-3} 
+ & It contains no questionable details & natural \\ \cline{2-3} 
+ & It is not a factual information, but I agree with the statement & natural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Acceptance, attribute value: \textit{Strong Accept}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is a factual information}} & It is (almost) a common sense & natural \\ \cline{2-3} 
+ & The information is about a historic or public event & natural \\ \cline{2-3} 
+ & It is a fact & natural \\ \cline{2-3} 
+ & It is close to a fact & natural \\ \cline{2-3} 
+ & It can easily be verified & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is not a factual \\ information, but I agree \\ with the statement}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement, but I agree with the statement & natural \\ \cline{2-3} 
+ & It is a reasonable argument & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement, but I agree with \\ the statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is a reasonable argument & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \cline{2-3} 
+ & It can easily be verified & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{It is a reasonable argument}} & The author / source has sufficient credibility & natural \\ \cline{2-3} 
+ & It is supported by solid arguments or evidence & natural \\ \cline{2-3} 
+ & It presents logical consistency & natural \\ \cline{2-3} 
+ & It contains no questionable details & natural \\ \cline{2-3} 
+ & It is not a factual information, but I agree with the statement & natural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Acceptance, attribute value: \textit{Accept}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is a factual information}} & The information is about a historic or public event & natural \\ \cline{2-3} 
+ & It is a fact & natural \\ \cline{2-3} 
+ & It is close to a fact & natural \\ \cline{2-3} 
+ & It is (almost) a common sense & natural \\ \cline{2-3} 
+ & It can easily be verified & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is not a factual \\ information, but I somewhat \\ agree with the statement}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement, but I somewhat agree with the statement & natural \\ \cline{2-3} 
+ & I do not strongly support this, but I have no reason to reject it & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement, but I somewhat \\ agree with the statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & I do not strongly support this, but I have no reason to reject it & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \cline{2-3} 
+ & It can easily be verified & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{I do not strongly support \\ this, but I have no reason \\ to reject it}} & The author / source has sufficient credibility & natural \\ \cline{2-3} 
+ & It presents logical consistency & natural \\ \cline{2-3} 
+ & There is no counter evidence to reject it & natural \\ \cline{2-3} 
+ & It is not a factual information, but I somewhat agree with the statement & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Acceptance, attribute value: \textit{Weak Accept}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It's a subjective statement, therefore I'd neither accept nor reject it & natural \\ \cline{2-3} 
+ & I don’t have enough information to judge & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{It's a subjective \\ statement, therefore I'd \\ neither accept nor reject \\ it}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & I don’t have enough information to judge & natural \\ \cline{2-3} 
+ & It is a fact & nonsensical \\ \cline{2-3} 
+ & It can easily be verified & unnatural \\ \hline 
+\multirow{5}{*}{\longcell{I don’t have enough \\ information to judge}} & I cannot reliably judge it in any meaningful way due to the lack of context & natural \\ \cline{2-3} 
+ & I don’t have enough background knowledge to judge & natural \\ \cline{2-3} 
+ & It is not a factual information & natural \\ \cline{2-3} 
+ & It's a subjective statement, therefore I'd neither accept nor reject it & natural \\ \cline{2-3} 
+ & The information is (almost) common-sense knowledge & nonsensical \\ \hline 
+\multirow{5}{*}{\longcell{This sentence gives no \\ information to judge}} & It is a question & natural \\ \cline{2-3} 
+ & It is not a complete sentence & natural \\ \cline{2-3} 
+ & It is a transition sentence that is meaningless & natural \\ \cline{2-3} 
+ & It is merely a word play or an analogy & natural \\ \cline{2-3} 
+ & I can find the records to verify it, from short search using a few keywords & nonsensical \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Acceptance, attribute value: \textit{Hard to Judge}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement, and  I do not agree with the statement & natural \\ \cline{2-3} 
+ & It is not a reasonable argument, and I do not agree with the statement & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement, and  I do not \\ agree with the statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is a biased statement & natural \\ \cline{2-3} 
+ & It is controversial and some would not agree with it & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is not a reasonable \\ argument, and I do not \\ agree with the statement}} & The author / source has insufficient credibility & natural \\ \cline{2-3} 
+ & It is not supported by solid arguments or evidence & natural \\ \cline{2-3} 
+ & It lacks logical consistency & natural \\ \cline{2-3} 
+ & It contains questionable details & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{I do not like the way the \\ author describes the \\ information}} & It sounds like the author is exaggerating & natural \\ \cline{2-3} 
+ & It is stated like a fact but it is not a fact & natural \\ \cline{2-3} 
+ & It is a mixture of opinion and facts designed for a disguise or a dramatic effect & natural \\ \cline{2-3} 
+ & It is an oversimplification & natural \\ \cline{2-3} 
+ & The author is utilizing rhetoric devices to elicit emotional reaction & natural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Acceptance, attribute value: \textit{Weak Reject}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement, and  I do not agree with the statement & natural \\ \cline{2-3} 
+ & It is not a reasonable argument, and I do not agree with the statement & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement, and  I do not \\ agree with the statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is a biased statement & natural \\ \cline{2-3} 
+ & It is controversial and some would not agree with it & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is not a reasonable \\ argument, and I do not \\ agree with the statement}} & The author / source has insufficient credibility & natural \\ \cline{2-3} 
+ & It is not supported by solid arguments or evidence & natural \\ \cline{2-3} 
+ & It lacks logical consistency & natural \\ \cline{2-3} 
+ & It contains questionable details & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{I do not like the way the \\ author describes the \\ information}} & It sounds like the author is exaggerating & natural \\ \cline{2-3} 
+ & It is stated like a fact but it is not a fact & natural \\ \cline{2-3} 
+ & It is a mixture of opinion and facts designed for a disguise or a dramatic effect & natural \\ \cline{2-3} 
+ & It is an oversimplification & natural \\ \cline{2-3} 
+ & The author is utilizing rhetoric devices to elicit emotional reaction & natural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Acceptance, attribute value: \textit{Reject}) }
+
+\end{table}
+    
+
+
+\begin{table}[!h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4.6cm}|p{8cm}|p{1.8cm}|}
+\hline
+Reason 1 & Reason 2 & Label \\ \hline
+\multirow{5}{*}{\longcell{It is not a factual \\ information}} & It is a speculative or hypothetical statement & natural \\ \cline{2-3} 
+ & It is a vague (or not clear) statement & natural \\ \cline{2-3} 
+ & It is a subjective statement, and  I do not agree with the statement & natural \\ \cline{2-3} 
+ & It is not a reasonable argument, and I do not agree with the statement & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is a subjective \\ statement, and  I do not \\ agree with the statement}} & It is a personal experience & natural \\ \cline{2-3} 
+ & It is a subjective opinion / judgment / interpretation & natural \\ \cline{2-3} 
+ & It is a biased statement & natural \\ \cline{2-3} 
+ & It is controversial and some would not agree with it & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{It is not a reasonable \\ argument, and I do not \\ agree with the statement}} & The author / source has insufficient credibility & natural \\ \cline{2-3} 
+ & It is not supported by solid arguments or evidence & natural \\ \cline{2-3} 
+ & It lacks logical consistency & natural \\ \cline{2-3} 
+ & It contains questionable details & natural \\ \cline{2-3} 
+ & I do not like the way the author describes the information & natural \\ \hline 
+\multirow{5}{*}{\longcell{I do not like the way the \\ author describes the \\ information}} & It sounds like the author is exaggerating & natural \\ \cline{2-3} 
+ & It is stated like a fact but it is not a fact & natural \\ \cline{2-3} 
+ & It is a mixture of opinion and facts designed for a disguise or a dramatic effect & natural \\ \cline{2-3} 
+ & It is an oversimplification & natural \\ \cline{2-3} 
+ & The author is utilizing rhetoric devices to elicit emotional reaction & natural \\ \hline 
+
+\end{tabular}%
+}
+\caption{ The options for the reason selection (attribute: Acceptance, attribute value: \textit{Strong Reject}) }
+
+\end{table}
+    
+
