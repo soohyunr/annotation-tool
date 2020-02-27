@@ -7,6 +7,9 @@ import logging
 db = MongoEngine()
 
 
+
+
+
 class Doc(db.Document):
     title = db.StringField(default='')
     text = db.StringField(default='')
@@ -56,7 +59,7 @@ class User(db.Document):
     salt = db.StringField()
     first_name = db.StringField()
     last_name = db.StringField()
-    is_active = db.BooleanField(default=False)
+    is_active = db.BooleanField(default=True)
     is_admin = db.BooleanField(default=False)
 
     last_ip = db.StringField()
@@ -78,6 +81,8 @@ class User(db.Document):
             'id': self.id,
             'username': self.username,
         }
+    def make_active(self):
+        self.is_active=True
 
 
 class DocLog(db.Document):
@@ -177,3 +182,30 @@ class AnnotationReview(db.Document):
             'created_at': str(self.created_at),
             'updated_at': str(self.updated_at),
         }
+
+    
+    
+####################################
+
+class Reactions(db.Document):
+    likes = db.ListField(User, default=[])
+
+class Sentence(db.Document):
+    user = db.ReferenceField(User)
+    text = db.StringField()
+    created_at = db.DateTimeField(default=datetime.datetime.now)
+    is_root = db.BooleanField(default=False)
+    parent_id = db.StringField()
+    children = db.ListField(db.ReferenceField('self'))
+    reacts = db.ReferenceField(Reactions)
+    
+    def dump(self):
+        return {
+            'user': str(self.user.username),
+            'text': str(self.text),
+            'id': str(self.id)
+        }
+    
+
+
+    

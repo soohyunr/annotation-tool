@@ -26,6 +26,8 @@
         <textarea class="form-control" id="text" rows="15"></textarea>
     </div>
     <button type="button" class="btn btn-primary btn-block" id="next-btn">Next</button>
+    <button type="button" class="btn btn-primary btn-block" id="activate-btn">Activate!!</button>
+    <button type="button" class="btn btn-primary btn-block" id="sentence-btn">Create New Sentence</button>
     <h3 style="margin-top: 40px;">History</h3>
     <div id="history" style="margin-bottom: 100px;">
         <div>[2018-12-13] In recent years, South Korea’s door-to-door.. (edit) (delete)</div>
@@ -72,6 +74,62 @@
     load_history();
   });
 
+  $('#activate-btn').click(function () {
+    var text = $('#text').val().trim();
+    var turker_id = $('#turker_id').val().trim();
+    var source_url = $('#source_url').val().trim();
+
+    if (!turker_id) {
+      swal({
+        title: '',
+        text: 'Please enter the Turker ID.',
+        type: 'error',
+      });
+      return;
+    }
+    if (!source_url) {
+      swal({
+        title: '',
+        text: 'Please enter the Source URL.',
+        type: 'error',
+      });
+      return;
+    }
+    if (!text) {
+      swal({
+        title: '',
+        text: 'Please enter the text.',
+        type: 'error',
+      });
+      return;
+    }
+
+
+    $(this).hide();
+    $.ajax({
+      url: '/api/mturk/activate',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify({
+        text: text,
+        doc_type: doc_type,
+        turker_id: turker_id,
+        source_url: source_url,
+      }),
+    }).done(function (data) {
+      var doc = JSON.parse(data);
+      localStorage.setItem(doc_type + '_' + doc.doc_id, data);
+      location.assign('/mturk/doc/' + doc.doc_id + '/v2');
+    }).fail(function () {
+      $(this).show();
+      swal({
+        title: '',
+        text: 'Error occurred. Please contact the administrator.',
+        type: 'error',
+      });
+    })
+  })
+    
   $('#next-btn').click(function () {
     var text = $('#text').val().trim();
     var turker_id = $('#turker_id').val().trim();
@@ -118,6 +176,59 @@
       var doc = JSON.parse(data);
       localStorage.setItem(doc_type + '_' + doc.doc_id, data);
       location.assign('/mturk/doc/' + doc.doc_id + '/v2');
+    }).fail(function () {
+      $(this).show();
+      swal({
+        title: '',
+        text: 'Error occurred. Please contact the administrator.',
+        type: 'error',
+      });
+    })
+  })
+    
+  $('#sentence-btn').click(function () {
+    var text = $('#text').val().trim();
+    var turker_id = $('#turker_id').val().trim();
+    var source_url = $('#source_url').val().trim();
+
+    if (!turker_id) {
+      swal({
+        title: '',
+        text: 'Please enter the Turker ID.',
+        type: 'error',
+      });
+      return;
+    }
+    if (!source_url) {
+      swal({
+        title: '',
+        text: 'Please enter the Source URL.',
+        type: 'error',
+      });
+      return;
+    }
+    if (!text) {
+      swal({
+        title: '',
+        text: 'Please enter the text.',
+        type: 'error',
+      });
+      return;
+    }
+
+
+    $(this).hide();
+    $.ajax({
+      url: '/api/sentence/upload',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify({
+        text: text,
+        is_root: true,
+        parent: null,
+      }),
+    }).done(function (data) {
+      location.assign('/mturk/rapid-annotation/v2');
     }).fail(function () {
       $(this).show();
       swal({

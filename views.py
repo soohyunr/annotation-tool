@@ -3,7 +3,7 @@ from flask import request, render_template, Response, g, session, redirect, send
 from flask_mongoengine import Pagination
 from bson import json_util
 
-from models import Doc, User, Sent, Annotation, DocLog, AnnotationReview
+from models import Doc, User, Sent, Annotation, DocLog, AnnotationReview, Sentence, Reactions
 from decorator import is_user, is_active_user, is_admin
 import config
 from tqdm import tqdm
@@ -423,6 +423,7 @@ def post_mturk_upload():
     return json.dumps(res)
 
 
+
 @is_user
 def mturk_doc_page(doc_id):
     try:
@@ -561,3 +562,102 @@ def delete_review_annotation(annotation_id):
         return Response('not found', status=404)
 
     return Response('success', status=200)
+
+
+#### By Eugene:
+
+@is_user
+def post_mturk_activate():
+    g.user.make_active()
+    data = request.get_json()
+    text = data['text']
+    doc_type = data['doc_type']
+
+    if 'turker_id' in data:
+        turker_id = data['turker_id']
+
+        g.user.turker_id = turker_id
+        g.user.save()
+
+    from nltk.tokenize import sent_tokenize
+    sents = sent_tokenize(text)
+
+    doc = Doc(title='', text=text, source='mturk', type=doc_type)
+    if 'source_url' in data:
+        doc.source = data['source_url']
+    doc.save()
+
+    res = {
+        'doc_id': str(doc.id),
+        'sents': list(),
+        'seq': doc.seq,
+        'title': doc.title,
+        'created_at': doc.created_at.isoformat(),
+    }
+    for index in range(0, len(sents)):
+        sent = Sent(index=index, text=sents[index], doc=doc).save()
+        res['sents'].append(sent.dump())
+
+    return json.dumps(res)
+
+@is_user
+def sentence_upload():
+    data = request.get_json()
+    text = data['text']
+    is_root = data['is_root']
+    parent_id = data['parent_id']
+    user = g.user
+    
+    new_sent = Sentence(user=user, text=text, is_root=is_root, parent_id=parent_id, children=[])
+    new_sent.save()
+    
+    return Response('success', status=200)
+
+
+
+@is_active_user
+def sentences_page():
+    item_per_page = 50
+    page = request.args.get('p', 1)
+    page = int(page)
+
+    total = Sentence.objects.count()
+    total_page = math.ceil(total / item_per_page)
+    
+    #paginator = Pagination(Doc.objects(), page, 50)
+    paginator = Pagination(Sentence.objects(), page, 50)
+    docs = paginator.items
+
+    docs_data = []
+    for doc in docs:
+        item = doc.dump()
+        
+        docs_data.append(item)
+
+    pagination = {
+        'page': page,
+        'total_page': total_page,
+        'left': max(1, page - 5),
+        'right': min(page + 5, total_page),
+    }
+
+    return render_template('sentences.html', type='v1', sents=docs_data, g=g, pagination=pagination)
+
+
+@is_active_user
+def view_sent(sent_id):
+    try:
+        sent = Sentence.objects.get(id=sent_id)
+    except Exception as e:
+        return redirect('/404')
+    
+    itersent = sent
+    prevsents = []
+    
+    while not itersent['is_root']:
+        p_id = itersent['parent_id']
+        psent = Sentence.objects.get(id=p_id)
+        prevsents.append(psent)
+        itersent = psent
+    prevsents.reverse()
+    return render_template('view_sent.html', sent=sent, prevsents=prevsents, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)

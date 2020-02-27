@@ -35,6 +35,7 @@ def before_request():
 
 
 app.add_url_rule('/', view_func=views.index_page, methods=['GET'])
+
 app.add_url_rule('/<doc_type>', view_func=views.index_v2_page, methods=['GET'])
 app.add_url_rule('/403', view_func=views.page_403, methods=['GET'])
 app.add_url_rule('/404', view_func=views.page_404, methods=['GET'])
@@ -68,12 +69,24 @@ app.add_url_rule('/mturk/doc/<doc_id>', view_func=views.mturk_doc_page, methods=
 app.add_url_rule('/mturk/doc/<doc_id>/<doc_type>', view_func=views.mturk_doc_page_v2, methods=['GET'])
 app.add_url_rule('/api/mturk/upload', view_func=views.post_mturk_upload, methods=['POST'])
 
+
+
 # for review
 app.add_url_rule('/review/<user_id>', view_func=views.review_index_page, methods=['GET'])
 app.add_url_rule('/review/<user_id>/doc/<doc_id>', view_func=views.review_doc_page, methods=['GET'])
 app.add_url_rule('/api/review/<user_id>/doc/<doc_id>/annotation', view_func=views.get_review_annotation, methods=['GET'])
 app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.put_review_annotation, methods=['PUT'])
 app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.delete_review_annotation, methods=['DELETE'])
+
+######## By Eugene
+app.add_url_rule('/api/mturk/activate', view_func=views.post_mturk_activate, methods=['POST'])
+app.add_url_rule('/api/sentence/upload', view_func=views.sentence_upload, methods=['POST'])
+app.add_url_rule('/sentences', view_func=views.sentences_page, methods=['GET'])
+app.add_url_rule('/view_sent/<sent_id>', view_func=views.view_sent, methods=['GET'])
+
+
+
+
 
 if __name__ == '__main__':
     FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)
