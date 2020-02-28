@@ -668,7 +668,8 @@ def view_sent(sent_id):
         prevsents.append(psent)
         itersent = psent
     prevsents.reverse()
-    return render_template('view_sent.html', sent=sent, prevsents=prevsents, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+    children = sent.children
+    return render_template('view_sent.html', sent=sent, prevsents=prevsents, children=children, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
 
 @is_active_user
 def view_user(username):

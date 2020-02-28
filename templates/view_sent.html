@@ -90,9 +90,9 @@
     
     {% for psent in prevsents %}
         <td>
-            <a href="/view_sent/{{psent.id}}">
+            
             {{psent['text']}}
-                </a>
+            
         </td>    
         
     {% endfor %}
@@ -101,11 +101,7 @@
         {{sent['text']}}
     </td>    
     
-    <td>
-        <a href="/view_user/{{sent.user.username}}">
-            {{sent['user'].username}}
-        </a>
-    </td>
+    
     <form>    
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Write a sentence that continues the story above</label>
@@ -113,6 +109,44 @@
       </div>    
     <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
     </form>
+    
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th>text</th>
+            <th>writer</th>
+            <th>reactions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for child in children %}
+        <tr>
+            <td>
+                <a href="/view_sent/{{child.id}}">
+                    {{child['depth']}}
+                </a>
+            </td>
+            <td>
+                <a href="/view_sent/{{child.id}}">
+                    {{child['text']}}
+                </a>
+            </td>
+            <td>
+                <a href="/view_user/{{child.user.username}}">
+                    {{child['user'].username}}
+                </a>
+            </td>
+            <td>
+                <a>
+                    Placeholder
+                </a>
+            
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% include 'base/script.html' %}
 
