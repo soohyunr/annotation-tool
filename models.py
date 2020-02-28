@@ -52,22 +52,27 @@ class Sent(db.Document):
             'text': self.text,
         }
 
-
+################################################################################################################
 class User(db.Document):
     username = db.StringField()
     password = db.StringField()
     salt = db.StringField()
+    
     first_name = db.StringField()
     last_name = db.StringField()
+    student_id = db.IntField()
+    
     is_active = db.BooleanField(default=True)
     is_admin = db.BooleanField(default=False)
-
+    
+    
+    political_category = db.StringField()
+    turker_id = db.StringField()
+    
+    
     last_ip = db.StringField()
     created_at = db.DateTimeField(default=datetime.datetime.now)
     accessed_at = db.DateTimeField(default=datetime.datetime.now)
-
-    turker_id = db.StringField(default='')
-    political_category = db.StringField(default='')
 
     def set_password(self, password):
         self.salt = uuid.uuid4().hex
@@ -84,7 +89,8 @@ class User(db.Document):
     def make_active(self):
         self.is_active=True
 
-
+        
+################################################################################################################
 class DocLog(db.Document):
     doc = db.ReferenceField(Doc)
     user = db.ReferenceField(User)
@@ -198,14 +204,16 @@ class Sentence(db.Document):
     parent_id = db.StringField()
     children = db.ListField(db.ReferenceField('self'))
     reacts = db.ReferenceField(Reactions)
+    depth = db.IntField()
+    
     
     def dump(self):
         return {
             'user': str(self.user.username),
             'text': str(self.text),
-            'id': str(self.id)
+            'id': str(self.id),
+            'depth': str(self.depth)
         }
     
 
 
-    

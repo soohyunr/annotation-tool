@@ -36,31 +36,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for psent in prevsents %}
-        <tr>
-            <td>
-                <a href="/view_sent/{{psent.id}}">
-                    {{psent['depth']}}
-                </a>
-            </td>
-            <td>
-                <a href="/view_sent/{{psent.id}}">
-                    {{psent['text']}}
-                </a>
-            </td>
-            <td>
-                <a href="/view_user/{{psent.user.username}}">
-                    {{psent['user'].username}}
-                </a>
-            </td>
-            <td>
-                <a>
-                    Placeholder
-                </a>
-            
-            </td>
-        </tr>
-        {% endfor %}
+        {% for sent in sents %}
         <tr>
             <td>
                 <a href="/view_sent/{{sent.id}}">
@@ -84,28 +60,21 @@
             
             </td>
         </tr>
+        {% endfor %}
         </tbody>
     </table>
     
     
-    {% for psent in prevsents %}
+    {% for sent in sents %}
         <td>
-            <a href="/view_sent/{{psent.id}}">
-            {{psent['text']}}
+            <a href="/view_sent/{{sent.id}}">
+            {{sent['text']}}
                 </a>
         </td>    
         
     {% endfor %}
     
-    <td>
-        {{sent['text']}}
-    </td>    
     
-    <td>
-        <a href="/view_user/{{sent.user.username}}">
-            {{sent['user'].username}}
-        </a>
-    </td>
     <form>    
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Write a sentence that continues the story above</label>
@@ -142,7 +111,8 @@
       }),
     }).done(function (data) {
       var doc = JSON.parse(data);
-      location.assign('/view_sent/' + doc.id);
+      localStorage.setItem(doc_type + '_' + doc.doc_id, data);
+      location.assign('/mturk/doc/' + doc.doc_id + '/v2');
     }).fail(function () {
       $(this).show();
       swal({

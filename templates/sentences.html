@@ -33,9 +33,9 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th>title</th>
-            <th>my progress</th>
-            <th>upload status</th>
+            <th>text</th>
+            <th>writer</th>
+            <th>reactions</th>
         </tr>
         </thead>
         <tbody>
@@ -43,7 +43,7 @@
         <tr>
             <td>
                 <a href="/view_sent/{{sent.id}}">
-                    {{sent['id']}}
+                    {{sent['depth']}}
                 </a>
             </td>
             <td>
@@ -88,7 +88,18 @@
             </div>
         </ul>
     </nav>
+    <br /><br /><br />
+    <form>    
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Come up with a new starting sentence!</label>
+        <textarea class="form-control" id="storyForm" rows="2"></textarea>
+      </div>    
+      <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+    </form>
 </div>
+    
+
+    
 {% include 'base/script.html' %}
 
 <script>
@@ -108,6 +119,41 @@
       go(page_number)
     })
   });
+  
+  $('#submit-btn').click(function () {
+    var text = $('#storyForm').val().trim();
+    
+    if (!text) {
+      swal({
+        title: '',
+        text: 'Please enter the text.',
+        type: 'error',
+      });
+      return;
+    }
+
+    $(this).hide();
+    $.ajax({
+      url: '/api/sentence/upload',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify({
+        text: text,
+        is_root: true
+      }),
+    }).done(function (data) {
+      var doc = JSON.parse(data);
+      localStorage.setItem(doc_type + '_' + doc.doc_id, data);
+      location.assign('/mturk/doc/' + doc.doc_id + '/v2');
+    }).fail(function () {
+      $(this).show();
+      swal({
+        title: '',
+        text: 'Error occurred. Please contact the administrator.',
+        type: 'error',
+      });
+    })
+  })
 </script>
 </body>
 </html>

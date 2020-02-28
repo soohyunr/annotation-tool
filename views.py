@@ -605,13 +605,21 @@ def sentence_upload():
     data = request.get_json()
     text = data['text']
     is_root = data['is_root']
-    parent_id = data['parent_id']
+    parent_id = None
     user = g.user
-    
-    new_sent = Sentence(user=user, text=text, is_root=is_root, parent_id=parent_id, children=[])
+    depth = 0
+    if not is_root:
+        parent_id = data['parent_id']
+        psent = Sentence.objects.get(id=parent_id)
+        depth = psent['depth'] + 1
+    new_sent = Sentence(user=user, text=text, is_root=is_root, parent_id=parent_id, depth=depth, children=[])
     new_sent.save()
+    if not is_root:
+        psent['children'].append(new_sent)
+        psent.save()
+
     
-    return Response('success', status=200)
+    return json.dumps(new_sent.dump())
 
 
 
@@ -661,3 +669,15 @@ def view_sent(sent_id):
         itersent = psent
     prevsents.reverse()
     return render_template('view_sent.html', sent=sent, prevsents=prevsents, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+
+@is_active_user
+def view_user(username):
+    try:
+        user = User.objects.get(username=username)
+    except Exception as e:
+        return redirect('/404')
+    user_id = user['id']
+    sents = Sentence.objects(user=user_id)
+       
+    
+    return render_template('view_user.html', sents=sents, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
