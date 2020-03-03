@@ -86,7 +86,9 @@ app.add_url_rule('/view_sent/<sent_id>', view_func=views.view_sent, methods=['GE
 app.add_url_rule('/view_user/<username>', view_func=views.view_user, methods=['GET'])
 
 
-
+app.add_url_rule('/react', view_func=views.react_test, methods=['GET'])
+app.add_url_rule('/api/react', view_func=views.put_react, methods=['POST'])
+app.add_url_rule('/view_sent2/<sent_id>', view_func=views.view_sent2, methods=['GET'])
 
 if __name__ == '__main__':
     FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)

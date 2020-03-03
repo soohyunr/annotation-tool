@@ -612,13 +612,16 @@ def sentence_upload():
         parent_id = data['parent_id']
         psent = Sentence.objects.get(id=parent_id)
         depth = psent['depth'] + 1
-    new_sent = Sentence(user=user, text=text, is_root=is_root, parent_id=parent_id, depth=depth, children=[])
+    reacts = Reactions()
+    reacts.save()
+    
+    new_sent = Sentence(user=user, text=text, is_root=is_root, parent_id=parent_id, depth=depth, children=[], reacts=reacts)
     new_sent.save()
     if not is_root:
         psent['children'].append(new_sent)
         psent.save()
-
-    
+    reacts['sent_id'] = str(new_sent['id'])
+    reacts.save()
     return json.dumps(new_sent.dump())
 
 
@@ -680,5 +683,40 @@ def view_user(username):
     user_id = user['id']
     sents = Sentence.objects(user=user_id)
        
-    
     return render_template('view_user.html', sents=sents, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+
+def react_test():
+    return render_template('react.html', g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+
+@is_active_user
+def put_react():
+    
+    data = request.get_json()
+    user = g.user
+    
+    sent_id = data['sent_id']
+    react_type = data['value']
+    react = Reactions.objects.get(sent_id=sent_id)
+    react['likes'][user.username]=react_type
+    react.save()
+
+    return Response('success', status=200)
+
+@is_active_user
+def view_sent2(sent_id):
+    try:
+        sent = Sentence.objects.get(id=sent_id)
+    except Exception as e:
+        return redirect('/404')
+    
+    itersent = sent
+    prevsents = []
+    
+    while not itersent['is_root']:
+        p_id = itersent['parent_id']
+        psent = Sentence.objects.get(id=p_id)
+        prevsents.append(psent)
+        itersent = psent
+    prevsents.reverse()
+    children = sent.children
+    return render_template('view_sent2.html', sent=sent, prevsents=prevsents, children=children, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)

@@ -54,7 +54,7 @@ class Sent(db.Document):
 
 ################################################################################################################
 class User(db.Document):
-    username = db.StringField()
+    username = db.StringField(unique=True)
     password = db.StringField()
     salt = db.StringField()
     
@@ -194,7 +194,8 @@ class AnnotationReview(db.Document):
 ####################################
 
 class Reactions(db.Document):
-    likes = db.ListField(User, default=[])
+    sent_id = db.StringField()
+    likes = db.DictField(default = {})
 
 class Sentence(db.Document):
     user = db.ReferenceField(User)

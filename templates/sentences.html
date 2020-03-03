@@ -94,7 +94,7 @@
         <label for="exampleFormControlTextarea1">Come up with a new starting sentence!</label>
         <textarea class="form-control" id="storyForm" rows="2"></textarea>
       </div>    
-      <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+      <button type="button" class="btn btn-primary" id="submit-btn">Submit</button>
     </form>
 </div>
     
@@ -129,7 +129,7 @@
         text: 'Please enter the text.',
         type: 'error',
       });
-      return;
+      return 0;
     }
 
     $(this).hide();
@@ -141,10 +141,6 @@
         text: text,
         is_root: true
       }),
-    }).done(function (data) {
-      var doc = JSON.parse(data);
-      localStorage.setItem(doc_type + '_' + doc.doc_id, data);
-      location.assign('/mturk/doc/' + doc.doc_id + '/v2');
     }).fail(function () {
       $(this).show();
       swal({

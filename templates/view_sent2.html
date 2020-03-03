@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+{% include 'base/reacthead.html' %}
+<style>
+    .pagination {
+        margin: 40px 20px 70px 0;
+        float: right;
+    }
+
+    table tr {
+        text-align: center;
+    }
+
+    table td {
+        text-align: center;
+    }
+
+    .page-link {
+        color: #6c757d;
+    }
+</style>
+    
+
+<body>
+{% include 'base/sentence_navbar.html' %}
+<div class="container">
+    
+    
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th>text</th>
+            <th>writer</th>
+            <th>reactions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for psent in prevsents %}
+        <tr>
+            <td>
+                <a href="/view_sent/{{psent.id}}">
+                    {{psent['depth']}}
+                </a>
+            </td>
+            <td>
+                <a href="/view_sent/{{psent.id}}">
+                    {{psent['text']}}
+                </a>
+            </td>
+            <td>
+                <a href="/view_user/{{psent.user.username}}">
+                    {{psent['user'].username}}
+                </a>
+            </td>
+            <td>
+                <a>
+                    <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="" data-sent-id="{{sent.id}}">
+                        <span>Like</span>
+                    </a>
+                </a>
+            
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td>
+                <a href="/view_sent/{{sent.id}}">
+                    {{sent['depth']}}
+                </a>
+            </td>
+            <td>
+                <a href="/view_sent/{{sent.id}}">
+                    {{sent['text']}}
+                </a>
+            </td>
+            <td>
+                <a href="/view_user/{{sent.user.username}}">
+                    {{sent['user'].username}}
+                </a>
+            </td>
+            <td>
+                <a>
+                    <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="" data-sent-id="{{sent.id}}">
+                        <span>Like</span>
+                    </a>
+                </a>
+            
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    
+    
+    {% for psent in prevsents %}
+        <td>
+            
+            {{psent['text']}}
+            
+        </td>    
+        
+    {% endfor %}
+    
+    <td>
+        {{sent['text']}}
+    </td>    
+    
+    
+    <form>    
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Write a sentence that continues the story above</label>
+        <textarea class="form-control" id="storyForm" rows="2"></textarea>
+      </div>    
+    <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+    </form>
+    
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th>text</th>
+            <th>writer</th>
+            <th>reactions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for child in children %}
+        <tr>
+            <td>
+                <a href="/view_sent/{{child.id}}">
+                    {{child['depth']}}
+                </a>
+            </td>
+            <td>
+                <a href="/view_sent/{{child.id}}">
+                    {{child['text']}}
+                </a>
+            </td>
+            <td>
+                <a href="/view_user/{{child.user.username}}">
+                    {{child['user'].username}}
+                </a>
+            </td>
+            <td>
+                <a>
+                    Placeholder
+                </a>
+            
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'base/script.html' %}
+
+<script>
+  $('#submit-btn').click(function () {
+    var text = $('#storyForm').val().trim();
+    var parent_id = window.location.href["split"]("_sent/")[1]["split"]("?")[0]
+    
+    if (!text) {
+      swal({
+        title: '',
+        text: 'Please enter the text.',
+        type: 'error',
+      });
+      return;
+    }
+
+    $(this).hide();
+    $.ajax({
+      url: '/api/sentence/upload',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify({
+        text: text,
+        is_root: false,
+        parent_id: parent_id
+      }),
+    }).done(function (data) {
+      var doc = JSON.parse(data);
+      location.assign('/view_sent/' + doc.id);
+    }).fail(function () {
+      $(this).show();
+      swal({
+        title: '',
+        text: 'Error occurred. Please contact the administrator.',
+        type: 'error',
+      });
+    })
+  })
+    
+    
+</script>
+</body>
+</html>

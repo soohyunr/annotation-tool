@@ -1,0 +1,106 @@
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://browser.sentry-cdn.com/4.0.4/bundle.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    
+    <title>Facebook Reactions</title>
+    <meta name="keywords" http-equiv="keywords" content=""> 
+    <meta name="description" http-equiv="description" content=""> 
+
+    
+    
+    <script src="{{ url_for('static', filename='js/jquery-2.1.4.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-ui_1.12.1_.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/facebook-reactions.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reactstylesheet.css') }}">
+    <script>
+    $(document).ready(function($) {
+
+        $('.FB_reactions').facebookReactions({
+
+            //postUrl: "save.php"
+        });
+    });
+    </script>
+
+
+    <style>
+    <!-- demo css -->
+
+    button.warning, a.btn.warning, input[type="submit"].warning {
+    border: 1px solid #9C5E09;
+    background: #FBA633;
+    background: -moz-linear-gradient(top, #FBA633, #DC840E) no-repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FBA633), color-stop(1, #DC840E)) no-repeat scroll 0 0 transparent;
+    border-image: initial;
+    }
+    button, a.btn, input[type="submit"] {
+    -webkit-transition: -webkit-box-shadow 0.05s ease-out;
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.45);
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    background: #009BB8;
+    background: -moz-linear-gradient(top, #009BB8, #00778D) no-repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #009BB8), color-stop(1, #00778D)) no-repeat scroll 0 0 transparent;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+    border: 1px solid #004754;
+    padding: 6px 14px;
+    font-size: 14px;
+    border-image: initial;
+    }
+    #bottomcr a{ color:#A2A2A2; font-size:11px; text-decoration:none}
+    #bottom a {
+    color: #900;
+    font-size:12px;
+    text-decoration: none;
+    }
+    #bottoms a,#bottoms {
+    color:#C00;
+    font-weight:bold;
+    font-size:12px;
+    }
+
+    body, input, textarea {
+    font: 14px/24px Helvetica, Arial, sans-serif;
+    }
+
+    body{    margin: 0px; padding: 0px;}
+
+    h1, h2, h3, h4, h5, h6 { margin: 0; padding: 0; color: #444; font-family:Helvetica, Arial, sans-serif;  }
+    .pkg{ float:left; margin-right:15px; }
+    #outer {  margin: auto; max-width: 750px; margin-top: 10px; margin-bottom: 10px; background: #fff; padding: 10px; border: 10px solid #f2f2f2; }
+     pre code{
+        display: inline;
+        max-width: auto;
+        padding: 0;
+        margin: 0;
+        overflow: visible;
+        line-height: inherit;
+        word-wrap: normal;
+        background-color: transparent;
+        border: 0;
+    }
+     pre {
+        padding: 16px;
+        overflow: auto;
+        font-size: 14px;
+        line-height: 1.45;
+        background-color: #f6f8fa;
+        border-radius: 3px;
+    }
+    </style>
+
+</head>
