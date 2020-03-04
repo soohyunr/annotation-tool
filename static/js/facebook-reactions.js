@@ -11,7 +11,7 @@
 (function($) {
     
 	$.fn.facebookReactions = function(options) {
-     	var sent_id = $(this).data('sent-id');
+     	
 		var settings = $.extend( {
             
 			postUrl: "/api/react", // once user will select an emoji, lets save this selection via ajax to DB.
@@ -51,6 +51,7 @@
 			if(e.target !== e.currentTarget) return;	
 			
 			var base = $(this).parent().parent().parent();
+            var sent_id = (base.data('sent-id'))
 			var move_emoji = $(this);
 			
             
@@ -89,7 +90,7 @@
 						
 						if ( settings.postUrl ) {
 						
-							__ajax(base.attr("data-unique-id"), emoji_value);
+							__ajax(base.attr("data-unique-id"), emoji_value, sent_id);
 						}
 					});
 				});
@@ -99,7 +100,7 @@
 		});
 		
 		// ajax
-		function __ajax(control_id, value){
+		function __ajax(control_id, value, sent_id){
             
 			console.log(control_id, value, sent_id, "ajax")
 			// here we have control id and value. We need to save them into db. You can change it according to yours requirements. 
@@ -138,11 +139,15 @@
 			window.selector = _this.get(0).className;
 			
 			$(this).find('span').click(function(e) {
-				console.log("click span")
+				
+                
 				if(e.target !== e.currentTarget) return;	
 				var isLiked = $(this).parent().attr("data-emoji-class");
 				var control_id = $(this).parent().attr("data-unique-id");
 				
+                
+                var sent_id = $(_this).data('sent-id');
+                
 				$(this).html(settings.defaultText);	
 				
 				if(isLiked)
@@ -150,14 +155,14 @@
 					$(this).parent().attr("data-emoji-class", "");
 					
 					if ( settings.postUrl )
-						__ajax(control_id, null);
+						__ajax(control_id, null, sent_id);
 				}
 				else
 				{				
 					$(this).parent().attr("data-emoji-class", "like");
 					
 					if ( settings.postUrl )
-						__ajax(control_id, "like");
+						__ajax(control_id, "like", sent_id);
 				}
 			});
 			

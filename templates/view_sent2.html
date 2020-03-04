@@ -55,9 +55,12 @@
             </td>
             <td>
                 <a>
-                    <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="" data-sent-id="{{sent.id}}">
-                        <span>Like</span>
+                    <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{psent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{psent.id}}">
+                        <span>{%if (psent['reacts']['likes'][g.user['username']]) == null%}
+                            LIKE {% else %} {{psent['reacts']['likes'][g.user['username']]}} {% endif %}
+                            </span>
                     </a>
+                    
                 </a>
             
             </td>
@@ -81,8 +84,9 @@
             </td>
             <td>
                 <a>
-                    <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="" data-sent-id="{{sent.id}}">
-                        <span>Like</span>
+                    <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{sent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{sent.id}}">
+                        <span>{%if (sent['reacts']['likes'][g.user['username']]) == null%}
+                            LIKE {% else %} {{sent['reacts']['likes'][g.user['username']]}} {% endif %}</span>
                     </a>
                 </a>
             
