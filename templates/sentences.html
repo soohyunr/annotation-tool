@@ -36,6 +36,7 @@
             <th>text</th>
             <th>writer</th>
             <th>reactions</th>
+            <th><img src="/static/img/like.svg" style="width:20px;height:20px;"></th>
         </tr>
         </thead>
         <tbody>
@@ -55,6 +56,12 @@
                 <a href="/view_user/{{sent.user.username}}">
                     {{sent['user']['username']}}
                 </a>
+            </td>
+            <td>
+                {%if (sent['reacts']['total_reacts']) == 0%}0 
+                {% else %}
+                    {{sent['reacts']['total_reacts']}} <img src="{{"/static/img/" + sent['reacts']['most'] + ".svg"}}" style="width:20px;height:20px;">
+                {% endif %}
             </td>
             <td>
                 <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{sent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{sent.id}}">

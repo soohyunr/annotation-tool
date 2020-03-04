@@ -196,7 +196,11 @@ class AnnotationReview(db.Document):
 class Reactions(db.Document):
     sent_id = db.StringField()
     likes = db.DictField(default = {})
-
+    most = db.StringField()
+    total_reacts = db.IntField(default = 0)
+    
+    
+    
 class Sentence(db.Document):
     user = db.ReferenceField(User)
     text = db.StringField()

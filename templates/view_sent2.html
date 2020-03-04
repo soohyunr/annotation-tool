@@ -33,6 +33,7 @@
             <th>text</th>
             <th>writer</th>
             <th>reactions</th>
+            <th><img src="/static/img/like.svg" style="width:20px;height:20px;"></th>
         </tr>
         </thead>
         <tbody>
@@ -52,6 +53,12 @@
                 <a href="/view_user/{{psent.user.username}}">
                     {{psent['user'].username}}
                 </a>
+            </td>
+            <td>
+                {%if (psent['reacts']['total_reacts']) == 0%}0 
+                {% else %}
+                    {{psent['reacts']['total_reacts']}} <img src="{{"/static/img/" + psent['reacts']['most'] + ".svg"}}" style="width:20px;height:20px;">
+                {% endif %}
             </td>
             <td>
                 
@@ -81,6 +88,11 @@
                     {{sent['user'].username}}
                 </a>
             </td>
+            <td>{%if (sent['reacts']['total_reacts']) == 0%} 0
+                {% else %}
+                    {{sent['reacts']['total_reacts']}} <img src="{{"/static/img/" + sent['reacts']['most'] + ".svg"}}" style="width:20px;height:20px;">
+                {% endif %}
+            </td>
             <td>
               
                     <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{sent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{sent.id}}">
@@ -101,7 +113,7 @@
         <label for="exampleFormControlTextarea1">Write a sentence that continues the story above</label>
         <textarea class="form-control" id="storyForm" rows="2"></textarea>
       </div>    
-    <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+    <button type="button" class="btn btn-primary" id="submit-btn">Submit</button>
     </form>
     
     <table class="table">
@@ -111,6 +123,7 @@
             <th>text</th>
             <th>writer</th>
             <th>reactions</th>
+            <th><img src="/static/img/like.svg" style="width:20px;height:20px;"></th>
         </tr>
         </thead>
         <tbody>
@@ -130,6 +143,12 @@
                 <a href="/view_user/{{child.user.username}}">
                     {{child['user'].username}}
                 </a>
+            </td>
+            <td>
+                {%if (child['reacts']['total_reacts']) == 0%}0 
+                {% else %}
+                    {{child['reacts']['total_reacts']}} <img src="{{"/static/img/" + child['reacts']['most'] + ".svg"}}" style="width:20px;height:20px;">
+                {% endif %}
             </td>
             <td>
                 <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{child['reacts']['likes'][g.user['username']]}}" data-sent-id="{{child.id}}">

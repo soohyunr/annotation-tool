@@ -697,8 +697,29 @@ def put_react():
     react_type = data['value']
     react = Reactions.objects.get(sent_id=sent_id)
     react['likes'][user.username]=react_type
-    react.save()
+    if react_type == None:
+        del react['likes'][user.username]
+    print(react['likes'])
+    
+    if react['likes'] == {}:
+        react['most'] = None
+        react['total_reacts'] = 0
+        react.save()
+        return Response('success', status=200)
+    
+    track={}
 
+    for key,value in react['likes'].items():
+        if value not in track:
+            track[value]=0
+        else:
+            track[value]+=1
+
+    react['most'] = max(track,key=track.get)
+    react['total_reacts']=len(react['likes'])
+    
+    
+    react.save()
     return Response('success', status=200)
 
 @is_active_user
