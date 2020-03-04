@@ -699,7 +699,6 @@ def put_react():
     react['likes'][user.username]=react_type
     if react_type == None:
         del react['likes'][user.username]
-    print(react['likes'])
     
     if react['likes'] == {}:
         react['most'] = None
