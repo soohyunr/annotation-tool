@@ -34,7 +34,7 @@ def before_request():
         g.user = user
 
 
-app.add_url_rule('/', view_func=views.index_page, methods=['GET'])
+app.add_url_rule('/', view_func=views.sentences_page, methods=['GET'])
 
 app.add_url_rule('/<doc_type>', view_func=views.index_v2_page, methods=['GET'])
 app.add_url_rule('/403', view_func=views.page_403, methods=['GET'])

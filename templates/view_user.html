@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-{% include 'base/head.html' %}
+{% include 'base/reacthead.html' %}
 <style>
     .pagination {
         margin: 40px 20px 70px 0;
@@ -24,8 +24,11 @@
 <body>
 {% include 'base/sentence_navbar.html' %}
 <div class="container">
-    
-    
+    <a>
+        Username: {{user.username}}
+        <br>
+        Full name: {{user.first_name}} {{user.last_name}}
+    </a>
     <table class="table">
         <thead>
         <tr>
@@ -54,9 +57,10 @@
                 </a>
             </td>
             <td>
-                <a>
-                    Placeholder
-                </a>
+                <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{sent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{sent.id}}">
+                        <span>{%if (sent['reacts']['likes'][g.user['username']]) == null%}
+                            LIKE {% else %} {{sent['reacts']['likes'][g.user['username']]}} {% endif %}</span>
+                    </a>
             
             </td>
         </tr>
@@ -65,23 +69,6 @@
     </table>
     
     
-    {% for sent in sents %}
-        <td>
-            <a href="/view_sent/{{sent.id}}">
-            {{sent['text']}}
-                </a>
-        </td>    
-        
-    {% endfor %}
-    
-    
-    <form>    
-      <div class="form-group">
-        <label for="exampleFormControlTextarea1">Write a sentence that continues the story above</label>
-        <textarea class="form-control" id="storyForm" rows="2"></textarea>
-      </div>    
-    <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
-    </form>
 </div>
 {% include 'base/script.html' %}
 

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-{% include 'base/head.html' %}
+{% include 'base/reacthead.html' %}
 <style>
     .pagination {
         margin: 40px 20px 70px 0;
@@ -52,13 +52,14 @@
                 </a>
             </td>
             <td>
-                <a href="/view_user/{{sent.user}}">
-                    {{sent['user']}}
+                <a href="/view_user/{{sent.user.username}}">
+                    {{sent['user']['username']}}
                 </a>
             </td>
             <td>
-                <a>
-                    123
+                <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{sent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{sent.id}}">
+                        <span>{%if (sent['reacts']['likes'][g.user['username']]) == null%}
+                            LIKE {% else %} {{sent['reacts']['likes'][g.user['username']]}} {% endif %}</span>
                 </a>
             
             </td>

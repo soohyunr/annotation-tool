@@ -641,8 +641,7 @@ def sentences_page():
 
     docs_data = []
     for doc in docs:
-        item = doc.dump()
-        
+        item = doc        
         docs_data.append(item)
 
     pagination = {
@@ -683,7 +682,7 @@ def view_user(username):
     user_id = user['id']
     sents = Sentence.objects(user=user_id)
        
-    return render_template('view_user.html', sents=sents, g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
+    return render_template('view_user.html', sents=sents, g=g, user=user, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
 
 def react_test():
     return render_template('react.html', g=g, ENCRYPTION_KEY=config.Config.ENCRYPTION_KEY)
@@ -704,7 +703,7 @@ def put_react():
 
 @is_active_user
 def view_sent2(sent_id):
-    try:
+    try: 
         sent = Sentence.objects.get(id=sent_id)
     except Exception as e:
         return redirect('/404')

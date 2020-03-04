@@ -54,14 +54,13 @@
                 </a>
             </td>
             <td>
-                <a>
+                
                     <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{psent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{psent.id}}">
                         <span>{%if (psent['reacts']['likes'][g.user['username']]) == null%}
                             LIKE {% else %} {{psent['reacts']['likes'][g.user['username']]}} {% endif %}
                             </span>
                     </a>
-                    
-                </a>
+                 
             
             </td>
         </tr>
@@ -83,12 +82,12 @@
                 </a>
             </td>
             <td>
-                <a>
+              
                     <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{sent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{sent.id}}">
                         <span>{%if (sent['reacts']['likes'][g.user['username']]) == null%}
                             LIKE {% else %} {{sent['reacts']['likes'][g.user['username']]}} {% endif %}</span>
                     </a>
-                </a>
+ 
             
             </td>
         </tr>
@@ -96,20 +95,7 @@
     </table>
     
     
-    {% for psent in prevsents %}
-        <td>
-            
-            {{psent['text']}}
-            
-        </td>    
         
-    {% endfor %}
-    
-    <td>
-        {{sent['text']}}
-    </td>    
-    
-    
     <form>    
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Write a sentence that continues the story above</label>
@@ -146,9 +132,10 @@
                 </a>
             </td>
             <td>
-                <a>
-                    Placeholder
-                </a>
+                <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{child['reacts']['likes'][g.user['username']]}}" data-sent-id="{{child.id}}">
+                        <span>{%if (child['reacts']['likes'][g.user['username']]) == null%}
+                            LIKE {% else %} {{child['reacts']['likes'][g.user['username']]}} {% endif %}</span>
+                    </a>
             
             </td>
         </tr>
