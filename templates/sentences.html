@@ -58,10 +58,12 @@
                 </a>
             </td>
             <td>
-                {%if (sent['reacts']['total_reacts']) == 0%}0 
+                <a class="reaction-show" data-reactions="{{sent['reacts']['likes']}}">
+                {%if (sent['reacts']['total_reacts']) == 0%}0 <img src="{{"/static/img/like.svg"}}" style="width:20px;height:20px;">
                 {% else %}
                     {{sent['reacts']['total_reacts']}} <img src="{{"/static/img/" + sent['reacts']['most'] + ".svg"}}" style="width:20px;height:20px;">
                 {% endif %}
+                </a>
             </td>
             <td>
                 <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{sent['reacts']['likes'][g.user['username']]}}" data-sent-id="{{sent.id}}">
@@ -107,10 +109,12 @@
 </div>
     
 
-    
+
+   
 {% include 'base/script.html' %}
 
 <script>
+
   function go(page_number) {
     location.assign(location.pathname + '?p=' + page_number);
   }
@@ -129,6 +133,7 @@
   });
   
   $('#submit-btn').click(function () {
+      
     var text = $('#storyForm').val().trim();
     
     if (!text) {
@@ -157,6 +162,30 @@
         type: 'error',
       });
     })
+  })
+  $('.reaction-show').click(function () {
+
+    var reacts = $(this).data('reactions');
+    if (jQuery.isEmptyObject(reacts)){
+        swal({
+        title: 'Reactions',
+        text: "no reactions yet!",
+      });return 0;
+    }
+    reacts = JSON.parse(reacts.replace(/'/g,"\""));
+    var swal_html='<table class="table"><tbody>'
+    for (var username in reacts){
+        swal_html += '<tr><td><a href="/view_user/' + username + '">'+ username+ '</a></td><td><a><img src="/static/img/' + reacts[username]+ '.svg" style="width:20px;height:20px;"></a></td><td></tr>'
+    }
+    swal_html += '</tbody></table>';
+    swal({
+        title: 'Reactions',
+        text: swal_html,
+        html: true,
+        
+      });
+    return 0;
+    
   })
 </script>
 </body>
