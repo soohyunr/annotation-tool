@@ -99,10 +99,14 @@
         </ul>
     </nav>
     <br /><br /><br />
-    <form>    
+    <form><br><br>    
       <div class="form-group">
-        <label for="exampleFormControlTextarea1">Come up with a new starting sentence!</label>
-        <textarea class="form-control" id="storyForm" rows="2"></textarea>
+            <select id="select_sent_type" class="form-control col-md-3">
+                <option selected>v1</option>
+                <option>v2</option>
+                <option>v3</option>  
+            </select>
+        <textarea class="form-control" id="storyForm" rows="2" placeholder = "Come up with a new starting sentence!"></textarea>
       </div>    
       <button type="button" class="btn btn-primary" id="submit-btn">Submit</button>
     </form>
@@ -133,7 +137,7 @@
   });
   
   $('#submit-btn').click(function () {
-      
+    var sent_type = $('#select_sent_type').val();
     var text = $('#storyForm').val().trim();
     
     if (!text) {
@@ -152,8 +156,12 @@
       type: 'POST',
       data: JSON.stringify({
         text: text,
-        is_root: true
+        is_root: true,
+        sent_type: sent_type
       }),
+    }).done(function (data) {
+      var doc = JSON.parse(data);
+      location.assign('/view_sent/' + doc.id);
     }).fail(function () {
       $(this).show();
       swal({
