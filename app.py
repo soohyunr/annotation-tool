@@ -82,13 +82,13 @@ app.add_url_rule('/api/review/annotation/<annotation_id>', view_func=views.delet
 app.add_url_rule('/api/mturk/activate', view_func=views.post_mturk_activate, methods=['POST'])
 app.add_url_rule('/api/sentence/upload', view_func=views.sentence_upload, methods=['POST'])
 app.add_url_rule('/sentences', view_func=views.sentences_page, methods=['GET'])
+app.add_url_rule('/sentences/<sent_type>', view_func=views.sentences_page_typed, methods=['GET'])
 app.add_url_rule('/view_sent/<sent_id>', view_func=views.view_sent2, methods=['GET'])
 app.add_url_rule('/view_user/<username>', view_func=views.view_user, methods=['GET'])
 
 
 app.add_url_rule('/react', view_func=views.react_test, methods=['GET'])
 app.add_url_rule('/api/react', view_func=views.put_react, methods=['POST'])
-app.add_url_rule('/view_sent2/<sent_id>', view_func=views.view_sent2, methods=['GET'])
 
 if __name__ == '__main__':
     FLASK_DEBUG = os.getenv('FLASK_DEBUG', True)

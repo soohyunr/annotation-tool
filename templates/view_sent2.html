@@ -55,10 +55,12 @@
                 </a>
             </td>
             <td>
-                {%if (psent['reacts']['total_reacts']) == 0%}0 
+                <a class="reaction-show" data-reactions="{{psent['reacts']['likes']}}">
+                {%if (psent['reacts']['total_reacts']) == 0%}0 <img src="{{"/static/img/like.svg"}}" style="width:20px;height:20px;">
                 {% else %}
                     {{psent['reacts']['total_reacts']}} <img src="{{"/static/img/" + psent['reacts']['most'] + ".svg"}}" style="width:20px;height:20px;">
                 {% endif %}
+                </a>
             </td>
             <td>
                 
@@ -88,10 +90,13 @@
                     {{sent['user'].username}}
                 </a>
             </td>
-            <td>{%if (sent['reacts']['total_reacts']) == 0%} 0
+            <td>
+                <a class="reaction-show" data-reactions="{{sent['reacts']['likes']}}">
+                {%if (sent['reacts']['total_reacts']) == 0%}0 <img src="{{"/static/img/like.svg"}}" style="width:20px;height:20px;">
                 {% else %}
                     {{sent['reacts']['total_reacts']}} <img src="{{"/static/img/" + sent['reacts']['most'] + ".svg"}}" style="width:20px;height:20px;">
                 {% endif %}
+                </a>
             </td>
             <td>
               
@@ -111,7 +116,7 @@
     <form>    
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Write a sentence that continues the story above</label>
-        <textarea class="form-control" id="storyForm" rows="2"></textarea>
+        <textarea class="form-control" id="storyForm" rows="2" data-sent-type="{{sent['sent_type']}}"></textarea>
       </div>    
     <button type="button" class="btn btn-primary" id="submit-btn">Submit</button>
     </form>
@@ -145,10 +150,12 @@
                 </a>
             </td>
             <td>
-                {%if (child['reacts']['total_reacts']) == 0%}0 
+                <a class="reaction-show" data-reactions="{{child['reacts']['likes']}}">
+                {%if (child['reacts']['total_reacts']) == 0%}0 <img src="{{"/static/img/like.svg"}}" style="width:20px;height:20px;">
                 {% else %}
                     {{child['reacts']['total_reacts']}} <img src="{{"/static/img/" + child['reacts']['most'] + ".svg"}}" style="width:20px;height:20px;">
                 {% endif %}
+                </a>
             </td>
             <td>
                 <a class="FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="{{child['reacts']['likes'][g.user['username']]}}" data-sent-id="{{child.id}}">
@@ -167,6 +174,7 @@
 <script>
   $('#submit-btn').click(function () {
     var text = $('#storyForm').val().trim();
+    var sent_type = $('#storyForm').data('sent-type')
     var parent_id = window.location.href["split"]("_sent/")[1]["split"]("?")[0]
     
     if (!text) {
@@ -186,7 +194,8 @@
       data: JSON.stringify({
         text: text,
         is_root: false,
-        parent_id: parent_id
+        parent_id: parent_id,
+        sent_type : sent_type,
       }),
     }).done(function (data) {
       var doc = JSON.parse(data);
@@ -200,7 +209,30 @@
       });
     })
   })
+  $('.reaction-show').click(function () {
+
+    var reacts = $(this).data('reactions');
+    if (jQuery.isEmptyObject(reacts)){
+        swal({
+        title: 'Reactions',
+        text: "no reactions yet!",
+      });return 0;
+    }
+    reacts = JSON.parse(reacts.replace(/'/g,"\""));
+    var swal_html='<table class="table"><tbody>'
+    for (var username in reacts){
+        swal_html += '<tr><td><a href="/view_user/' + username + '">'+ username+ '</a></td><td><a><img src="/static/img/' + reacts[username]+ '.svg" style="width:20px;height:20px;"></a></td><td></tr>'
+    }
+    swal_html += '</tbody></table>';
+    swal({
+        title: 'Reactions',
+        text: swal_html,
+        html: true,
+        
+      });
+    return 0;
     
+  })
     
 </script>
 </body>

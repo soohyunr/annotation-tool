@@ -605,6 +605,7 @@ def sentence_upload():
     data = request.get_json()
     text = data['text']
     is_root = data['is_root']
+    sent_type = data['sent_type']
     parent_id = None
     user = g.user
     depth = 0
@@ -615,7 +616,7 @@ def sentence_upload():
     reacts = Reactions()
     reacts.save()
     
-    new_sent = Sentence(user=user, text=text, is_root=is_root, parent_id=parent_id, depth=depth, children=[], reacts=reacts)
+    new_sent = Sentence(user=user, text=text, is_root=is_root, parent_id=parent_id, depth=depth, children=[], sent_type=sent_type, reacts=reacts)
     new_sent.save()
     if not is_root:
         psent['children'].append(new_sent)
@@ -641,6 +642,33 @@ def sentences_page():
 
     docs_data = []
     for doc in docs:
+        item = doc
+        docs_data.append(item)
+
+    pagination = {
+        'page': page,
+        'total_page': total_page,
+        'left': max(1, page - 5),
+        'right': min(page + 5, total_page),
+    }
+
+    return render_template('sentences.html', type='', sents=docs_data, g=g, pagination=pagination)
+
+@is_active_user
+def sentences_page_typed(sent_type):
+    item_per_page = 50
+    page = request.args.get('p', 1)
+    page = int(page)
+
+    total = Sentence.objects(sent_type=sent_type).count()
+    total_page = math.ceil(total / item_per_page)
+    
+    #paginator = Pagination(Doc.objects(), page, 50)
+    paginator = Pagination(Sentence.objects(sent_type=sent_type), page, 50)
+    docs = paginator.items
+
+    docs_data = []
+    for doc in docs:
         item = doc        
         docs_data.append(item)
 
@@ -651,8 +679,7 @@ def sentences_page():
         'right': min(page + 5, total_page),
     }
 
-    return render_template('sentences.html', type='v1', sents=docs_data, g=g, pagination=pagination)
-
+    return render_template('sentences.html', type=sent_type, sents=docs_data, g=g, pagination=pagination)
 
 @is_active_user
 def view_sent(sent_id):

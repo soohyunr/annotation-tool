@@ -210,7 +210,7 @@ class Sentence(db.Document):
     children = db.ListField(db.ReferenceField('self'))
     reacts = db.ReferenceField(Reactions)
     depth = db.IntField()
-    
+    sent_type = db.StringField(default = 'v1')
     
     def dump(self):
         return {
