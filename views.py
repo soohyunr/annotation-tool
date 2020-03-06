@@ -612,6 +612,8 @@ def sentence_upload():
     if not is_root:
         parent_id = data['parent_id']
         psent = Sentence.objects.get(id=parent_id)
+        if user.username == psent['user']['username']:
+            raise Exception("replying to oneself")
         depth = psent['depth'] + 1
     reacts = Reactions()
     reacts.save()
