@@ -1,1 +1,8 @@
+## For any question, please feel free to contact us casually!
+   (nlpcl-credon@nlp.kaist.ac.kr)
 
+## We release only the first three and last three words of the sentences, and we only upload the documents of which we can find alive link (including mirror link) due to the copyright issue. As the news editorials are from major news organizations, we are much careful about the copyright issue. We are planning to upload the alignment-tool in our repository. As we continue to develop the corpus, we keep updating the resources. Please stay watching "credon.kaist.ac.kr" and this GitHub repository for news.
+
+## It should be noted that in the process of our annotation, we did not upload the text of news editorial in any external webpage from our web server, following the copyright protocol of the news agencies. The annotator used our annotation tool that supports automatic sentence boundary detection and rapid annotation of the copied text from an arbitrary source. Due to the copyright constraint, the annotators rather freely annotate the sentences within the news editorial. When there is a mismatch (overlapped span but not the same) between the sentence boundary between two different sentences that two different annotators annotated, we dismissed the two sentences.
+
+## If there is any problem with the copyright issue, please contact the email address above. I will promptly handle the problem.
